@@ -1,0 +1,70 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.HealthReadingsController = void 0;
+const common_1 = require("@nestjs/common");
+const health_readings_service_1 = require("./health-readings.service");
+const create_health_reading_dto_1 = require("./dto/create-health-reading.dto");
+let HealthReadingsController = class HealthReadingsController {
+    healthReadingsService;
+    constructor(healthReadingsService) {
+        this.healthReadingsService = healthReadingsService;
+    }
+    create(createHealthReadingDto) {
+        return this.healthReadingsService.create(createHealthReadingDto);
+    }
+    findLatestReading(id) {
+        return this.healthReadingsService.getLatestReading(id);
+    }
+    findAggregateReading(id) {
+        return this.healthReadingsService.getAggregatedReadings(id);
+    }
+    findOne(id) {
+        return this.healthReadingsService.findAllForUser(id);
+    }
+};
+exports.HealthReadingsController = HealthReadingsController;
+__decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_health_reading_dto_1.CreateHealthReadingDto]),
+    __metadata("design:returntype", void 0)
+], HealthReadingsController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)('latest-health/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], HealthReadingsController.prototype, "findLatestReading", null);
+__decorate([
+    (0, common_1.Get)('latest-health/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], HealthReadingsController.prototype, "findAggregateReading", null);
+__decorate([
+    (0, common_1.Get)('health-reading/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], HealthReadingsController.prototype, "findOne", null);
+exports.HealthReadingsController = HealthReadingsController = __decorate([
+    (0, common_1.Controller)('health-readings'),
+    __metadata("design:paramtypes", [health_readings_service_1.HealthReadingsService])
+], HealthReadingsController);
+//# sourceMappingURL=health-readings.controller.js.map

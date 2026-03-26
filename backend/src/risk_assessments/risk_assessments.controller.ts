@@ -1,4 +1,3 @@
-// risk-assessments.controller.ts
 import {
   Controller,
   Get,
@@ -58,7 +57,7 @@ export class RiskAssessmentsController {
    * Get the latest risk assessment for a user
    */
 
-  @Get('latest/:userId')
+  @Get('latestAssessment/:userId')
   @HttpCode(HttpStatus.OK)
   async getLatestAssessment(@Param('userId', ParseUUIDPipe) userId: string) {
     const assessment = await this.riskAssessmentsService.getLatestAssessment(userId);
@@ -200,14 +199,14 @@ export class RiskAssessmentsController {
   // async bulkAssessUsers() {
   //   // Get all users with recent readings
   //   const users = await this.riskAssessmentsService.usersService.findAll();
-
+    
   //   const results = {
   //     total: users.length,
   //     processed: 0,
   //     failed: 0,
   //     details: [] as any[],
   //   };
-
+    
   //   // Process each user (consider using queue for large scale)
   //   for (const user of users) {
   //     try {
@@ -227,7 +226,7 @@ export class RiskAssessmentsController {
   //       });
   //     }
   //   }
-
+    
   //   return results;
   // }
   
