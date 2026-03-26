@@ -5,11 +5,12 @@ import { HealthReading } from 'src/health-readings/entities/health-reading.entit
 import { HealthReadingsController } from 'src/health-readings/health-readings.controller';
 import { HealthReadingsService } from 'src/health-readings/health-readings.service';
 import { SmsService } from 'src/smsService/sms.service';
+import { RiskAssessmentsService } from './risk_assessments.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([HealthReading]), UsersModule],
   controllers: [HealthReadingsController],
-  providers: [HealthReadingsService, SmsService],
+  providers: [HealthReadingsService, SmsService, RiskAssessmentsService],
   exports: [HealthReadingsService],
 })
 export class HealthReadingsModule {}

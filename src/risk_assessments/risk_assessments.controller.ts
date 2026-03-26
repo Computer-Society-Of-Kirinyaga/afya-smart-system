@@ -7,23 +7,19 @@ import {
   Patch,
   Param,
   Query,
-  UseGuards,
   HttpCode,
   HttpStatus,
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { CreateRiskAssessmentDto } from './dto/create-risk_assessment.dto';
 import { RiskAssessmentsService } from './risk_assessments.service';
-import { InjectRepository } from '@nestjs/typeorm';
 import { RiskAssessment } from './entities/risk_assessment.entity';
-import { Repository } from 'typeorm';
 
 @Controller('risk-assessments')
 // @UseGuards(JwtAuthGuard)
 export class RiskAssessmentsController {
   constructor(
-    @InjectRepository(RiskAssessment)
-    private readonly riskAssessmentsService: Repository<RiskAssessmentsService>) {}
+    private readonly riskAssessmentsService:RiskAssessmentsService) {}
 
   /**
    * Create a new risk assessment manually
@@ -34,31 +30,34 @@ export class RiskAssessmentsController {
     return this.riskAssessmentsService.create(createDto);
   }
 
-  /**
-   * Trigger risk assessment for a specific user
-   * This will analyze recent readings and generate a risk assessment
-   */
-  @Post('assess/:userId')
-  @HttpCode(HttpStatus.OK)
-  async assessUserRisk(@Param('userId', ParseUUIDPipe) userId: string) {
-    const assessment = await this.riskAssessmentsService.assessUserRisk(userId);
+  //This will be triggerd by the cron through the assessment service not controller
+
+  // /**
+  //  * Trigger risk assessment for a specific user
+  //  * This will analyze recent readings and generate a risk assessment
+  //  */
+  // @Post('assess/:userId')
+  // @HttpCode(HttpStatus.OK)
+  // async assessUserRisk(@Param('userId', ParseUUIDPipe) userId: string) {
+  //   const assessment = await this.riskAssessmentsService.assessUserRisk(userId);
     
-    if (!assessment) {
-      return {
-        statusCode: HttpStatus.NOT_FOUND,
-        message: 'No readings found for this user in the last hour',
-      };
-    }
+  //   if (!assessment) {
+  //     return {
+  //       statusCode: HttpStatus.NOT_FOUND,
+  //       message: 'No readings found for this user in the last hour',
+  //     };
+  //   }
     
-    return {
-      message: 'Risk assessment completed successfully',
-      assessment,
-    };
-  }
+  //   return {
+  //     message: 'Risk assessment completed successfully',
+  //     assessment,
+  //   };
+  // }
 
   /**
    * Get the latest risk assessment for a user
    */
+
   @Get('latest/:userId')
   @HttpCode(HttpStatus.OK)
   async getLatestAssessment(@Param('userId', ParseUUIDPipe) userId: string) {
@@ -74,6 +73,7 @@ export class RiskAssessmentsController {
     
     return assessment;
   }
+
 
   /**
    * Get all risk assessments for a user with optional filters
@@ -103,6 +103,7 @@ export class RiskAssessmentsController {
       assessments,
     };
   }
+
 
   /**
    * Get risk history with trends for a user
@@ -137,138 +138,97 @@ export class RiskAssessmentsController {
     };
   }
 
-  /**
-   * Get a single risk assessment by ID
-   */
-  @Get(':assessmentId')
-  @HttpCode(HttpStatus.OK)
-  async getAssessmentById(@Param('assessmentId', ParseUUIDPipe) assessmentId: string) {
-    const assessment = await this.riskAssessmentsService.riskRepository.findOne({
-      where: { id: assessmentId },
-      relations: ['user'],
-    });
-    
-    if (!assessment) {
-      return {
-        statusCode: HttpStatus.NOT_FOUND,
-        message: 'Risk assessment not found',
-      };
-    }
-    
-    return assessment;
-  }
 
-  /**
-   * Get recent risk alerts (assessments with alerts sent)
-   * Useful for dashboard overview
-   */
-  @Get('alerts/recent')
-  @HttpCode(HttpStatus.OK)
-  async getRecentAlerts(@Query('limit') limit?: string) {
-    const alertLimit = limit ? parseInt(limit, 10) : 10;
+
+  // /**
+  //  * Get a single risk assessment by ID
+  //  */
+  // @Get(':assessmentId')
+  // @HttpCode(HttpStatus.OK)
+  // async getAssessmentById(@Param('assessmentId', ParseUUIDPipe) assessmentId: string) {
+  //   const assessment = await this.riskAssessmentsService.getAssessmentsForUser(assessmentId);
     
-    const alerts = await this.riskAssessmentsService.riskRepository.find({
-      where: { alert_sent: true },
-      relations: ['user'],
-      order: { alert_sent_at: 'DESC' },
-      take: alertLimit,
-    });
+  //   if (!assessment) {
+  //     return {
+  //       statusCode: HttpStatus.NOT_FOUND,
+  //       message: 'Risk assessment not found',
+  //     };
+  //   }
     
-    return {
-      count: alerts.length,
-      alerts,
-    };
-  }
+  //   return assessment;
+  // }
+
+  // /**
+  //  * Get recent risk alerts (assessments with alerts sent)
+  //  * Useful for dashboard overview
+  //  */
+  // @Get('alerts/recent')
+  // @HttpCode(HttpStatus.OK)
+  // async getRecentAlerts(@Query('limit') limit?: string) {
+  //   const alertLimit = limit ? parseInt(limit, 10) : 10;
+    
+  //   const alerts = await this.riskAssessmentsService.find({
+  //     where: { alert_sent: true },
+  //     relations: ['user'],
+  //     order: { alert_sent_at: 'DESC' },
+  //     take: alertLimit,
+  //   });
+    
+  //   return {
+  //     count: alerts.length,
+  //     alerts,
+  //   };
+  // }
 
   /**
    * Get risk statistics dashboard data
    * Returns aggregated stats for all users
    */
-  @Get('stats/dashboard')
+  @Get('stats/dashboard/:userId')
   @HttpCode(HttpStatus.OK)
-  async getDashboardStats() {
-    const allAssessments = await this.riskAssessmentsService.riskRepository.find({
-      relations: ['user'],
-      order: { assessment_time: 'DESC' },
-    });
+  async getDashboardStats(@Param('userId') userId: string) {
+    return await this.riskAssessmentsService.getAssessmentsForUser(userId);
     
-    // Group by risk level
-    const riskLevels = {
-      healthy: 0,
-      low: 0,
-      moderate: 0,
-      high: 0,
-    };
-    
-    // Group by user to get latest assessment per user
-    const latestByUser = new Map();
-    for (const assessment of allAssessments) {
-      const existing = latestByUser.get(assessment.user_id);
-      if (!existing || assessment.assessment_time > existing.assessment_time) {
-        latestByUser.set(assessment.user_id, assessment);
-      }
-    }
-    
-    const latestAssessments = Array.from(latestByUser.values());
-    
-    // Count risk levels
-    for (const assessment of latestAssessments) {
-      riskLevels[assessment.risk_level]++;
-    }
-    
-    // Calculate alert stats
-    const alertsLast24h = allAssessments.filter(
-      a => a.alert_sent && 
-      a.alert_sent_at && 
-      new Date().getTime() - a.alert_sent_at.getTime() < 24 * 60 * 60 * 1000
-    ).length;
-    
-    return {
-      totalUsers: latestByUser.size,
-      riskLevels,
-      alertsLast24h,
-      totalAssessments: allAssessments.length,
-      assessmentsWithAlerts: allAssessments.filter(a => a.alert_sent).length,
-    };
   }
 
-  /**
-   * Bulk trigger risk assessment for all active users
-   * This would be called by the cron job
-   */
-  @Post('bulk-assess')
-  @HttpCode(HttpStatus.ACCEPTED)
-  async bulkAssessUsers() {
-    // Get all users with recent readings
-    const users = await this.riskAssessmentsService.usersService.findAll();
+  // /**
+  //  * Bulk trigger risk assessment for all active users
+  //  * This would be called by the cron job
+  //  */
+  // @Post('bulk-assess')
+  // @HttpCode(HttpStatus.ACCEPTED)
+  // async bulkAssessUsers() {
+  //   // Get all users with recent readings
+  //   const users = await this.riskAssessmentsService.usersService.findAll();
     
-    const results = {
-      total: users.length,
-      processed: 0,
-      failed: 0,
-      details: [] as any[],
-    };
+  //   const results = {
+  //     total: users.length,
+  //     processed: 0,
+  //     failed: 0,
+  //     details: [] as any[],
+  //   };
     
-    // Process each user (consider using queue for large scale)
-    for (const user of users) {
-      try {
-        const assessment = await this.riskAssessmentsService.assessUserRisk(user.id);
-        results.processed++;
-        results.details.push({
-          userId: user.id,
-          status: 'success',
-          riskLevel: assessment?.risk_level || 'no_data',
-        });
-      } catch (error) {
-        results.failed++;
-        results.details.push({
-          userId: user.id,
-          status: 'failed',
-          error: error.message,
-        });
-      }
-    }
+  //   // Process each user (consider using queue for large scale)
+  //   for (const user of users) {
+  //     try {
+  //       const assessment = await this.riskAssessmentsService.assessUserRisk(user.id);
+  //       results.processed++;
+  //       results.details.push({
+  //         userId: user.id,
+  //         status: 'success',
+  //         riskLevel: assessment?.risk_level || 'no_data',
+  //       });
+  //     } catch (error) {
+  //       results.failed++;
+  //       results.details.push({
+  //         userId: user.id,
+  //         status: 'failed',
+  //         error: error.message,
+  //       });
+  //     }
+  //   }
     
-    return results;
-  }
+  //   return results;
+  // }
+  
 }
