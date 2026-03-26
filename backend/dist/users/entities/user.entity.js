@@ -15,10 +15,12 @@ let User = class User {
     id;
     phone_number;
     name;
+    password_hash;
     doctor_name;
     doctor_phone_number;
     consent_given;
     alert_preferences;
+    refresh_token;
     created_at;
     updated_at;
 };
@@ -37,6 +39,10 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "name", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ select: false }),
+    __metadata("design:type", String)
+], User.prototype, "password_hash", void 0);
+__decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "doctor_name", void 0);
@@ -54,11 +60,15 @@ __decorate([
         default: {
             sms_enabled: true,
             risk_threshold: 'medium',
-            alert_doctor: false
-        }
+            alert_doctor: false,
+        },
     }),
     __metadata("design:type", Object)
 ], User.prototype, "alert_preferences", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, select: false }),
+    __metadata("design:type", String)
+], User.prototype, "refresh_token", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
