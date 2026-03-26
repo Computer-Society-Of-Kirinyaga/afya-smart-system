@@ -25,9 +25,9 @@ export class CronsService {
 
      
 
-      this.logger.log('✅ 5-minute health check completed (using existing methods)');
+      this.logger.log(' 5-minute health check completed (using existing methods)');
     } catch (error) {
-      this.logger.error('❌ Error during 5-minute health check', error);
+      this.logger.error(' Error during 5-minute health check', error);
     }
   }
 
@@ -40,9 +40,9 @@ export class CronsService {
       this.logger.log('Daily reminder logic ready. Will use getLatestReading() when user list is available.');
       
 
-      this.logger.log('✅ Daily reminder job completed');
+      this.logger.log(' Daily reminder job completed');
     } catch (error) {
-      this.logger.error('❌ Error during daily reminder job', error);
+      this.logger.error('Error during daily reminder job', error);
     }
   }
 }
