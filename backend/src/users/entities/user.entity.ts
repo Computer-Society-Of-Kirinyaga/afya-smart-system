@@ -19,6 +19,9 @@ export class User {
   @Column()
   name: string;
 
+  @Column({ select: false })
+  password_hash: string;
+
   @Column({ nullable: true })
   doctor_name: string;
 
@@ -28,19 +31,22 @@ export class User {
   @Column({ default: false })
   consent_given: boolean;
 
-  @Column({ 
-    type: 'jsonb', 
-    default: { 
-      sms_enabled: true, 
+  @Column({
+    type: 'jsonb',
+    default: {
+      sms_enabled: true,
       risk_threshold: 'medium',
-      alert_doctor: false  // Option to also alert doctor
-    } 
+      alert_doctor: false, // Option to also alert doctor
+    },
   })
   alert_preferences: {
     sms_enabled: boolean;
     risk_threshold: 'low' | 'medium' | 'high';
     alert_doctor: boolean;
   };
+  
+  @Column({ nullable: true, select: false })
+  refresh_token?: string;
 
   @CreateDateColumn()
   created_at: Date;
