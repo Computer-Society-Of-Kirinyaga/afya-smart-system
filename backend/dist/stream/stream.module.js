@@ -6,21 +6,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppModule = void 0;
+exports.StreamModule = void 0;
 const common_1 = require("@nestjs/common");
-const app_controller_1 = require("./app.controller");
-const app_service_1 = require("./app.service");
-const users_module_1 = require("./users/users.module");
-const health_readings_module_1 = require("./health-readings/health-readings.module");
-const stream_module_1 = require("./stream/stream.module");
-let AppModule = class AppModule {
+const stream_controller_1 = require("./stream.controller");
+const health_readings_service_1 = require("../health-readings/health-readings.service");
+let StreamModule = class StreamModule {
 };
-exports.AppModule = AppModule;
-exports.AppModule = AppModule = __decorate([
+exports.StreamModule = StreamModule;
+exports.StreamModule = StreamModule = __decorate([
     (0, common_1.Module)({
-        imports: [users_module_1.UsersModule, health_readings_module_1.HealthReadingsModule, stream_module_1.StreamModule],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        controllers: [stream_controller_1.StreamController],
+        providers: [health_readings_service_1.HealthReadingsService],
     })
-], AppModule);
-//# sourceMappingURL=app.module.js.map
+], StreamModule);
+//# sourceMappingURL=stream.module.js.map
