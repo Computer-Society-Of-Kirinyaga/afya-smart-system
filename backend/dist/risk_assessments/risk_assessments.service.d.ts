@@ -3,7 +3,7 @@ import { HealthReadingsService } from '../health-readings/health-readings.servic
 import { UsersService } from '../users/users.service';
 import { RiskAssessment } from './entities/risk_assessment.entity';
 import { CreateRiskAssessmentDto } from './dto/create-risk_assessment.dto';
-import { SmsService } from 'src/smsService/sms.service';
+import { SmsService } from 'src/sms/sms.service';
 export declare class RiskAssessmentsService {
     private riskRepository;
     private healthReadingsService;

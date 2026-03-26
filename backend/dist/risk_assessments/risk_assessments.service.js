@@ -19,7 +19,7 @@ const typeorm_2 = require("typeorm");
 const health_readings_service_1 = require("../health-readings/health-readings.service");
 const users_service_1 = require("../users/users.service");
 const risk_assessment_entity_1 = require("./entities/risk_assessment.entity");
-const sms_service_1 = require("../smsService/sms.service");
+const sms_service_1 = require("../sms/sms.service");
 let RiskAssessmentsService = class RiskAssessmentsService {
     riskRepository;
     healthReadingsService;

@@ -5,7 +5,7 @@ import { HealthReadingsService } from '../health-readings/health-readings.servic
 import { UsersService } from '../users/users.service';
 import { RiskAssessment, RiskLevel } from './entities/risk_assessment.entity';
 import { CreateRiskAssessmentDto } from './dto/create-risk_assessment.dto';
-import { SmsService } from 'src/smsService/sms.service';
+import { SmsService } from 'src/sms/sms.service';
 
 @Injectable()
 export class RiskAssessmentsService {
@@ -73,8 +73,7 @@ export class RiskAssessmentsService {
 
     // Send SMS if risk detected
     if (riskLevel !== 'healthy') {
-     //logic for sms sent
-     
+          // this.smsService.sendRiskAlert(userId, mockLlmResponse)
     }
 
     return assessment;

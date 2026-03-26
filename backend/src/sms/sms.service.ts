@@ -7,7 +7,7 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
-import { SMS_GATEWAY, SmsGateway } from './sms.gateway';
+import { SMS_GATEWAY, type SmsGateway } from './sms.gateway';
 
 @Injectable()
 export class SmsService {
@@ -18,10 +18,8 @@ export class SmsService {
     @Inject(SMS_GATEWAY) private smsGateway: SmsGateway,
   ) {}
 
-  async sendRiskAlert(userId: string, riskLevel: string, explanation: string) {
+  async sendRiskAlert(userId: string, msg: string) {
     this.ensureNonEmpty(userId, 'userId');
-    this.ensureNonEmpty(riskLevel, 'riskLevel');
-    this.ensureNonEmpty(explanation, 'explanation');
 
     const user = await this.usersService.findOne(userId);
     
@@ -37,7 +35,7 @@ export class SmsService {
     }
     
     const errors: string[] = [];
-    const userMessage = this.buildUserAlertMessage(user.name, riskLevel, explanation);
+    const userMessage = this.buildUserAlertMessage(user.name, msg);
     try {
       await this.sendOrThrow(user.phone_number, userMessage);
     } catch (error) {
@@ -55,8 +53,7 @@ export class SmsService {
       const doctorMessage = this.buildDoctorAlertMessage(
         user.name,
         user.phone_number,
-        riskLevel,
-        explanation,
+        msg
       );
       try {
         await this.sendOrThrow(user.doctor_phone_number, doctorMessage);
@@ -72,19 +69,16 @@ export class SmsService {
     }
   }
 
-  private buildUserAlertMessage(userName: string, riskLevel: string, explanation: string) {
-    const level = riskLevel.toUpperCase();
-    return `Hello ${userName}, risk level: ${level}. ${explanation}`;
+  private buildUserAlertMessage(userName: string, msg: string) {
+    return `Hello ${userName}, ${msg}`;
   }
 
   private buildDoctorAlertMessage(
     userName: string,
     userPhone: string,
-    riskLevel: string,
-    explanation: string,
+    msg: string,
   ) {
-    const level = riskLevel.toUpperCase();
-    return `Patient ${userName} (${userPhone}) risk level: ${level}. ${explanation}`;
+    return `Patient ${userName} (${userPhone}) ${msg}`;
   }
 
   private async sendOrThrow(to: string, message: string) {

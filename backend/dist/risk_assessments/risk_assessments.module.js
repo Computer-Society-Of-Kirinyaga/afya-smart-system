@@ -14,6 +14,7 @@ const users_module_1 = require("../users/users.module");
 const risk_assessment_entity_1 = require("./entities/risk_assessment.entity");
 const risk_assessments_controller_1 = require("./risk_assessments.controller");
 const risk_assessments_service_1 = require("./risk_assessments.service");
+const sms_module_1 = require("../sms/sms.module");
 let RiskAssessmentsModule = class RiskAssessmentsModule {
 };
 exports.RiskAssessmentsModule = RiskAssessmentsModule;
@@ -23,6 +24,7 @@ exports.RiskAssessmentsModule = RiskAssessmentsModule = __decorate([
             typeorm_1.TypeOrmModule.forFeature([risk_assessment_entity_1.RiskAssessment]),
             health_readings_module_1.HealthReadingsModule,
             users_module_1.UsersModule,
+            sms_module_1.SmsModule,
         ],
         controllers: [risk_assessments_controller_1.RiskAssessmentsController],
         providers: [risk_assessments_service_1.RiskAssessmentsService],
