@@ -8,15 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StreamModule = void 0;
 const common_1 = require("@nestjs/common");
+const stream_service_1 = require("./stream.service");
 const stream_controller_1 = require("./stream.controller");
-const health_readings_service_1 = require("../health-readings/health-readings.service");
+const health_readings_module_1 = require("../health-readings/health-readings.module");
 let StreamModule = class StreamModule {
 };
 exports.StreamModule = StreamModule;
 exports.StreamModule = StreamModule = __decorate([
     (0, common_1.Module)({
+        imports: [health_readings_module_1.HealthReadingsModule],
         controllers: [stream_controller_1.StreamController],
-        providers: [health_readings_service_1.HealthReadingsService],
+        providers: [stream_service_1.StreamService],
     })
 ], StreamModule);
 //# sourceMappingURL=stream.module.js.map

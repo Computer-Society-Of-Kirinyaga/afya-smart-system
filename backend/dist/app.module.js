@@ -13,12 +13,22 @@ const app_service_1 = require("./app.service");
 const users_module_1 = require("./users/users.module");
 const health_readings_module_1 = require("./health-readings/health-readings.module");
 const stream_module_1 = require("./stream/stream.module");
+const database_module_1 = require("./config/database.module");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [users_module_1.UsersModule, health_readings_module_1.HealthReadingsModule, stream_module_1.StreamModule],
+        imports: [config_1.ConfigModule.forRoot({
+                isGlobal: true,
+                envFilePath: '.env',
+            }),
+            database_module_1.DatabaseModule,
+            users_module_1.UsersModule,
+            health_readings_module_1.HealthReadingsModule,
+            stream_module_1.StreamModule
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

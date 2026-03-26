@@ -12,13 +12,13 @@ const typeorm_1 = require("@nestjs/typeorm");
 const health_readings_service_1 = require("./health-readings.service");
 const health_readings_controller_1 = require("./health-readings.controller");
 const health_reading_entity_1 = require("./entities/health-reading.entity");
-const users_module_1 = require("../users/users.module");
+const user_entity_1 = require("../users/entities/user.entity");
 let HealthReadingsModule = class HealthReadingsModule {
 };
 exports.HealthReadingsModule = HealthReadingsModule;
 exports.HealthReadingsModule = HealthReadingsModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([health_reading_entity_1.HealthReading]), users_module_1.UsersModule],
+        imports: [typeorm_1.TypeOrmModule.forFeature([health_reading_entity_1.HealthReading, user_entity_1.User])],
         controllers: [health_readings_controller_1.HealthReadingsController],
         providers: [health_readings_service_1.HealthReadingsService],
         exports: [health_readings_service_1.HealthReadingsService],
