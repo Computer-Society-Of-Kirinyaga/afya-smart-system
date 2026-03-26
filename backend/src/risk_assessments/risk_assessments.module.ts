@@ -1,16 +1,20 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { HealthReadingsModule } from '../health-readings/health-readings.module';
 import { UsersModule } from '../users/users.module';
-import { HealthReading } from 'src/health-readings/entities/health-reading.entity';
-import { HealthReadingsController } from 'src/health-readings/health-readings.controller';
-import { HealthReadingsService } from 'src/health-readings/health-readings.service';
-import { SmsService } from 'src/smsService/sms.service';
+import { RiskAssessment } from './entities/risk_assessment.entity';
+import { RiskAssessmentsController } from './risk_assessments.controller';
 import { RiskAssessmentsService } from './risk_assessments.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([HealthReading]), UsersModule],
-  controllers: [HealthReadingsController],
-  providers: [HealthReadingsService, SmsService, RiskAssessmentsService],
-  exports: [HealthReadingsService],
+  imports: [
+    TypeOrmModule.forFeature([RiskAssessment]),
+    HealthReadingsModule,
+    UsersModule,
+    // SmsModule,
+  ],
+  controllers: [RiskAssessmentsController],
+  providers: [RiskAssessmentsService],
+  exports: [RiskAssessmentsService],
 })
-export class HealthReadingsModule {}
+export class RiskAssessmentsModule {}

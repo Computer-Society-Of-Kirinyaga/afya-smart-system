@@ -16,7 +16,6 @@ exports.HealthReadingsController = void 0;
 const common_1 = require("@nestjs/common");
 const health_readings_service_1 = require("./health-readings.service");
 const create_health_reading_dto_1 = require("./dto/create-health-reading.dto");
-const update_health_reading_dto_1 = require("./dto/update-health-reading.dto");
 let HealthReadingsController = class HealthReadingsController {
     healthReadingsService;
     constructor(healthReadingsService) {
@@ -25,17 +24,14 @@ let HealthReadingsController = class HealthReadingsController {
     create(createHealthReadingDto) {
         return this.healthReadingsService.create(createHealthReadingDto);
     }
-    findAll() {
-        return this.healthReadingsService.findAll();
+    findLatestReading(id) {
+        return this.healthReadingsService.getLatestReading(id);
+    }
+    findAggregateReading(id) {
+        return this.healthReadingsService.getAggregatedReadings(id);
     }
     findOne(id) {
-        return this.healthReadingsService.findOne(+id);
-    }
-    update(id, updateHealthReadingDto) {
-        return this.healthReadingsService.update(+id, updateHealthReadingDto);
-    }
-    remove(id) {
-        return this.healthReadingsService.remove(+id);
+        return this.healthReadingsService.findAllForUser(id);
     }
 };
 exports.HealthReadingsController = HealthReadingsController;
@@ -47,33 +43,26 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], HealthReadingsController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('latest-health/:id'),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
-], HealthReadingsController.prototype, "findAll", null);
+], HealthReadingsController.prototype, "findLatestReading", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)('latest-health/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], HealthReadingsController.prototype, "findAggregateReading", null);
+__decorate([
+    (0, common_1.Get)('health-reading/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], HealthReadingsController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_health_reading_dto_1.UpdateHealthReadingDto]),
-    __metadata("design:returntype", void 0)
-], HealthReadingsController.prototype, "update", null);
-__decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], HealthReadingsController.prototype, "remove", null);
 exports.HealthReadingsController = HealthReadingsController = __decorate([
     (0, common_1.Controller)('health-readings'),
     __metadata("design:paramtypes", [health_readings_service_1.HealthReadingsService])

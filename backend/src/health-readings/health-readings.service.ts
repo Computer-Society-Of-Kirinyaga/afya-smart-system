@@ -28,6 +28,8 @@ export class HealthReadingsService {
     return this.readingsRepository.save(reading);
   }
 
+
+  //Could come in handy
   async bulkCreate(bulkDto: BulkCreateHealthReadingDto): Promise<HealthReading[]> {
     const readings = await Promise.all(
       bulkDto.readings.map(async (dto) => {

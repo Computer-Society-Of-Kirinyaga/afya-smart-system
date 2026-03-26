@@ -12,23 +12,41 @@ export class HealthReadingsController {
     return this.healthReadingsService.create(createHealthReadingDto);
   }
 
-  @Get()
-  findAll() {
-    return this.healthReadingsService.findAll();
+  //No point we dont have a unified system they are all individual
+  // @Get()
+  // findAll() {
+  //   return this.healthReadingsService.findAll();
+  // }
+
+
+
+  @Get('latest-health/:id')
+  findLatestReading(@Param('id') id: string) {
+    return this.healthReadingsService.getLatestReading(id);
   }
 
-  @Get(':id')
+  @Get('latest-health/:id')
+  findAggregateReading(@Param('id') id: string) {
+    return this.healthReadingsService.getAggregatedReadings(id);
+  }
+
+  @Get('health-reading/:id')
   findOne(@Param('id') id: string) {
-    return this.healthReadingsService.findOne(+id);
+    return this.healthReadingsService.findAllForUser(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHealthReadingDto: UpdateHealthReadingDto) {
-    return this.healthReadingsService.update(+id, updateHealthReadingDto);
-  }
+  //We do not expect udpate for health readings its realtime
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.healthReadingsService.remove(+id);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateHealthReadingDto: UpdateHealthReadingDto) {
+  //   return this.healthReadingsService.update(+id, updateHealthReadingDto);
+  // }
+
+
+  // we do not expect delete, again its real time
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.healthReadingsService.remove(+id);
+  // }
+
 }

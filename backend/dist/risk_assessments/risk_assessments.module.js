@@ -6,24 +6,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HealthReadingsModule = void 0;
+exports.RiskAssessmentsModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const health_readings_module_1 = require("../health-readings/health-readings.module");
 const users_module_1 = require("../users/users.module");
-const health_reading_entity_1 = require("../health-readings/entities/health-reading.entity");
-const health_readings_controller_1 = require("../health-readings/health-readings.controller");
-const health_readings_service_1 = require("../health-readings/health-readings.service");
-const sms_service_1 = require("../smsService/sms.service");
+const risk_assessment_entity_1 = require("./entities/risk_assessment.entity");
+const risk_assessments_controller_1 = require("./risk_assessments.controller");
 const risk_assessments_service_1 = require("./risk_assessments.service");
-let HealthReadingsModule = class HealthReadingsModule {
+let RiskAssessmentsModule = class RiskAssessmentsModule {
 };
-exports.HealthReadingsModule = HealthReadingsModule;
-exports.HealthReadingsModule = HealthReadingsModule = __decorate([
+exports.RiskAssessmentsModule = RiskAssessmentsModule;
+exports.RiskAssessmentsModule = RiskAssessmentsModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([health_reading_entity_1.HealthReading]), users_module_1.UsersModule],
-        controllers: [health_readings_controller_1.HealthReadingsController],
-        providers: [health_readings_service_1.HealthReadingsService, sms_service_1.SmsService, risk_assessments_service_1.RiskAssessmentsService],
-        exports: [health_readings_service_1.HealthReadingsService],
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([risk_assessment_entity_1.RiskAssessment]),
+            health_readings_module_1.HealthReadingsModule,
+            users_module_1.UsersModule,
+        ],
+        controllers: [risk_assessments_controller_1.RiskAssessmentsController],
+        providers: [risk_assessments_service_1.RiskAssessmentsService],
+        exports: [risk_assessments_service_1.RiskAssessmentsService],
     })
-], HealthReadingsModule);
+], RiskAssessmentsModule);
 //# sourceMappingURL=risk_assessments.module.js.map

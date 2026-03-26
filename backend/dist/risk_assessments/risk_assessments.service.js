@@ -76,9 +76,14 @@ let RiskAssessmentsService = class RiskAssessmentsService {
         return assessment;
     }
     async updateAlertStatus(assessmentId, alertSent) {
+        if (alertSent) {
+            await this.riskRepository.update(assessmentId, {
+                alert_sent: alertSent,
+                alert_sent_at: new Date()
+            });
+        }
         await this.riskRepository.update(assessmentId, {
             alert_sent: alertSent,
-            alert_sent_at: new Date(),
         });
     }
     async getLatestAssessment(userId) {

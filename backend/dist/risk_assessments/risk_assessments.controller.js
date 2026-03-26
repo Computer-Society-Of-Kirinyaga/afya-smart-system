@@ -77,7 +77,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RiskAssessmentsController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)('latest/:userId'),
+    (0, common_1.Get)('latestAssessment/:userId'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('userId', common_1.ParseUUIDPipe)),
     __metadata("design:type", Function),

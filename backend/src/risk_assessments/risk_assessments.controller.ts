@@ -1,4 +1,3 @@
-// risk-assessments.controller.ts
 import {
   Controller,
   Get,
@@ -58,7 +57,7 @@ export class RiskAssessmentsController {
    * Get the latest risk assessment for a user
    */
 
-  @Get('latest/:userId')
+  @Get('latestAssessment/:userId')
   @HttpCode(HttpStatus.OK)
   async getLatestAssessment(@Param('userId', ParseUUIDPipe) userId: string) {
     const assessment = await this.riskAssessmentsService.getLatestAssessment(userId);

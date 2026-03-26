@@ -1,2 +1,2 @@
-export declare class HealthReadingsModule {
+export declare class RiskAssessmentsModule {
 }

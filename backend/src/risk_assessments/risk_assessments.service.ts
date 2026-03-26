@@ -81,10 +81,17 @@ export class RiskAssessmentsService {
   }
 
   async updateAlertStatus(assessmentId: string, alertSent: boolean): Promise<void> {
+    if(alertSent) {
+      await this.riskRepository.update(assessmentId, {
+        alert_sent: alertSent,
+        alert_sent_at: new Date()
+      });
+    }
+
     await this.riskRepository.update(assessmentId, {
-      alert_sent: alertSent,
-      alert_sent_at:new Date(), // todo check if alert sent update alertSent ? new Date() : null,
-    });
+        alert_sent: alertSent,
+      });
+      
   }
 
   async getLatestAssessment(userId: string): Promise<RiskAssessment | null> {
