@@ -6,7 +6,7 @@ import { HealthReadingsModule } from './health-readings/health-readings.module';
 import { StreamModule } from './stream/stream.module';
 
 @Module({
-  imports: [UsersModule, HealthReadingsModule, RiskAssessmentsModule, StreamModule],
+  imports: [UsersModule, HealthReadingsModule, StreamModule],
   controllers: [AppController],
   providers: [AppService],
 })
