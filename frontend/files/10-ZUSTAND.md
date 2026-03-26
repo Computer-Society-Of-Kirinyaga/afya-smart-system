@@ -1,6 +1,7 @@
 # 10 — Zustand Stores
 
 ## Rules
+
 - All stores live in `src/stores/`
 - All stores are fully typed — no `any`
 - Stores hold **UI state** and **user preferences** only
@@ -34,31 +35,32 @@ export const useAlertStore = create<AlertStore>((set, get) => ({
   unreadCount: 0,
 
   addAlert: (alert) =>
-    set(state => ({
+    set((state) => ({
       activeAlerts: [alert, ...state.activeAlerts].slice(0, 100), // keep max 100
       unreadCount: state.unreadCount + 1,
     })),
 
   markAsRead: (alertId) =>
-    set(state => {
-      const updated = state.activeAlerts.map(a =>
-        a.id === alertId ? { ...a, isRead: true } : a
+    set((state) => {
+      const updated = state.activeAlerts.map((a) =>
+        a.id === alertId ? { ...a, isRead: true } : a,
       )
-      const unread = updated.filter(a => !a.isRead).length
+      const unread = updated.filter((a) => !a.isRead).length
       return { activeAlerts: updated, unreadCount: unread }
     }),
 
   markAllAsRead: () =>
-    set(state => ({
-      activeAlerts: state.activeAlerts.map(a => ({ ...a, isRead: true })),
+    set((state) => ({
+      activeAlerts: state.activeAlerts.map((a) => ({ ...a, isRead: true })),
       unreadCount: 0,
     })),
 
   clearAlert: (alertId) =>
-    set(state => ({
-      activeAlerts: state.activeAlerts.filter(a => a.id !== alertId),
-      unreadCount: state.activeAlerts
-        .filter(a => a.id !== alertId && !a.isRead).length,
+    set((state) => ({
+      activeAlerts: state.activeAlerts.filter((a) => a.id !== alertId),
+      unreadCount: state.activeAlerts.filter(
+        (a) => a.id !== alertId && !a.isRead,
+      ).length,
     })),
 
   clearAll: () => set({ activeAlerts: [], unreadCount: 0 }),
@@ -66,9 +68,10 @@ export const useAlertStore = create<AlertStore>((set, get) => ({
 ```
 
 **Usage:**
+
 ```tsx
 // Topbar — bell badge
-const unreadCount = useAlertStore(state => state.unreadCount)
+const unreadCount = useAlertStore((state) => state.unreadCount)
 
 // Sidebar — alert nav badge
 const { unreadCount } = useAlertStore()
@@ -99,7 +102,10 @@ interface SettingsStore {
 
   // Actions
   updateContacts: (contacts: Partial<ContactInfo>) => void
-  updateThreshold: (vital: keyof Thresholds, value: Partial<Thresholds[keyof Thresholds]>) => void
+  updateThreshold: (
+    vital: keyof Thresholds,
+    value: Partial<Thresholds[keyof Thresholds]>,
+  ) => void
   resetThresholds: () => void
   toggleSms: (severity: keyof SmsToggles) => void
   setToastsEnabled: (enabled: boolean) => void
@@ -123,10 +129,10 @@ export const useSettingsStore = create<SettingsStore>()(
       toastsEnabled: true,
 
       updateContacts: (contacts) =>
-        set(state => ({ contacts: { ...state.contacts, ...contacts } })),
+        set((state) => ({ contacts: { ...state.contacts, ...contacts } })),
 
       updateThreshold: (vital, value) =>
-        set(state => ({
+        set((state) => ({
           thresholds: {
             ...state.thresholds,
             [vital]: { ...state.thresholds[vital], ...value },
@@ -136,7 +142,7 @@ export const useSettingsStore = create<SettingsStore>()(
       resetThresholds: () => set({ thresholds: DEFAULT_THRESHOLDS }),
 
       toggleSms: (severity) =>
-        set(state => ({
+        set((state) => ({
           smsEnabled: {
             ...state.smsEnabled,
             [severity]: !state.smsEnabled[severity],
@@ -146,9 +152,9 @@ export const useSettingsStore = create<SettingsStore>()(
       setToastsEnabled: (enabled) => set({ toastsEnabled: enabled }),
     }),
     {
-      name: 'vitalis-settings',       // localStorage key
-    }
-  )
+      name: 'vitalis-settings', // localStorage key
+    },
+  ),
 )
 ```
 
@@ -180,10 +186,10 @@ export const usePatientStore = create<PatientStore>()(
       patient: MOCK_PATIENT,
 
       updatePatient: (updates) =>
-        set(state => ({ patient: { ...state.patient, ...updates } })),
+        set((state) => ({ patient: { ...state.patient, ...updates } })),
 
       addCondition: (condition) =>
-        set(state => ({
+        set((state) => ({
           patient: {
             ...state.patient,
             conditions: [...state.patient.conditions, condition],
@@ -191,17 +197,17 @@ export const usePatientStore = create<PatientStore>()(
         })),
 
       removeCondition: (condition) =>
-        set(state => ({
+        set((state) => ({
           patient: {
             ...state.patient,
-            conditions: state.patient.conditions.filter(c => c !== condition),
+            conditions: state.patient.conditions.filter((c) => c !== condition),
           },
         })),
     }),
     {
       name: 'vitalis-patient',
-    }
-  )
+    },
+  ),
 )
 ```
 
@@ -209,11 +215,11 @@ export const usePatientStore = create<PatientStore>()(
 
 ## Store Usage Summary
 
-| Store | Used in | Purpose |
-|-------|---------|---------|
-| `useAlertStore` | Topbar, Sidebar, AlertsPage, DashboardShell | Alert count badge, alert list |
-| `useSettingsStore` | SettingsPage, useAlertEngine, useSmsNotification | Thresholds, contacts, toggles |
-| `usePatientStore` | Sidebar, Topbar, ProfileSettings, WelcomeBanner | Patient name, avatar, conditions |
+| Store              | Used in                                          | Purpose                          |
+| ------------------ | ------------------------------------------------ | -------------------------------- |
+| `useAlertStore`    | Topbar, Sidebar, AlertsPage, DashboardShell      | Alert count badge, alert list    |
+| `useSettingsStore` | SettingsPage, useAlertEngine, useSmsNotification | Thresholds, contacts, toggles    |
+| `usePatientStore`  | Sidebar, Topbar, ProfileSettings, WelcomeBanner  | Patient name, avatar, conditions |
 
 ---
 
@@ -221,7 +227,10 @@ export const usePatientStore = create<PatientStore>()(
 
 ```ts
 // ❌ WRONG — storing server data in Zustand
-const useVitalsStore = create(() => ({ vitals: null, fetchVitals: async () => {} }))
+const useVitalsStore = create(() => ({
+  vitals: null,
+  fetchVitals: async () => {},
+}))
 
 // ✅ RIGHT — server data in TanStack Query
 const { data: vitals } = useCurrentVitals()
@@ -236,5 +245,5 @@ const { activeAlerts } = useAlertStore()
 const store = useAlertStore()
 
 // ✅ RIGHT — use selector to subscribe to only what you need
-const unreadCount = useAlertStore(state => state.unreadCount)
+const unreadCount = useAlertStore((state) => state.unreadCount)
 ```

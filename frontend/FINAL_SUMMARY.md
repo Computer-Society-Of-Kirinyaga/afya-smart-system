@@ -7,12 +7,14 @@ This is a **healthcare monitoring dashboard** built with React 19, TypeScript, T
 ## 📋 What Was Built
 
 ### Phase 1: Landing Page ✅ (Previously Completed)
+
 - Marketing website with 10 sections
 - Hero, Problem, Solution, Architecture, Features, Testimonials, FAQ, CTA, Footer
 - TanStack Query example with testimonials
 - 1,200+ lines of professional React components
 
 ### Phase 2: Dashboard & Auth ✅ (Just Completed)
+
 - Complete authentication system with mock credentials
 - 4 fully functional dashboard pages
 - Real-time data with mock generators
@@ -62,6 +64,7 @@ This is a **healthcare monitoring dashboard** built with React 19, TypeScript, T
 ## 🏗️ Technical Architecture
 
 ### State Management
+
 ```
 Zustand Stores:
 ├── useAuthStore (auth.ts)
@@ -83,6 +86,7 @@ Zustand Stores:
 ```
 
 ### Data Flow
+
 ```
 Mock Data Generators → TanStack Query Hooks → React Components
   (mockData.ts)          (useVitals.ts)       (Page components)
@@ -94,6 +98,7 @@ Mock Data Generators → TanStack Query Hooks → React Components
 ```
 
 ### TanStack Query Hooks
+
 ```
 useCurrentVitals()
   - Stale time: 5 minutes
@@ -115,6 +120,7 @@ useAlerts()
 ## 📊 Data Models
 
 ### Vital Types
+
 - Heart Rate (bpm)
 - Blood Pressure (mmHg)
 - Oxygen Saturation - SpO2 (%)
@@ -122,11 +128,13 @@ useAlerts()
 - Blood Glucose (mg/dL)
 
 ### Alert Severity Levels
+
 - **Critical**: Red - Life-threatening readings
 - **Warning**: Yellow - Elevated readings
 - **Info**: Blue - General information
 
 ### User Settings
+
 - Primary/Secondary phone numbers
 - Email address
 - Emergency contact name
@@ -136,6 +144,7 @@ useAlerts()
 ## 🔐 Authentication
 
 ### Login Credentials (Demo)
+
 ```
 User 1:
 - Email: jane@vitalis.io
@@ -149,6 +158,7 @@ User 2:
 ```
 
 ### Flow
+
 1. User visits `/` → redirects to `/login`
 2. Enters credentials → validates against mock users
 3. On success → stores auth state in Zustand + localStorage
@@ -159,17 +169,20 @@ User 2:
 ## 🎨 Design System
 
 ### Colors (VITALIS Theme)
+
 - **Primary**: Teal-600 (#0d9488)
 - **Dark**: Slate-900 (#0f172a)
 - **Light**: White (#ffffff)
 - **Accents**: Red (critical), Yellow (warning), Blue (info), Green (safe)
 
 ### Typography
+
 - **Headings**: Bold, sans-serif, slate-900
 - **Body**: Regular weight, slate-700
 - **Small text**: slate-600, lighter weight
 
 ### Components
+
 - Cards with shadows and borders
 - Buttons with hover states
 - Form inputs with focus rings
@@ -179,17 +192,20 @@ User 2:
 ## 📱 Responsive Design
 
 ### Mobile (< 768px)
+
 - Slide-out navigation menu
 - Single column layouts
 - Full-width forms
 - Touch-friendly buttons
 
 ### Tablet (768px - 1024px)
+
 - 2-column grid layouts
 - Sidebar navigation starts to show
 - Wider form fields
 
 ### Desktop (> 1024px)
+
 - Fixed sidebar (64px)
 - Multi-column layouts
 - Full navigation always visible
@@ -198,26 +214,31 @@ User 2:
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 16+
 - npm or pnpm
 
 ### Installation
+
 ```bash
 cd frontend
 pnpm install
 ```
 
 ### Development
+
 ```bash
 pnpm dev
 ```
 
 ### Build
+
 ```bash
 pnpm build
 ```
 
 ### Navigation Path
+
 1. Open `http://localhost:5173`
 2. Login with: `jane@vitalis.io` / `password123`
 3. Explore dashboard pages via sidebar
@@ -227,20 +248,25 @@ pnpm build
 ## 📚 Project Files (New)
 
 ### Stores (3 files)
+
 - `src/store/auth.ts` - Authentication state
 - `src/store/alerts.ts` - Alert management
 - `src/store/settings.ts` - User settings
 
 ### Data (1 file)
+
 - `src/lib/mockData.ts` - Realistic data generators
 
 ### Hooks (1 file)
+
 - `src/hooks/useVitals.ts` - TanStack Query hooks
 
 ### Components (1 file)
+
 - `src/components/DashboardShell.tsx` - Layout shell
 
 ### Pages (4 files)
+
 - `src/content/auth/LoginPage.tsx`
 - `src/content/dashboard/OverviewPage.tsx`
 - `src/content/dashboard/VitalsPage.tsx`
@@ -248,6 +274,7 @@ pnpm build
 - `src/content/dashboard/SettingsPage.tsx`
 
 ### Routes (6 files)
+
 - `src/routes/login.tsx`
 - `src/routes/dashboard.tsx`
 - `src/routes/dashboard/overview.tsx`
@@ -258,6 +285,7 @@ pnpm build
 ## ✨ Features
 
 ### Real-Time Data
+
 - ✅ Current vital readings
 - ✅ 24-hour historical data
 - ✅ 7-day analytics
@@ -265,12 +293,14 @@ pnpm build
 - ✅ Realistic value ranges
 
 ### State Management
+
 - ✅ Authentication with persistence
 - ✅ Alert tracking with unread count
 - ✅ User settings with localStorage
 - ✅ UI state (mobile menu, theme)
 
 ### User Experience
+
 - ✅ Smooth animations and transitions
 - ✅ Loading states for data
 - ✅ Error handling and feedback
@@ -278,6 +308,7 @@ pnpm build
 - ✅ Professional branding
 
 ### Data Visualization
+
 - ✅ Interactive charts
 - ✅ Trend indicators
 - ✅ Color-coded status
@@ -287,10 +318,12 @@ pnpm build
 ## 🔄 State Persistence
 
 ### localStorage Items
+
 - `auth-store` - Authentication state
 - `settings-store` - User settings
 
 ### Session Management
+
 - Login persists across page reloads
 - Settings updates save immediately
 - Alerts managed in memory (with max 100)
@@ -342,6 +375,7 @@ pnpm build
 ## 🎓 Learning Outcomes
 
 This project demonstrates:
+
 - Modern React patterns (hooks, composition)
 - TypeScript best practices
 - State management with Zustand
@@ -366,6 +400,7 @@ This project demonstrates:
 ## 📞 Support
 
 For questions about the implementation:
+
 - Check the specification files in `/files` folder
 - Review component TypeScript interfaces
 - Examine Zustand store implementations

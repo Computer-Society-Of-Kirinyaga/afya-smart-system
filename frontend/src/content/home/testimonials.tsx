@@ -16,7 +16,7 @@ const mockTestimonials: Testimonial[] = [
     id: '1',
     name: 'Dr. Sarah Johnson',
     role: 'Cardiologist',
-    hospital: 'St. Mary\'s Medical Center',
+    hospital: "St. Mary's Medical Center",
     content:
       'VITALIS has transformed how we monitor our cardiac patients. The predictive alerts have helped us catch potential issues before they become emergencies.',
     rating: 5,
@@ -56,14 +56,18 @@ export function Testimonials(): JSX.Element {
   })
 
   return (
-    <section className="overflow-hidden lg:py-32 w-full z-20 pt-24 pb-24 relative bg-white" id="testimonials">
+    <section
+      className="overflow-hidden lg:py-32 w-full z-20 pt-24 pb-24 relative bg-white"
+      id="testimonials"
+    >
       <div className="px-6 lg:px-[6%] max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
             Healthcare Leaders Trust Us
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Hear from doctors and hospital administrators who are transforming patient care with VITALIS
+            Hear from doctors and hospital administrators who are transforming
+            patient care with VITALIS
           </p>
         </div>
 

@@ -1,13 +1,22 @@
 import {
-    generate24HourHistory,
-    generate7DayAnalytics,
-    generateAlertEvents,
-    generateCurrentVitals,
+  generate24HourHistory,
+  generate7DayAnalytics,
+  generateAlertEvents,
+  generateCurrentVitals,
 } from '@/lib/mockData'
 import { useAuth } from '@/store/auth'
-import type { AlertEvent, CurrentVitals, VitalDataPoint, VitalType, WeeklyAnalytics } from '@/types/dashboard'
+import type {
+  AlertEvent,
+  CurrentVitals,
+  VitalDataPoint,
+  VitalType,
+  WeeklyAnalytics,
+} from '@/types/dashboard'
 import { useQuery } from '@tanstack/react-query'
-import { useHealthReadings, useLatestHealthReading } from './useHealthReadingsApi'
+import {
+  useHealthReadings,
+  useLatestHealthReading,
+} from './useHealthReadingsApi'
 
 // Fetch current vitals from API (falls back to mock data if API fails)
 export function useCurrentVitals() {
@@ -57,7 +66,7 @@ export function use24HourHistory(vitalType: VitalType) {
         if (apiQuery.data && Array.isArray(apiQuery.data)) {
           return apiQuery.data.map((reading) => ({
             timestamp: new Date(reading.timestamp),
-            value: reading[vitalType as keyof typeof reading] as number || 0,
+            value: (reading[vitalType as keyof typeof reading] as number) || 0,
           }))
         }
         throw new Error('No data from API')

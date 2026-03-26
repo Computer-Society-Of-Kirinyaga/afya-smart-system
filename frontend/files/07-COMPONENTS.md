@@ -10,18 +10,19 @@ The most-used component — displays a single vital metric.
 
 ```tsx
 interface VitalCardProps {
-  vital: VitalType           // 'heartRate' | 'bloodPressure' | 'spo2' | 'temperature' | 'glucose'
-  value: string              // formatted value e.g. "72" or "120/80"
-  unit: string               // "bpm", "%", "°C", "mmol/L"
-  status: VitalStatus        // 'normal' | 'warning' | 'critical'
-  trend: TrendDirection      // 'up' | 'down' | 'stable'
-  sparklineData: number[]    // last 10 readings for mini chart
+  vital: VitalType // 'heartRate' | 'bloodPressure' | 'spo2' | 'temperature' | 'glucose'
+  value: string // formatted value e.g. "72" or "120/80"
+  unit: string // "bpm", "%", "°C", "mmol/L"
+  status: VitalStatus // 'normal' | 'warning' | 'critical'
+  trend: TrendDirection // 'up' | 'down' | 'stable'
+  sparklineData: number[] // last 10 readings for mini chart
   lastUpdated: Date
   onClick?: () => void
 }
 ```
 
 **Visual structure:**
+
 ```
 ┌─────────────────────────────────┐
 │ [Icon bg]  Heart Rate   [badge] │
@@ -33,21 +34,23 @@ interface VitalCardProps {
 ```
 
 **Vital color mapping:**
+
 ```ts
 const VITAL_COLORS: Record<VitalType, string> = {
-  heartRate:     'text-red-500  bg-red-50',
+  heartRate: 'text-red-500  bg-red-50',
   bloodPressure: 'text-purple-500 bg-purple-50',
-  spo2:          'text-blue-500 bg-blue-50',
-  temperature:   'text-orange-500 bg-orange-50',
-  glucose:       'text-teal-600 bg-teal-50',
+  spo2: 'text-blue-500 bg-blue-50',
+  temperature: 'text-orange-500 bg-orange-50',
+  glucose: 'text-teal-600 bg-teal-50',
 }
 ```
 
 **Status border mapping:**
+
 ```ts
 const STATUS_BORDER: Record<VitalStatus, string> = {
-  normal:   'border-slate-100 hover:border-teal-100',
-  warning:  'border-orange-200',
+  normal: 'border-slate-100 hover:border-teal-100',
+  warning: 'border-orange-200',
   critical: 'border-red-200 bg-red-50/30',
 }
 ```
@@ -65,8 +68,8 @@ interface StatusBadgeProps {
 
 ```tsx
 const STATUS_STYLES: Record<VitalStatus, string> = {
-  normal:   'bg-green-50 text-green-700',
-  warning:  'bg-orange-50 text-orange-700',
+  normal: 'bg-green-50 text-green-700',
+  warning: 'bg-orange-50 text-orange-700',
   critical: 'bg-red-50 text-red-600',
 }
 
@@ -80,10 +83,10 @@ const STATUS_STYLES: Record<VitalStatus, string> = {
 
 ```tsx
 interface TrendSparklineProps {
-  data: number[]           // array of values
-  color?: string           // tailwind hex — defaults to '#0d9488' (teal-600)
-  height?: number          // default 40
-  showDot?: boolean        // show last point as dot
+  data: number[] // array of values
+  color?: string // tailwind hex — defaults to '#0d9488' (teal-600)
+  height?: number // default 40
+  showDot?: boolean // show last point as dot
 }
 ```
 
@@ -99,8 +102,8 @@ interface TrendSparklineProps {
 interface SectionHeaderProps {
   title: string
   subtitle?: string
-  action?: React.ReactNode    // optional right-side button/badge
-  badge?: string              // optional count badge
+  action?: React.ReactNode // optional right-side button/badge
+  badge?: string // optional count badge
 }
 ```
 
@@ -163,7 +166,7 @@ interface ErrorBoundaryProps {
 
 ```tsx
 interface LiveIndicatorProps {
-  label?: string     // default "Live"
+  label?: string // default "Live"
 }
 ```
 
@@ -181,26 +184,39 @@ interface LiveIndicatorProps {
 
 ```tsx
 interface VitalsLineChartProps {
-  data: VitalDataPoint[]      // { time: string; value: number }[]
-  color?: string              // hex, default teal-600 (#0d9488)
+  data: VitalDataPoint[] // { time: string; value: number }[]
+  color?: string // hex, default teal-600 (#0d9488)
   minThreshold?: number
   maxThreshold?: number
   unit?: string
-  height?: number             // default 250
+  height?: number // default 250
 }
 ```
 
 **Recharts setup:**
+
 ```tsx
 <ResponsiveContainer width="100%" height={height}>
   <LineChart data={data}>
     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
     <XAxis dataKey="time" tick={{ fontSize: 11, fill: '#64748b' }} />
     <YAxis tick={{ fontSize: 11, fill: '#64748b' }} />
-    <Tooltip contentStyle={{ borderRadius: '8px', border: '1px solid #f1f5f9' }} />
-    {minThreshold && <ReferenceLine y={minThreshold} stroke="#f97316" strokeDasharray="4 4" />}
-    {maxThreshold && <ReferenceLine y={maxThreshold} stroke="#ef4444" strokeDasharray="4 4" />}
-    <Line type="monotone" dataKey="value" stroke={color} strokeWidth={2} dot={false} />
+    <Tooltip
+      contentStyle={{ borderRadius: '8px', border: '1px solid #f1f5f9' }}
+    />
+    {minThreshold && (
+      <ReferenceLine y={minThreshold} stroke="#f97316" strokeDasharray="4 4" />
+    )}
+    {maxThreshold && (
+      <ReferenceLine y={maxThreshold} stroke="#ef4444" strokeDasharray="4 4" />
+    )}
+    <Line
+      type="monotone"
+      dataKey="value"
+      stroke={color}
+      strokeWidth={2}
+      dot={false}
+    />
   </LineChart>
 </ResponsiveContainer>
 ```
@@ -227,8 +243,8 @@ Same props as `VitalsLineChart` — uses `<AreaChart>` with gradient fill:
 
 ```tsx
 interface RiskGaugeChartProps {
-  score: number         // 0–100
-  level: RiskLevel      // 'low' | 'moderate' | 'high' | 'critical'
+  score: number // 0–100
+  level: RiskLevel // 'low' | 'moderate' | 'high' | 'critical'
 }
 ```
 
@@ -243,22 +259,22 @@ interface RiskGaugeChartProps {
 
 ```ts
 import {
-  Activity,        // Heart Rate
-  Droplets,        // SpO2 / Blood Pressure
-  Thermometer,     // Temperature
-  FlaskConical,    // Blood Glucose
-  Bell,            // Alerts / Notifications
-  BarChart3,       // Analytics
+  Activity, // Heart Rate
+  Droplets, // SpO2 / Blood Pressure
+  Thermometer, // Temperature
+  FlaskConical, // Blood Glucose
+  Bell, // Alerts / Notifications
+  BarChart3, // Analytics
   LayoutDashboard, // Overview
-  Settings,        // Settings
-  AlertTriangle,   // Warning alerts
-  AlertCircle,     // Critical alerts
-  CheckCircle2,    // Normal status
-  ArrowUp,         // Trend up
-  ArrowDown,       // Trend down
-  Minus,           // Trend stable
-  MessageSquare,   // SMS
-  User,            // Patient
-  Phone,           // Contact
+  Settings, // Settings
+  AlertTriangle, // Warning alerts
+  AlertCircle, // Critical alerts
+  CheckCircle2, // Normal status
+  ArrowUp, // Trend up
+  ArrowDown, // Trend down
+  Minus, // Trend stable
+  MessageSquare, // SMS
+  User, // Patient
+  Phone, // Contact
 } from 'lucide-react'
 ```

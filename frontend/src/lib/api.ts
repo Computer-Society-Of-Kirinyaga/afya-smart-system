@@ -1,28 +1,28 @@
 // API configuration and utilities
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
 export interface ApiErrorResponse {
-  message: string;
-  statusCode: number;
-  error?: string;
+  message: string
+  statusCode: number
+  error?: string
 }
 
 export class ApiError extends Error {
   constructor(
     public status: number,
     message: string,
-    public data?: ApiErrorResponse
+    public data?: ApiErrorResponse,
   ) {
-    super(message);
-    this.name = 'ApiError';
+    super(message)
+    this.name = 'ApiError'
   }
 }
 
 export async function apiCall<T>(
   endpoint: string,
-  options?: RequestInit
+  options?: RequestInit,
 ): Promise<T> {
-  const url = `${API_BASE_URL}${endpoint}`;
+  const url = `${API_BASE_URL}${endpoint}`
 
   try {
     const response = await fetch(url, {
@@ -31,48 +31,46 @@ export async function apiCall<T>(
         ...options?.headers,
       },
       ...options,
-    });
+    })
 
-    const data = await response.json() as T | ApiErrorResponse;
+    const data = (await response.json()) as T | ApiErrorResponse
 
     if (!response.ok) {
-      const errorData = data as ApiErrorResponse;
+      const errorData = data as ApiErrorResponse
       throw new ApiError(
         response.status,
         errorData.message || `HTTP ${response.status}: ${response.statusText}`,
-        errorData
-      );
+        errorData,
+      )
     }
 
-    return data as T;
+    return data as T
   } catch (error) {
     if (error instanceof ApiError) {
-      throw error;
+      throw error
     }
     throw new ApiError(
       0,
-      error instanceof Error ? error.message : 'Unknown error occurred'
-    );
+      error instanceof Error ? error.message : 'Unknown error occurred',
+    )
   }
 }
 
 // Helper methods for common HTTP methods
 export const api = {
-  get: <T,>(endpoint: string) =>
-    apiCall<T>(endpoint, { method: 'GET' }),
+  get: <T>(endpoint: string) => apiCall<T>(endpoint, { method: 'GET' }),
 
-  post: <T,>(endpoint: string, data?: unknown) =>
+  post: <T>(endpoint: string, data?: unknown) =>
     apiCall<T>(endpoint, {
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
     }),
 
-  patch: <T,>(endpoint: string, data?: unknown) =>
+  patch: <T>(endpoint: string, data?: unknown) =>
     apiCall<T>(endpoint, {
       method: 'PATCH',
       body: data ? JSON.stringify(data) : undefined,
     }),
 
-  delete: <T,>(endpoint: string) =>
-    apiCall<T>(endpoint, { method: 'DELETE' }),
-};
+  delete: <T>(endpoint: string) => apiCall<T>(endpoint, { method: 'DELETE' }),
+}

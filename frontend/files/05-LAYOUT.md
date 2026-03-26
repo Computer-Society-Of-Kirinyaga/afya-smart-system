@@ -54,9 +54,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
         {/* Main area */}
         <div className="flex flex-1 flex-col overflow-hidden">
           <Topbar />
-          <main className="flex-1 overflow-y-auto">
-            {children}
-          </main>
+          <main className="flex-1 overflow-y-auto">{children}</main>
         </div>
       </div>
 
@@ -72,6 +70,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
 ## `Sidebar.tsx`
 
 ### Structure
+
 ```
 ┌─────────────────────────┐
 │ [Logo mark] VITALIS     │  h-16, border-b border-slate-100
@@ -89,6 +88,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
 ```
 
 ### Key Implementation Notes
+
 - Use `<Link>` from `@tanstack/react-router` with `activeProps`
 - Unread alert count from `useAlertStore` — show only if > 0
 - Logo mark: `h-8 w-8 rounded-lg bg-teal-600 flex items-center justify-center` with white "V" text
@@ -99,11 +99,13 @@ export function DashboardShell({ children }: DashboardShellProps) {
 ## `Topbar.tsx`
 
 ### Structure
+
 ```
 [Page Title]                          [LIVE badge] [Bell🔔 +badge] [Avatar]
 ```
 
 ### Key Implementation Notes
+
 - Page title derived from current route path — map route to label
 - `LiveIndicator` component (pulsing green dot) — always shown
 - Bell icon: `lucide-react` `Bell` — wrap in shadcn `<Button variant="ghost" size="icon">`
@@ -133,13 +135,13 @@ Bottom navigation bar — **mobile only** (`lg:hidden`)
 ## Page Content Grid System
 
 ### Single column (most pages)
+
 ```tsx
-<div className="flex flex-col gap-y-6 px-6 py-8 lg:px-[6%]">
-  ...sections
-</div>
+<div className="flex flex-col gap-y-6 px-6 py-8 lg:px-[6%]">...sections</div>
 ```
 
 ### Two-column grid (overview, analytics)
+
 ```tsx
 <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
   <div className="lg:col-span-2">...</div>
@@ -148,6 +150,7 @@ Bottom navigation bar — **mobile only** (`lg:hidden`)
 ```
 
 ### Vitals grid (5 cards)
+
 ```tsx
 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
   {/* 5 VitalCard components */}
@@ -158,21 +161,21 @@ Bottom navigation bar — **mobile only** (`lg:hidden`)
 
 ## Z-Index Layers
 
-| Layer | z-index | Element |
-|-------|---------|---------|
-| Ambient bg | fixed, z-0 | Background blur divs |
-| Sidebar | z-30 | Desktop sidebar |
-| Topbar | z-40 | Sticky topbar |
-| Mobile nav | z-50 | Bottom mobile nav |
-| Toasts | z-[100] | shadcn Toaster |
-| Sheets | z-[200] | shadcn Sheet (alert detail) |
+| Layer      | z-index    | Element                     |
+| ---------- | ---------- | --------------------------- |
+| Ambient bg | fixed, z-0 | Background blur divs        |
+| Sidebar    | z-30       | Desktop sidebar             |
+| Topbar     | z-40       | Sticky topbar               |
+| Mobile nav | z-50       | Bottom mobile nav           |
+| Toasts     | z-[100]    | shadcn Toaster              |
+| Sheets     | z-[200]    | shadcn Sheet (alert detail) |
 
 ---
 
 ## Responsive Breakpoints Summary
 
-| Breakpoint | Sidebar | Content padding | Grid cols |
-|-----------|---------|----------------|-----------|
-| Mobile (<768px) | Hidden (bottom nav) | px-4 | 1 col |
-| Tablet (768–1024px) | Hidden (bottom nav) | px-6 | 1–2 cols |
-| Desktop (>1024px) | w-64 visible | px-[6%] | 2–3 cols |
+| Breakpoint          | Sidebar             | Content padding | Grid cols |
+| ------------------- | ------------------- | --------------- | --------- |
+| Mobile (<768px)     | Hidden (bottom nav) | px-4            | 1 col     |
+| Tablet (768–1024px) | Hidden (bottom nav) | px-6            | 1–2 cols  |
+| Desktop (>1024px)   | w-64 visible        | px-[6%]         | 2–3 cols  |

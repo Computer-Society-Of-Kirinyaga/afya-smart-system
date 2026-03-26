@@ -23,6 +23,7 @@ All routes use TanStack Router's `createFileRoute` or `createRootRoute` pattern.
 ## File Implementations
 
 ### `src/routes/__root.tsx`
+
 ```tsx
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { DashboardShell } from '@/content/layout/DashboardShell'
@@ -37,6 +38,7 @@ export const Route = createRootRoute({
 ```
 
 ### `src/routes/index.tsx`
+
 ```tsx
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
@@ -48,6 +50,7 @@ export const Route = createFileRoute('/')({
 ```
 
 ### `src/routes/dashboard/overview.tsx`
+
 ```tsx
 import { createFileRoute } from '@tanstack/react-router'
 import { OverviewPage } from '@/content/overview/OverviewPage'
@@ -58,6 +61,7 @@ export const Route = createFileRoute('/dashboard/overview')({
 ```
 
 ### `src/routes/dashboard/vitals.tsx`
+
 ```tsx
 import { createFileRoute } from '@tanstack/react-router'
 import { VitalsPage } from '@/content/vitals/VitalsPage'
@@ -68,6 +72,7 @@ export const Route = createFileRoute('/dashboard/vitals')({
 ```
 
 ### `src/routes/dashboard/alerts.tsx`
+
 ```tsx
 import { createFileRoute } from '@tanstack/react-router'
 import { AlertsPage } from '@/content/alerts/AlertsPage'
@@ -78,6 +83,7 @@ export const Route = createFileRoute('/dashboard/alerts')({
 ```
 
 ### `src/routes/dashboard/analytics.tsx`
+
 ```tsx
 import { createFileRoute } from '@tanstack/react-router'
 import { AnalyticsPage } from '@/content/analytics/AnalyticsPage'
@@ -88,6 +94,7 @@ export const Route = createFileRoute('/dashboard/analytics')({
 ```
 
 ### `src/routes/dashboard/settings.tsx`
+
 ```tsx
 import { createFileRoute } from '@tanstack/react-router'
 import { SettingsPage } from '@/content/settings/SettingsPage'
@@ -134,11 +141,11 @@ export function OverviewPage() {
 
 ```ts
 export const NAV_LINKS = [
-  { label: 'Overview',   to: '/dashboard/overview',   icon: 'LayoutDashboard' },
-  { label: 'Vitals',     to: '/dashboard/vitals',     icon: 'Activity' },
-  { label: 'Alerts',     to: '/dashboard/alerts',     icon: 'Bell' },
-  { label: 'Analytics',  to: '/dashboard/analytics',  icon: 'BarChart3' },
-  { label: 'Settings',   to: '/dashboard/settings',   icon: 'Settings' },
+  { label: 'Overview', to: '/dashboard/overview', icon: 'LayoutDashboard' },
+  { label: 'Vitals', to: '/dashboard/vitals', icon: 'Activity' },
+  { label: 'Alerts', to: '/dashboard/alerts', icon: 'Bell' },
+  { label: 'Analytics', to: '/dashboard/analytics', icon: 'BarChart3' },
+  { label: 'Settings', to: '/dashboard/settings', icon: 'Settings' },
 ] as const
 ```
 
@@ -173,6 +180,6 @@ const router = createRouter({ routeTree })
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
-  </QueryClientProvider>
+  </QueryClientProvider>,
 )
 ```

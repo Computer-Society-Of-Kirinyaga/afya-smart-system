@@ -17,7 +17,9 @@ function OverviewPage() {
       <div className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-lg p-6 text-white shadow-lg">
         <h1 className="text-3xl font-bold">{user?.name}</h1>
         <p className="text-teal-100 mt-2">
-          Last vitals updated: {currentVitals?.heartRate.timestamp.toLocaleTimeString() || 'Loading...'}
+          Last vitals updated:{' '}
+          {currentVitals?.heartRate.timestamp.toLocaleTimeString() ||
+            'Loading...'}
         </p>
       </div>
 
@@ -28,9 +30,15 @@ function OverviewPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-slate-600 text-sm font-medium">Risk Score</p>
-              <p className="text-3xl font-bold text-slate-900 mt-1">{riskScore}</p>
+              <p className="text-3xl font-bold text-slate-900 mt-1">
+                {riskScore}
+              </p>
               <p className="text-xs text-slate-500 mt-1">
-                {riskScore > 60 ? 'High risk' : riskScore > 30 ? 'Moderate risk' : 'Low risk'}
+                {riskScore > 60
+                  ? 'High risk'
+                  : riskScore > 30
+                    ? 'Moderate risk'
+                    : 'Low risk'}
               </p>
             </div>
             <div
@@ -44,7 +52,11 @@ function OverviewPage() {
             >
               <TrendingUp
                 className={`w-6 h-6 ${
-                  riskScore > 60 ? 'text-red-600' : riskScore > 30 ? 'text-yellow-600' : 'text-green-600'
+                  riskScore > 60
+                    ? 'text-red-600'
+                    : riskScore > 30
+                      ? 'text-yellow-600'
+                      : 'text-green-600'
                 }`}
               />
             </div>
@@ -55,7 +67,9 @@ function OverviewPage() {
         <div className="bg-white rounded-lg shadow p-6 border-l-4 border-orange-600">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-slate-600 text-sm font-medium">Active Alerts</p>
+              <p className="text-slate-600 text-sm font-medium">
+                Active Alerts
+              </p>
               <p className="text-3xl font-bold text-slate-900 mt-1">
                 {alerts?.length || 0}
               </p>
@@ -75,7 +89,8 @@ function OverviewPage() {
             <div>
               <p className="text-slate-600 text-sm font-medium">Heart Rate</p>
               <p className="text-3xl font-bold text-slate-900 mt-1">
-                {vitalsLoading ? '—' : currentVitals?.heartRate.value} {currentVitals?.heartRate.unit}
+                {vitalsLoading ? '—' : currentVitals?.heartRate.value}{' '}
+                {currentVitals?.heartRate.unit}
               </p>
               <p className="text-xs text-slate-500 mt-1">Normal range</p>
             </div>
@@ -93,12 +108,19 @@ function OverviewPage() {
         </div>
         <div className="divide-y divide-slate-200">
           {alertsLoading ? (
-            <div className="p-6 text-center text-slate-500">Loading alerts...</div>
+            <div className="p-6 text-center text-slate-500">
+              Loading alerts...
+            </div>
           ) : recentAlerts.length === 0 ? (
-            <div className="p-6 text-center text-slate-500">No recent alerts</div>
+            <div className="p-6 text-center text-slate-500">
+              No recent alerts
+            </div>
           ) : (
             recentAlerts.map((alert) => (
-              <div key={alert.id} className="p-6 hover:bg-slate-50 transition duration-200">
+              <div
+                key={alert.id}
+                className="p-6 hover:bg-slate-50 transition duration-200"
+              >
                 <div className="flex items-start gap-4">
                   <div
                     className={`p-2 rounded-lg ${
@@ -122,8 +144,12 @@ function OverviewPage() {
                   <div className="flex-1">
                     <div className="flex items-start justify-between">
                       <div>
-                        <p className="font-semibold text-slate-900">{alert.vital}</p>
-                        <p className="text-sm text-slate-600 mt-1">{alert.message}</p>
+                        <p className="font-semibold text-slate-900">
+                          {alert.vital}
+                        </p>
+                        <p className="text-sm text-slate-600 mt-1">
+                          {alert.message}
+                        </p>
                       </div>
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold ${
@@ -154,9 +180,12 @@ function OverviewPage() {
           <>
             {/* Blood Pressure */}
             <div className="bg-white rounded-lg shadow p-6">
-              <p className="text-slate-600 text-sm font-medium">Blood Pressure</p>
+              <p className="text-slate-600 text-sm font-medium">
+                Blood Pressure
+              </p>
               <p className="text-2xl font-bold text-slate-900 mt-2">
-                {currentVitals.bloodPressure.systolic}/{currentVitals.bloodPressure.diastolic}{' '}
+                {currentVitals.bloodPressure.systolic}/
+                {currentVitals.bloodPressure.diastolic}{' '}
                 {currentVitals.bloodPressure.unit}
               </p>
               <p className="text-xs text-slate-500 mt-1">Normal</p>
@@ -164,7 +193,9 @@ function OverviewPage() {
 
             {/* SpO2 */}
             <div className="bg-white rounded-lg shadow p-6">
-              <p className="text-slate-600 text-sm font-medium">Oxygen Saturation</p>
+              <p className="text-slate-600 text-sm font-medium">
+                Oxygen Saturation
+              </p>
               <p className="text-2xl font-bold text-slate-900 mt-2">
                 {currentVitals.spo2.value}% {currentVitals.spo2.unit}
               </p>
@@ -175,14 +206,17 @@ function OverviewPage() {
             <div className="bg-white rounded-lg shadow p-6">
               <p className="text-slate-600 text-sm font-medium">Temperature</p>
               <p className="text-2xl font-bold text-slate-900 mt-2">
-                {currentVitals.temperature.value} {currentVitals.temperature.unit}
+                {currentVitals.temperature.value}{' '}
+                {currentVitals.temperature.unit}
               </p>
               <p className="text-xs text-slate-500 mt-1">Normal</p>
             </div>
 
             {/* Glucose */}
             <div className="bg-white rounded-lg shadow p-6">
-              <p className="text-slate-600 text-sm font-medium">Blood Glucose</p>
+              <p className="text-slate-600 text-sm font-medium">
+                Blood Glucose
+              </p>
               <p className="text-2xl font-bold text-slate-900 mt-2">
                 {currentVitals.glucose.value} {currentVitals.glucose.unit}
               </p>

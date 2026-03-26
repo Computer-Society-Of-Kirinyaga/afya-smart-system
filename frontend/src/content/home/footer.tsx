@@ -17,16 +17,34 @@ export function Footer() {
               Revolutionizing patient care through intelligent monitoring.
             </p>
             <div className="flex gap-4">
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-sky-600 transition">
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-500 hover:text-sky-600 transition"
+              >
                 <Twitter size={20} />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-sky-600 transition">
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-500 hover:text-sky-600 transition"
+              >
                 <Linkedin size={20} />
               </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-sky-600 transition">
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-500 hover:text-sky-600 transition"
+              >
                 <Github size={20} />
               </a>
-              <a href="mailto:hello@vitalis.io" className="text-slate-500 hover:text-sky-600 transition">
+              <a
+                href="mailto:hello@vitalis.io"
+                className="text-slate-500 hover:text-sky-600 transition"
+              >
                 <Mail size={20} />
               </a>
             </div>
@@ -36,16 +54,28 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-slate-900 mb-4">Product</h4>
             <nav className="space-y-2">
-              <a href="#" className="text-slate-600 hover:text-slate-900 text-sm block transition">
+              <a
+                href="#"
+                className="text-slate-600 hover:text-slate-900 text-sm block transition"
+              >
                 Features
               </a>
-              <a href="#" className="text-slate-600 hover:text-slate-900 text-sm block transition">
+              <a
+                href="#"
+                className="text-slate-600 hover:text-slate-900 text-sm block transition"
+              >
                 Pricing
               </a>
-              <a href="#" className="text-slate-600 hover:text-slate-900 text-sm block transition">
+              <a
+                href="#"
+                className="text-slate-600 hover:text-slate-900 text-sm block transition"
+              >
                 Security
               </a>
-              <a href="#" className="text-slate-600 hover:text-slate-900 text-sm block transition">
+              <a
+                href="#"
+                className="text-slate-600 hover:text-slate-900 text-sm block transition"
+              >
                 Roadmap
               </a>
             </nav>
@@ -55,16 +85,28 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-slate-900 mb-4">Company</h4>
             <nav className="space-y-2">
-              <a href="#" className="text-slate-600 hover:text-slate-900 text-sm block transition">
+              <a
+                href="#"
+                className="text-slate-600 hover:text-slate-900 text-sm block transition"
+              >
                 About Us
               </a>
-              <a href="#" className="text-slate-600 hover:text-slate-900 text-sm block transition">
+              <a
+                href="#"
+                className="text-slate-600 hover:text-slate-900 text-sm block transition"
+              >
                 Blog
               </a>
-              <a href="#" className="text-slate-600 hover:text-slate-900 text-sm block transition">
+              <a
+                href="#"
+                className="text-slate-600 hover:text-slate-900 text-sm block transition"
+              >
                 Careers
               </a>
-              <a href="#" className="text-slate-600 hover:text-slate-900 text-sm block transition">
+              <a
+                href="#"
+                className="text-slate-600 hover:text-slate-900 text-sm block transition"
+              >
                 Contact
               </a>
             </nav>
@@ -74,16 +116,28 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-slate-900 mb-4">Legal</h4>
             <nav className="space-y-2">
-              <a href="#" className="text-slate-600 hover:text-slate-900 text-sm block transition">
+              <a
+                href="#"
+                className="text-slate-600 hover:text-slate-900 text-sm block transition"
+              >
                 Privacy Policy
               </a>
-              <a href="#" className="text-slate-600 hover:text-slate-900 text-sm block transition">
+              <a
+                href="#"
+                className="text-slate-600 hover:text-slate-900 text-sm block transition"
+              >
                 Terms of Service
               </a>
-              <a href="#" className="text-slate-600 hover:text-slate-900 text-sm block transition">
+              <a
+                href="#"
+                className="text-slate-600 hover:text-slate-900 text-sm block transition"
+              >
                 Compliance
               </a>
-              <a href="#" className="text-slate-600 hover:text-slate-900 text-sm block transition">
+              <a
+                href="#"
+                className="text-slate-600 hover:text-slate-900 text-sm block transition"
+              >
                 Certifications
               </a>
             </nav>
@@ -96,13 +150,22 @@ export function Footer() {
             © 2024 VITALIS. All rights reserved. Made with ❤️ for healthcare.
           </p>
           <div className="flex gap-8 text-sm">
-            <a href="#" className="text-slate-600 hover:text-slate-900 transition">
+            <a
+              href="#"
+              className="text-slate-600 hover:text-slate-900 transition"
+            >
               Status
             </a>
-            <a href="#" className="text-slate-600 hover:text-slate-900 transition">
+            <a
+              href="#"
+              className="text-slate-600 hover:text-slate-900 transition"
+            >
               API Docs
             </a>
-            <a href="#" className="text-slate-600 hover:text-slate-900 transition">
+            <a
+              href="#"
+              className="text-slate-600 hover:text-slate-900 transition"
+            >
               Support
             </a>
           </div>

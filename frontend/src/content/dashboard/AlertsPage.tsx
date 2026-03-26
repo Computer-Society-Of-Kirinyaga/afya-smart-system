@@ -7,7 +7,9 @@ import { useState } from 'react'
 function AlertsPage() {
   const { data: alerts, isLoading } = useAlerts()
   const { markAsRead, clearAlert } = useAlertStore()
-  const [severityFilter, setSeverityFilter] = useState<AlertSeverity | 'all'>('all')
+  const [severityFilter, setSeverityFilter] = useState<AlertSeverity | 'all'>(
+    'all',
+  )
 
   const filteredAlerts =
     severityFilter === 'all'
@@ -28,7 +30,8 @@ function AlertsPage() {
       <div>
         <h1 className="text-3xl font-bold text-slate-900">Alerts</h1>
         <p className="text-slate-600 mt-2">
-          Total: <span className="font-semibold">{alerts?.length || 0}</span> alert
+          Total: <span className="font-semibold">{alerts?.length || 0}</span>{' '}
+          alert
           {alerts && alerts.length !== 1 ? 's' : ''}
         </p>
       </div>
@@ -53,7 +56,9 @@ function AlertsPage() {
       {/* Alerts List */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
         {isLoading ? (
-          <div className="p-6 text-center text-slate-500">Loading alerts...</div>
+          <div className="p-6 text-center text-slate-500">
+            Loading alerts...
+          </div>
         ) : filteredAlerts && filteredAlerts.length > 0 ? (
           <div className="divide-y divide-slate-200">
             {filteredAlerts.map((alert) => (
@@ -93,7 +98,9 @@ function AlertsPage() {
                     {/* Content */}
                     <div className="flex-1">
                       <div className="flex items-center gap-3">
-                        <h3 className="font-semibold text-slate-900">{alert.vital}</h3>
+                        <h3 className="font-semibold text-slate-900">
+                          {alert.vital}
+                        </h3>
                         <span
                           className={`px-2 py-1 rounded text-xs font-semibold ${
                             alert.severity === 'critical'
@@ -110,7 +117,9 @@ function AlertsPage() {
                         )}
                       </div>
 
-                      <p className="text-slate-600 text-sm mt-1">{alert.message}</p>
+                      <p className="text-slate-600 text-sm mt-1">
+                        {alert.message}
+                      </p>
 
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3 text-sm">
                         <div>
@@ -122,7 +131,8 @@ function AlertsPage() {
                         <div>
                           <p className="text-slate-500">Threshold</p>
                           <p className="font-semibold text-slate-900">
-                            {alert.direction === 'above' ? '>' : '<'} {alert.threshold} {alert.unit}
+                            {alert.direction === 'above' ? '>' : '<'}{' '}
+                            {alert.threshold} {alert.unit}
                           </p>
                         </div>
                         <div>
@@ -141,7 +151,8 @@ function AlertsPage() {
 
                       {alert.smsSent && (
                         <div className="mt-3 p-2 bg-green-50 rounded text-xs text-green-700 border border-green-200">
-                          ✓ SMS notification sent to {alert.smsRecipients.join(', ')}
+                          ✓ SMS notification sent to{' '}
+                          {alert.smsRecipients.join(', ')}
                         </div>
                       )}
                     </div>
@@ -185,7 +196,9 @@ function AlertsPage() {
             </p>
           </div>
           <div className="bg-yellow-50 rounded-lg p-6 border border-yellow-200">
-            <p className="text-yellow-700 text-sm font-medium">Warning Alerts</p>
+            <p className="text-yellow-700 text-sm font-medium">
+              Warning Alerts
+            </p>
             <p className="text-3xl font-bold text-yellow-900 mt-2">
               {alerts.filter((a) => a.severity === 'warning').length}
             </p>

@@ -1,8 +1,22 @@
 import { Button } from '@/components/ui/button'
 import { useAlertStore } from '@/store/alerts'
 import { useAuthStore } from '@/store/auth'
-import { Navigate, Outlet, useLocation, useNavigate } from '@tanstack/react-router'
-import { AlertCircle, BarChart3, Bell, Heart, LogOut, Menu, Settings, X } from 'lucide-react'
+import {
+  Navigate,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from '@tanstack/react-router'
+import {
+  AlertCircle,
+  BarChart3,
+  Bell,
+  Heart,
+  LogOut,
+  Menu,
+  Settings,
+  X,
+} from 'lucide-react'
 import { useState } from 'react'
 
 export function DashboardShell() {
@@ -34,7 +48,9 @@ export function DashboardShell() {
       {/* Sidebar */}
       <aside
         className={`fixed lg:relative lg:w-64 w-64 h-screen bg-slate-900 text-white shadow-lg z-40 transform transition-transform duration-300 ${
-          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+          mobileMenuOpen
+            ? 'translate-x-0'
+            : '-translate-x-full lg:translate-x-0'
         }`}
       >
         {/* Logo */}
@@ -86,7 +102,11 @@ export function DashboardShell() {
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-slate-900 text-white rounded-lg"
       >
-        {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        {mobileMenuOpen ? (
+          <X className="w-6 h-6" />
+        ) : (
+          <Menu className="w-6 h-6" />
+        )}
       </button>
 
       {/* Overlay for mobile menu */}

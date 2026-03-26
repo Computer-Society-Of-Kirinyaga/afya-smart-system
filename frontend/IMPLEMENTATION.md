@@ -50,41 +50,47 @@ src/
 ## Key Features
 
 ### 1. **Pixel-Perfect UI Replication**
-   - All sections from demo.html are preserved
-   - Original layout structure and hierarchy maintained
-   - Responsive design (mobile, tablet, desktop)
+
+- All sections from demo.html are preserved
+- Original layout structure and hierarchy maintained
+- Responsive design (mobile, tablet, desktop)
 
 ### 2. **Component Architecture**
-   - Each page section is a standalone component
-   - Clean separation between route logic and UI components
-   - Reusable UI patterns across sections
+
+- Each page section is a standalone component
+- Clean separation between route logic and UI components
+- Reusable UI patterns across sections
 
 ### 3. **State Management**
-   - **Zustand Store** (`src/store/ui.ts`):
-     - Theme toggling (light/dark mode)
-     - Mobile menu state management
-     - Global UI state handling
+
+- **Zustand Store** (`src/store/ui.ts`):
+  - Theme toggling (light/dark mode)
+  - Mobile menu state management
+  - Global UI state handling
 
 ### 4. **Data Fetching**
-   - **TanStack Query** implementation in Testimonials:
-     - Simulated API call with 500ms delay
-     - Proper loading states
-     - Cache management with 5-minute stale time
-     - Error boundary ready
+
+- **TanStack Query** implementation in Testimonials:
+  - Simulated API call with 500ms delay
+  - Proper loading states
+  - Cache management with 5-minute stale time
+  - Error boundary ready
 
 ### 5. **Type Safety**
-   - Full TypeScript coverage
-   - No `any` types
-   - Strictly typed props and interfaces
-   - Defined types for:
-     - Testimonials
-     - FAQ items
-     - Features
-     - Navigation links
+
+- Full TypeScript coverage
+- No `any` types
+- Strictly typed props and interfaces
+- Defined types for:
+  - Testimonials
+  - FAQ items
+  - Features
+  - Navigation links
 
 ## Component Details
 
 ### Header Component
+
 - Sticky navigation bar with logo
 - Desktop and mobile navigation menus
 - Mobile menu overlay with smooth transitions
@@ -92,6 +98,7 @@ src/
 - Responsive design (hidden on mobile)
 
 ### Hero Section
+
 - Large headline and subheadline
 - Primary and secondary CTAs
 - Background gradient elements
@@ -99,6 +106,7 @@ src/
 - Responsive typography scaling
 
 ### Sections
+
 1. **Problem** - Healthcare challenges with visual indicators
 2. **Solution** - Solution features and benefits
 3. **Architecture** - Technical infrastructure overview
@@ -128,6 +136,7 @@ src/
 ## State Management Pattern
 
 ### Zustand Store Usage
+
 ```typescript
 // From src/store/ui.ts
 export const useUIStore = create<UIState>((set) => ({
@@ -143,6 +152,7 @@ const { mobileMenuOpen, toggleMobileMenu } = useUIStore()
 ## Data Fetching Pattern
 
 ### TanStack Query Implementation
+
 ```typescript
 // From src/content/home/testimonials.tsx
 const { data: testimonials = [], isLoading } = useQuery({
@@ -152,6 +162,7 @@ const { data: testimonials = [], isLoading } = useQuery({
 ```
 
 Features:
+
 - Automatic caching and revalidation
 - Loading state handling
 - Mock data for demo purposes
@@ -160,6 +171,7 @@ Features:
 ## Routing Structure
 
 ### File-Based Routing (TanStack Router)
+
 ```
 /                  → Home page (all sections)
 /about            → About page (existing route)
@@ -170,12 +182,14 @@ Routes are automatically generated from files in `src/routes/`.
 ## Quality Assurance
 
 ### Compilation Status
+
 ✅ All TypeScript errors resolved
 ✅ No `any` types present
 ✅ Full type coverage
 ✅ Proper JSX structure
 
 ### Component Specifications
+
 ✅ Header - Navigation with mobile responsiveness
 ✅ Hero - Large hero section with CTA
 ✅ Problem - Healthcare challenges display
@@ -188,6 +202,7 @@ Routes are automatically generated from files in `src/routes/`.
 ✅ Footer - Complete footer navigation
 
 ### Functional Requirements
+
 ✅ Application compiles without errors
 ✅ All sections render correctly
 ✅ Routing works with TanStack Router
@@ -246,18 +261,21 @@ npm run check
 ## Standards & Conventions
 
 ### Code Style
+
 - ES2020+ JavaScript
 - TypeScript strict mode
 - Function components with hooks
 - Functional programming patterns
 
 ### Naming Conventions
+
 - Components: PascalCase (e.g., `Header`, `Hero`)
 - Functions: camelCase (e.g., `toggleTheme`)
 - Constants: UPPER_SNAKE_CASE
 - Types/Interfaces: PascalCase with `I` prefix for interfaces
 
 ### File Organization
+
 - One component per file
 - Index files not used to avoid confusion
 - Descriptive filenames matching exports

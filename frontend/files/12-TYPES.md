@@ -45,8 +45,8 @@ export interface VitalDisplayConfig {
   key: VitalType
   label: string
   unit: string
-  icon: string                    // lucide icon name
-  colorClass: string              // Tailwind text + bg classes
+  icon: string // lucide icon name
+  colorClass: string // Tailwind text + bg classes
   formatValue: (v: number) => string
 }
 ```
@@ -94,7 +94,7 @@ export interface AlertTemplate {
 export type RiskLevel = 'low' | 'moderate' | 'high' | 'critical'
 
 export interface RiskScore {
-  score: number          // 0–100
+  score: number // 0–100
   level: RiskLevel
 }
 
@@ -212,6 +212,7 @@ export * from './sms'
 ```
 
 **Usage:**
+
 ```ts
 import type { CurrentVitals, VitalStatus, AlertEvent } from '@/types'
 ```
@@ -221,6 +222,7 @@ import type { CurrentVitals, VitalStatus, AlertEvent } from '@/types'
 ## Strict TypeScript Config
 
 Ensure `tsconfig.json` has:
+
 ```json
 {
   "compilerOptions": {
@@ -234,6 +236,7 @@ Ensure `tsconfig.json` has:
 ```
 
 **Forbidden patterns:**
+
 ```ts
 // ❌ Never use
 const x: any = {}
@@ -243,5 +246,5 @@ const result = data as any
 // ✅ Always use
 const x: CurrentVitals = generateCurrentVitals()
 function foo(bar: VitalType) {}
-const result = data as CurrentVitals   // only when truly safe
+const result = data as CurrentVitals // only when truly safe
 ```

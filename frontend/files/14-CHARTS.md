@@ -13,12 +13,15 @@ All charts are wrapped in `<ResponsiveContainer>` and use VITALIS theme colors.
 ## Chart Color Map per Vital
 
 ```ts
-export const VITAL_CHART_COLORS: Record<VitalType, { stroke: string; fill: string }> = {
-  heartRate:     { stroke: '#ef4444', fill: '#fef2f2' },   // red-500 / red-50
-  bloodPressure: { stroke: '#a855f7', fill: '#faf5ff' },   // purple-500 / purple-50
-  spo2:          { stroke: '#3b82f6', fill: '#eff6ff' },   // blue-500 / blue-50
-  temperature:   { stroke: '#f97316', fill: '#fff7ed' },   // orange-500 / orange-50
-  glucose:       { stroke: '#0d9488', fill: '#f0fdfa' },   // teal-600 / teal-50
+export const VITAL_CHART_COLORS: Record<
+  VitalType,
+  { stroke: string; fill: string }
+> = {
+  heartRate: { stroke: '#ef4444', fill: '#fef2f2' }, // red-500 / red-50
+  bloodPressure: { stroke: '#a855f7', fill: '#faf5ff' }, // purple-500 / purple-50
+  spo2: { stroke: '#3b82f6', fill: '#eff6ff' }, // blue-500 / blue-50
+  temperature: { stroke: '#f97316', fill: '#fff7ed' }, // orange-500 / orange-50
+  glucose: { stroke: '#0d9488', fill: '#f0fdfa' }, // teal-600 / teal-50
 }
 ```
 
@@ -30,8 +33,14 @@ Used on: Vitals page (`VitalsChartPanel`)
 
 ```tsx
 import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, ReferenceLine
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  ReferenceLine,
 } from 'recharts'
 
 interface Props {
@@ -42,27 +51,46 @@ interface Props {
   height?: number
 }
 
-export function VitalsAreaChart({ data, vitalType, minThreshold, maxThreshold, height = 250 }: Props) {
+export function VitalsAreaChart({
+  data,
+  vitalType,
+  minThreshold,
+  maxThreshold,
+  height = 250,
+}: Props) {
   const { stroke, fill } = VITAL_CHART_COLORS[vitalType]
 
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <AreaChart data={data} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
+      <AreaChart
+        data={data}
+        margin={{ top: 8, right: 8, left: -20, bottom: 0 }}
+      >
         <defs>
-          <linearGradient id={`gradient-${vitalType}`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%"  stopColor={stroke} stopOpacity={0.15} />
+          <linearGradient
+            id={`gradient-${vitalType}`}
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
+            <stop offset="5%" stopColor={stroke} stopOpacity={0.15} />
             <stop offset="95%" stopColor={stroke} stopOpacity={0} />
           </linearGradient>
         </defs>
 
-        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+        <CartesianGrid
+          strokeDasharray="3 3"
+          stroke="#f1f5f9"
+          vertical={false}
+        />
 
         <XAxis
           dataKey="time"
           tick={{ fontSize: 11, fill: '#94a3b8' }}
           tickLine={false}
           axisLine={false}
-          interval={3}          // Show every 4th label to avoid crowding
+          interval={3} // Show every 4th label to avoid crowding
         />
 
         <YAxis
@@ -90,7 +118,12 @@ export function VitalsAreaChart({ data, vitalType, minThreshold, maxThreshold, h
             stroke="#f97316"
             strokeDasharray="4 4"
             strokeWidth={1.5}
-            label={{ value: 'Min', position: 'insideTopLeft', fontSize: 10, fill: '#f97316' }}
+            label={{
+              value: 'Min',
+              position: 'insideTopLeft',
+              fontSize: 10,
+              fill: '#f97316',
+            }}
           />
         )}
         {maxThreshold && (
@@ -99,7 +132,12 @@ export function VitalsAreaChart({ data, vitalType, minThreshold, maxThreshold, h
             stroke="#ef4444"
             strokeDasharray="4 4"
             strokeWidth={1.5}
-            label={{ value: 'Max', position: 'insideTopLeft', fontSize: 10, fill: '#ef4444' }}
+            label={{
+              value: 'Max',
+              position: 'insideTopLeft',
+              fontSize: 10,
+              fill: '#ef4444',
+            }}
           />
         )}
 
@@ -126,8 +164,14 @@ Used on: Analytics page (`WeeklyTrendChart`)
 
 ```tsx
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid,
-  Tooltip, Legend, ResponsiveContainer
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
 } from 'recharts'
 
 // Single vital 7-day view
@@ -136,14 +180,59 @@ export function VitalsLineChart({ data, vitalType, height = 220 }: Props) {
 
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <LineChart data={data} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-        <XAxis dataKey="day" tick={{ fontSize: 11, fill: '#94a3b8' }} tickLine={false} axisLine={false} />
-        <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} tickLine={false} axisLine={false} width={40} />
-        <Tooltip contentStyle={{ borderRadius: '8px', border: '1px solid #f1f5f9', fontSize: '12px' }} />
-        <Line type="monotone" dataKey="avg"  stroke={stroke} strokeWidth={2} dot={{ r: 3, fill: stroke }} />
-        <Line type="monotone" dataKey="max"  stroke={stroke} strokeWidth={1} strokeDasharray="4 4" dot={false} opacity={0.5} />
-        <Line type="monotone" dataKey="min"  stroke={stroke} strokeWidth={1} strokeDasharray="4 4" dot={false} opacity={0.5} />
+      <LineChart
+        data={data}
+        margin={{ top: 8, right: 8, left: -20, bottom: 0 }}
+      >
+        <CartesianGrid
+          strokeDasharray="3 3"
+          stroke="#f1f5f9"
+          vertical={false}
+        />
+        <XAxis
+          dataKey="day"
+          tick={{ fontSize: 11, fill: '#94a3b8' }}
+          tickLine={false}
+          axisLine={false}
+        />
+        <YAxis
+          tick={{ fontSize: 11, fill: '#94a3b8' }}
+          tickLine={false}
+          axisLine={false}
+          width={40}
+        />
+        <Tooltip
+          contentStyle={{
+            borderRadius: '8px',
+            border: '1px solid #f1f5f9',
+            fontSize: '12px',
+          }}
+        />
+        <Line
+          type="monotone"
+          dataKey="avg"
+          stroke={stroke}
+          strokeWidth={2}
+          dot={{ r: 3, fill: stroke }}
+        />
+        <Line
+          type="monotone"
+          dataKey="max"
+          stroke={stroke}
+          strokeWidth={1}
+          strokeDasharray="4 4"
+          dot={false}
+          opacity={0.5}
+        />
+        <Line
+          type="monotone"
+          dataKey="min"
+          stroke={stroke}
+          strokeWidth={1}
+          strokeDasharray="4 4"
+          dot={false}
+          opacity={0.5}
+        />
       </LineChart>
     </ResponsiveContainer>
   )
@@ -159,12 +248,19 @@ Used on: VitalCard (overview + vitals pages)
 ```tsx
 import { LineChart, Line, ResponsiveContainer } from 'recharts'
 
-export function TrendSparkline({ data, color = '#0d9488', height = 40 }: TrendSparklineProps) {
+export function TrendSparkline({
+  data,
+  color = '#0d9488',
+  height = 40,
+}: TrendSparklineProps) {
   const chartData = data.map((value, i) => ({ i, value }))
 
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <LineChart data={chartData} margin={{ top: 2, right: 2, bottom: 2, left: 2 }}>
+      <LineChart
+        data={chartData}
+        margin={{ top: 2, right: 2, bottom: 2, left: 2 }}
+      >
         <Line
           type="monotone"
           dataKey="value"
@@ -186,13 +282,18 @@ export function TrendSparkline({ data, color = '#0d9488', height = 40 }: TrendSp
 Used on: Overview (`RiskScoreCard`), Analytics (`RiskTrendCard`)
 
 ```tsx
-import { RadialBarChart, RadialBar, ResponsiveContainer, PolarAngleAxis } from 'recharts'
+import {
+  RadialBarChart,
+  RadialBar,
+  ResponsiveContainer,
+  PolarAngleAxis,
+} from 'recharts'
 
 const RISK_COLORS: Record<RiskLevel, string> = {
-  low:      '#22c55e',   // green-500
-  moderate: '#f97316',   // orange-500
-  high:     '#ef4444',   // red-500
-  critical: '#dc2626',   // red-600
+  low: '#22c55e', // green-500
+  moderate: '#f97316', // orange-500
+  high: '#ef4444', // red-500
+  critical: '#dc2626', // red-600
 }
 
 export function RiskGaugeChart({ score, level }: RiskGaugeChartProps) {
@@ -220,8 +321,13 @@ export function RiskGaugeChart({ score, level }: RiskGaugeChartProps) {
 
       {/* Center label — absolutely positioned */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center">
-        <p className="text-3xl font-semibold tabular-nums text-slate-900">{score}</p>
-        <p className="text-xs font-bold uppercase tracking-widest" style={{ color }}>
+        <p className="text-3xl font-semibold tabular-nums text-slate-900">
+          {score}
+        </p>
+        <p
+          className="text-xs font-bold uppercase tracking-widest"
+          style={{ color }}
+        >
           {level}
         </p>
       </div>

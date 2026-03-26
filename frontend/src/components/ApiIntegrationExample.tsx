@@ -1,4 +1,7 @@
-import { useCreateHealthReading, useHealthReadings } from '@/hooks/useHealthReadingsApi'
+import {
+  useCreateHealthReading,
+  useHealthReadings,
+} from '@/hooks/useHealthReadingsApi'
 import { useUser } from '@/hooks/useUsersApi'
 import { useAuth } from '@/store/auth'
 import { useState } from 'react'
@@ -19,7 +22,11 @@ export function ApiIntegrationExample() {
   const [diastolicBp, setDiastolicBp] = useState('')
 
   // Query hooks
-  const { data: readings, isLoading: readingsLoading, error: readingsError } = useHealthReadings(userId || '')
+  const {
+    data: readings,
+    isLoading: readingsLoading,
+    error: readingsError,
+  } = useHealthReadings(userId || '')
   const { data: user } = useUser(userId || '')
 
   // Mutation hook
@@ -69,7 +76,10 @@ export function ApiIntegrationExample() {
         )}
 
         {/* Add Reading Form */}
-        <form onSubmit={handleAddReading} className="mb-6 space-y-4 border-b pb-6">
+        <form
+          onSubmit={handleAddReading}
+          className="mb-6 space-y-4 border-b pb-6"
+        >
           <h3 className="font-semibold">Add Health Reading</h3>
 
           <div className="grid grid-cols-3 gap-4">
@@ -145,9 +155,13 @@ export function ApiIntegrationExample() {
                     {new Date(reading.timestamp).toLocaleString()}
                   </div>
                   <div className="flex gap-4 mt-1 text-sm font-medium">
-                    {reading.heart_rate && <span>❤️ {reading.heart_rate} bpm</span>}
+                    {reading.heart_rate && (
+                      <span>❤️ {reading.heart_rate} bpm</span>
+                    )}
                     {reading.systolic_bp && reading.diastolic_bp && (
-                      <span>🩺 {reading.systolic_bp}/{reading.diastolic_bp}</span>
+                      <span>
+                        🩺 {reading.systolic_bp}/{reading.diastolic_bp}
+                      </span>
                     )}
                     {reading.spo2 && <span>O₂ {reading.spo2}%</span>}
                     {reading.temperature && (
@@ -158,7 +172,9 @@ export function ApiIntegrationExample() {
               ))}
             </div>
           ) : (
-            <div className="text-gray-500">No readings found. Add one to get started!</div>
+            <div className="text-gray-500">
+              No readings found. Add one to get started!
+            </div>
           )}
         </div>
       </div>
@@ -168,17 +184,28 @@ export function ApiIntegrationExample() {
         <h4 className="font-semibold mb-2">API Integration Status</h4>
         <ul className="space-y-1 text-gray-700">
           <li>
-            ✓ API Client: <code className="bg-gray-200 px-2 py-1 rounded">src/lib/api.ts</code>
+            ✓ API Client:{' '}
+            <code className="bg-gray-200 px-2 py-1 rounded">
+              src/lib/api.ts
+            </code>
           </li>
           <li>
             ✓ Health Readings Hooks:{' '}
-            <code className="bg-gray-200 px-2 py-1 rounded">useHealthReadingsApi.ts</code>
+            <code className="bg-gray-200 px-2 py-1 rounded">
+              useHealthReadingsApi.ts
+            </code>
           </li>
           <li>
-            ✓ Users Hooks: <code className="bg-gray-200 px-2 py-1 rounded">useUsersApi.ts</code>
+            ✓ Users Hooks:{' '}
+            <code className="bg-gray-200 px-2 py-1 rounded">
+              useUsersApi.ts
+            </code>
           </li>
           <li>✓ CORS Enabled on Backend</li>
-          <li>✓ Environment: {import.meta.env.VITE_API_URL || 'http://localhost:3001'}</li>
+          <li>
+            ✓ Environment:{' '}
+            {import.meta.env.VITE_API_URL || 'http://localhost:3001'}
+          </li>
         </ul>
       </div>
     </div>

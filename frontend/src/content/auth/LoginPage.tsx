@@ -44,7 +44,10 @@ export function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-slate-700 mb-1"
+              >
                 Email Address
               </label>
               <input
@@ -60,7 +63,10 @@ export function LoginPage() {
 
             {/* Password Input */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-slate-700 mb-1"
+              >
                 Password
               </label>
               <input
@@ -86,7 +92,9 @@ export function LoginPage() {
 
           {/* Demo Credentials Info */}
           <div className="mt-8 p-4 bg-slate-50 rounded-lg border border-slate-200">
-            <p className="text-xs font-semibold text-slate-700 mb-2">Demo Credentials:</p>
+            <p className="text-xs font-semibold text-slate-700 mb-2">
+              Demo Credentials:
+            </p>
             <div className="space-y-1 text-xs text-slate-600 font-mono">
               <p>
                 <span className="text-slate-700">Email:</span> jane@vitalis.io
@@ -94,7 +102,9 @@ export function LoginPage() {
               <p>
                 <span className="text-slate-700">Password:</span> password123
               </p>
-              <p className="mt-2 text-slate-700">Or try john@vitalis.io / password456</p>
+              <p className="mt-2 text-slate-700">
+                Or try john@vitalis.io / password456
+              </p>
             </div>
           </div>
         </div>

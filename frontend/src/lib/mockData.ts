@@ -1,12 +1,12 @@
 import type {
-    AlertDirection,
-    AlertEvent,
-    AlertSeverity,
-    CurrentVitals,
-    DailyVitalSummary,
-    VitalDataPoint,
-    VitalType,
-    WeeklyAnalytics,
+  AlertDirection,
+  AlertEvent,
+  AlertSeverity,
+  CurrentVitals,
+  DailyVitalSummary,
+  VitalDataPoint,
+  VitalType,
+  WeeklyAnalytics,
 } from '@/types/dashboard'
 
 // Vital ranges for realistic data generation
@@ -27,7 +27,9 @@ function randomBetween(min: number, max: number, decimals: number = 0): number {
 }
 
 // Generate current vital reading
-function generateVitalReading(vitalType: VitalType | 'systolic' | 'diastolic'): number {
+function generateVitalReading(
+  vitalType: VitalType | 'systolic' | 'diastolic',
+): number {
   const key = vitalType as keyof typeof VITAL_RANGES
   const range = VITAL_RANGES[key]
   if (!range) return 0
@@ -60,7 +62,10 @@ export function generate24HourHistory(vitalType: VitalType): VitalDataPoint[] {
   for (let i = 23; i >= 0; i--) {
     const timestamp = new Date(now.getTime() - i * 60 * 60 * 1000)
     dataPoints.push({
-      time: timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+      time: timestamp.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
       value: generateVitalReading(vitalType),
       timestamp: timestamp,
     })
@@ -113,7 +118,13 @@ export function generate7DayAnalytics(): WeeklyAnalytics {
 // Generate alert events
 export function generateAlertEvents(count: number = 5): AlertEvent[] {
   const severities: AlertSeverity[] = ['critical', 'warning', 'info']
-  const vitals = ['Heart Rate', 'Blood Pressure', 'SpO2', 'Temperature', 'Glucose']
+  const vitals = [
+    'Heart Rate',
+    'Blood Pressure',
+    'SpO2',
+    'Temperature',
+    'Glucose',
+  ]
   const directions: AlertDirection[] = ['above', 'below']
   const alerts: AlertEvent[] = []
 
@@ -145,6 +156,6 @@ export function generateAlertEvents(count: number = 5): AlertEvent[] {
   }
 
   return alerts.sort(
-    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
   )
 }

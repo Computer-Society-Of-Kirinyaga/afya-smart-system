@@ -29,7 +29,10 @@ function VitalsPage() {
   const max = historyValues.length > 0 ? Math.max(...historyValues) : 0
   const avg =
     historyValues.length > 0
-      ? Math.round((historyValues.reduce((a, b) => a + b, 0) / historyValues.length) * 10) / 10
+      ? Math.round(
+          (historyValues.reduce((a, b) => a + b, 0) / historyValues.length) *
+            10,
+        ) / 10
       : 0
 
   return (
@@ -122,19 +125,37 @@ function VitalsPage() {
           <table className="w-full">
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600">Time</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600">Value</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600">Trend</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600">
+                  Time
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600">
+                  Value
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600">
+                  Trend
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
               {history?.map((point, idx) => {
                 const prevValue = idx > 0 ? history[idx - 1].value : point.value
-                const trend = point.value > prevValue ? 'up' : point.value < prevValue ? 'down' : 'stable'
+                const trend =
+                  point.value > prevValue
+                    ? 'up'
+                    : point.value < prevValue
+                      ? 'down'
+                      : 'stable'
                 return (
-                  <tr key={idx} className="hover:bg-slate-50 transition duration-200">
-                    <td className="px-6 py-4 text-sm text-slate-900">{point.time}</td>
-                    <td className="px-6 py-4 text-sm font-semibold text-slate-900">{point.value}</td>
+                  <tr
+                    key={idx}
+                    className="hover:bg-slate-50 transition duration-200"
+                  >
+                    <td className="px-6 py-4 text-sm text-slate-900">
+                      {point.time}
+                    </td>
+                    <td className="px-6 py-4 text-sm font-semibold text-slate-900">
+                      {point.value}
+                    </td>
                     <td className="px-6 py-4 text-sm">
                       <div className="flex items-center gap-2">
                         {trend === 'up' && (

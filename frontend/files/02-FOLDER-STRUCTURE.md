@@ -108,15 +108,15 @@ src/
 
 ## Key Naming Conventions
 
-| Pattern | Example |
-|---------|---------|
-| Route files — routing only, no JSX | `overview.tsx` imports `OverviewPage` |
-| Content files — page sections | `WelcomeBanner.tsx` in `content/overview/` |
-| Shared components — reusable primitives | `VitalCard.tsx` in `components/shared/` |
-| Hooks — `use` prefix, descriptive | `useVitalsQuery.ts` |
-| Stores — `use` prefix + `Store` suffix | `useAlertStore.ts` |
-| Types — noun interfaces, PascalCase | `VitalReading`, `AlertEvent` |
-| Mock data functions — `generate` prefix | `generateMockVitals()` |
+| Pattern                                 | Example                                    |
+| --------------------------------------- | ------------------------------------------ |
+| Route files — routing only, no JSX      | `overview.tsx` imports `OverviewPage`      |
+| Content files — page sections           | `WelcomeBanner.tsx` in `content/overview/` |
+| Shared components — reusable primitives | `VitalCard.tsx` in `components/shared/`    |
+| Hooks — `use` prefix, descriptive       | `useVitalsQuery.ts`                        |
+| Stores — `use` prefix + `Store` suffix  | `useAlertStore.ts`                         |
+| Types — noun interfaces, PascalCase     | `VitalReading`, `AlertEvent`               |
+| Mock data functions — `generate` prefix | `generateMockVitals()`                     |
 
 ---
 

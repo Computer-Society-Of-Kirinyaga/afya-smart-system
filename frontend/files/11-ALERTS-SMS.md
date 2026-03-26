@@ -3,6 +3,7 @@
 ## Overview
 
 The alert system has two layers:
+
 1. **Alert Engine** — checks vitals against thresholds every 5 seconds, fires toasts, updates Zustand
 2. **SMS Service** — sends real SMS via Africa's Talking API when critical/warning thresholds breach
 
@@ -64,15 +65,11 @@ export const DEFAULT_THRESHOLDS: Thresholds = {
 
 export function checkThresholds(
   vitals: CurrentVitals,
-  thresholds: Thresholds
+  thresholds: Thresholds,
 ): AlertBreach[] {
   const breaches: AlertBreach[] = []
 
-  const check = (
-    value: number,
-    key: keyof Thresholds,
-    label: string
-  ) => {
+  const check = (value: number, key: keyof Thresholds, label: string) => {
     const t = thresholds[key]
     if (value > t.max) {
       breaches.push({
@@ -109,7 +106,11 @@ export function checkThresholds(
 
   check(vitals.heartRate.value, 'heartRate', 'Heart Rate')
   check(vitals.bloodPressure.systolic, 'systolic', 'Blood Pressure (Systolic)')
-  check(vitals.bloodPressure.diastolic, 'diastolic', 'Blood Pressure (Diastolic)')
+  check(
+    vitals.bloodPressure.diastolic,
+    'diastolic',
+    'Blood Pressure (Diastolic)',
+  )
   check(vitals.spo2.value, 'spo2', 'Blood Oxygen')
   check(vitals.temperature.value, 'temperature', 'Temperature')
   check(vitals.glucose.value, 'glucose', 'Blood Glucose')
@@ -139,7 +140,7 @@ export function useAlertEngine(): void {
 
     const breaches = checkThresholds(vitals, thresholds)
 
-    breaches.forEach(breach => {
+    breaches.forEach((breach) => {
       const lastTime = lastAlertTime.current[breach.vital] ?? 0
       const now = Date.now()
 
@@ -152,7 +153,8 @@ export function useAlertEngine(): void {
 
       // 2. Show toast
       if (toastsEnabled) {
-        const toastFn = breach.severity === 'critical' ? toast.error : toast.warning
+        const toastFn =
+          breach.severity === 'critical' ? toast.error : toast.warning
         toastFn(`⚠️ ${breach.message}`, {
           description: `Threshold: ${breach.threshold} ${breach.unit}`,
           duration: 8_000,
@@ -168,7 +170,7 @@ export function useAlertEngine(): void {
         sendSms({ breach, contacts })
       }
     })
-  }, [vitals])   // Re-runs every time vitals refresh
+  }, [vitals]) // Re-runs every time vitals refresh
 }
 ```
 
@@ -203,7 +205,7 @@ interface SmsResult {
 }
 
 export async function sendSmsViaAfricasTalking(
-  payload: SmsPayload
+  payload: SmsPayload,
 ): Promise<SmsResult> {
   const apiKey = import.meta.env.VITE_AT_API_KEY
   const username = import.meta.env.VITE_AT_USERNAME
@@ -218,9 +220,9 @@ export async function sendSmsViaAfricasTalking(
     const response = await fetch(AT_API_URL, {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        'apiKey': apiKey,
+        apiKey: apiKey,
       },
       body: new URLSearchParams({
         username,
@@ -235,7 +237,10 @@ export async function sendSmsViaAfricasTalking(
     }
 
     const data = await response.json()
-    return { success: true, messageId: data?.SMSMessageData?.Recipients?.[0]?.messageId }
+    return {
+      success: true,
+      messageId: data?.SMSMessageData?.Recipients?.[0]?.messageId,
+    }
   } catch (error) {
     return { success: false, error: String(error) }
   }
@@ -256,15 +261,22 @@ interface SendSmsParams {
 
 export function useSendSms() {
   return useMutation({
-    mutationFn: async ({ breach, contacts }: SendSmsParams): Promise<SmsResult> => {
+    mutationFn: async ({
+      breach,
+      contacts,
+    }: SendSmsParams): Promise<SmsResult> => {
       const message = buildSmsMessage(breach)
-      const recipients = [contacts.patientPhone, contacts.doctorPhone].filter(Boolean)
+      const recipients = [contacts.patientPhone, contacts.doctorPhone].filter(
+        Boolean,
+      )
 
       return sendSmsViaAfricasTalking({ to: recipients, message })
     },
     onSuccess: (result, variables) => {
       if (result.success) {
-        toast.success('SMS alert sent to patient and doctor', { duration: 4000 })
+        toast.success('SMS alert sent to patient and doctor', {
+          duration: 4000,
+        })
       }
       // Invalidate SMS log so SMSLogPanel refreshes
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.smsLog.all() })
@@ -313,10 +325,11 @@ Using **sonner** (ships with shadcn):
 import { Toaster } from '@/components/ui/sonner'
 
 // Add inside root layout:
-<Toaster position="top-right" richColors expand />
+;<Toaster position="top-right" richColors expand />
 ```
 
 Toast variants used:
+
 - `toast.error()` — critical alerts
 - `toast.warning()` — warning alerts
 - `toast.success()` — SMS sent confirmation

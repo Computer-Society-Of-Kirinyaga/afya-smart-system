@@ -11,11 +11,11 @@ All mock data generators used by TanStack Query hooks.
 ```ts
 export const VITAL_RANGES = {
   heartRate: { min: 58, max: 105, unit: 'bpm', decimals: 0 },
-  systolic:  { min: 105, max: 145, unit: 'mmHg', decimals: 0 },
-  diastolic: { min: 65, max: 95,  unit: 'mmHg', decimals: 0 },
-  spo2:      { min: 93, max: 100, unit: '%', decimals: 1 },
+  systolic: { min: 105, max: 145, unit: 'mmHg', decimals: 0 },
+  diastolic: { min: 65, max: 95, unit: 'mmHg', decimals: 0 },
+  spo2: { min: 93, max: 100, unit: '%', decimals: 1 },
   temperature: { min: 35.8, max: 38.2, unit: '°C', decimals: 1 },
-  glucose:   { min: 3.8, max: 9.5, unit: 'mmol/L', decimals: 1 },
+  glucose: { min: 3.8, max: 9.5, unit: 'mmol/L', decimals: 1 },
 } as const
 ```
 
@@ -69,14 +69,17 @@ function randomBetween(min: number, max: number, decimals = 0): number {
 ```ts
 // Generates 24 hourly data points ending at now
 export function generate24HourHistory(
-  vitalKey: keyof typeof VITAL_RANGES
+  vitalKey: keyof typeof VITAL_RANGES,
 ): VitalDataPoint[] {
   const now = new Date()
   return Array.from({ length: 24 }, (_, i) => {
     const time = new Date(now.getTime() - (23 - i) * 60 * 60 * 1000)
     const range = VITAL_RANGES[vitalKey]
     return {
-      time: time.toLocaleTimeString('en-KE', { hour: '2-digit', minute: '2-digit' }),
+      time: time.toLocaleTimeString('en-KE', {
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
       value: randomBetween(range.min, range.max, range.decimals),
       timestamp: time,
     }
@@ -93,25 +96,25 @@ export function generate7DayAnalytics(): WeeklyAnalytics {
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
   return {
-    heartRate: days.map(day => ({
+    heartRate: days.map((day) => ({
       day,
       avg: randomBetween(65, 85),
       min: randomBetween(55, 65),
       max: randomBetween(90, 110),
     })),
-    spo2: days.map(day => ({
+    spo2: days.map((day) => ({
       day,
       avg: randomBetween(96, 99, 1),
       min: randomBetween(94, 96, 1),
       max: randomBetween(99, 100, 1),
     })),
-    temperature: days.map(day => ({
+    temperature: days.map((day) => ({
       day,
       avg: randomBetween(36.4, 37.1, 1),
       min: randomBetween(36.0, 36.4, 1),
       max: randomBetween(37.1, 37.8, 1),
     })),
-    glucose: days.map(day => ({
+    glucose: days.map((day) => ({
       day,
       avg: randomBetween(4.5, 6.5, 1),
       min: randomBetween(3.8, 4.5, 1),
@@ -127,12 +130,37 @@ export function generate7DayAnalytics(): WeeklyAnalytics {
 
 ```ts
 const ALERT_TEMPLATES: AlertTemplate[] = [
-  { vital: 'heartRate', message: 'Heart rate elevated', threshold: 100, unit: 'bpm' },
-  { vital: 'heartRate', message: 'Heart rate too low', threshold: 60, unit: 'bpm' },
-  { vital: 'spo2',      message: 'Oxygen saturation low', threshold: 95, unit: '%' },
-  { vital: 'temperature', message: 'Fever detected', threshold: 37.5, unit: '°C' },
-  { vital: 'glucose',   message: 'Blood glucose high', threshold: 7.8, unit: 'mmol/L' },
-  { vital: 'bloodPressure', message: 'Blood pressure elevated', threshold: 140, unit: 'mmHg' },
+  {
+    vital: 'heartRate',
+    message: 'Heart rate elevated',
+    threshold: 100,
+    unit: 'bpm',
+  },
+  {
+    vital: 'heartRate',
+    message: 'Heart rate too low',
+    threshold: 60,
+    unit: 'bpm',
+  },
+  { vital: 'spo2', message: 'Oxygen saturation low', threshold: 95, unit: '%' },
+  {
+    vital: 'temperature',
+    message: 'Fever detected',
+    threshold: 37.5,
+    unit: '°C',
+  },
+  {
+    vital: 'glucose',
+    message: 'Blood glucose high',
+    threshold: 7.8,
+    unit: 'mmol/L',
+  },
+  {
+    vital: 'bloodPressure',
+    message: 'Blood pressure elevated',
+    threshold: 140,
+    unit: 'mmHg',
+  },
 ]
 
 export function generateAlertHistory(count = 20): AlertEvent[] {
@@ -192,7 +220,14 @@ export function calculateRiskScore(vitals: CurrentVitals): RiskScore {
 
   return {
     score: Math.min(score, 100),
-    level: score >= 60 ? 'critical' : score >= 30 ? 'high' : score >= 15 ? 'moderate' : 'low',
+    level:
+      score >= 60
+        ? 'critical'
+        : score >= 30
+          ? 'high'
+          : score >= 15
+            ? 'moderate'
+            : 'low',
   }
 }
 ```

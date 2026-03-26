@@ -9,17 +9,25 @@ export function Solution(): JSX.Element {
             <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
               <CheckCircle className="w-8 h-8 text-green-500 mb-4" />
               <h4 className="font-semibold text-slate-900">Unified Data</h4>
-              <p className="text-sm text-slate-600 mt-2">Centralized patient records</p>
+              <p className="text-sm text-slate-600 mt-2">
+                Centralized patient records
+              </p>
             </div>
             <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
               <Cpu className="w-8 h-8 text-blue-500 mb-4" />
               <h4 className="font-semibold text-slate-900">AI-Powered</h4>
-              <p className="text-sm text-slate-600 mt-2">Intelligent predictions</p>
+              <p className="text-sm text-slate-600 mt-2">
+                Intelligent predictions
+              </p>
             </div>
             <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-sm lg:col-span-2">
               <TrendingUp className="w-8 h-8 text-teal-500 mb-4" />
-              <h4 className="font-semibold text-slate-900">Real-Time Monitoring</h4>
-              <p className="text-sm text-slate-600 mt-2">Continuous health tracking</p>
+              <h4 className="font-semibold text-slate-900">
+                Real-Time Monitoring
+              </h4>
+              <p className="text-sm text-slate-600 mt-2">
+                Continuous health tracking
+              </p>
             </div>
           </div>
 
@@ -28,7 +36,9 @@ export function Solution(): JSX.Element {
               Our Intelligent Solution
             </h2>
             <p className="text-lg text-slate-600 mb-6">
-              VITALIS combines cutting-edge IoT sensors, machine learning algorithms, and cloud infrastructure to deliver proactive, data-driven healthcare.
+              VITALIS combines cutting-edge IoT sensors, machine learning
+              algorithms, and cloud infrastructure to deliver proactive,
+              data-driven healthcare.
             </p>
 
             <div className="space-y-4">
@@ -37,8 +47,12 @@ export function Solution(): JSX.Element {
                   <span className="text-green-600 font-bold">✓</span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-900 mb-1">Integrated Platform</h3>
-                  <p className="text-slate-600 text-sm">All patient data in one secure place</p>
+                  <h3 className="font-semibold text-slate-900 mb-1">
+                    Integrated Platform
+                  </h3>
+                  <p className="text-slate-600 text-sm">
+                    All patient data in one secure place
+                  </p>
                 </div>
               </div>
 
@@ -47,8 +61,12 @@ export function Solution(): JSX.Element {
                   <span className="text-green-600 font-bold">✓</span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-900 mb-1">Predictive Analytics</h3>
-                  <p className="text-slate-600 text-sm">Early warning systems and risk assessment</p>
+                  <h3 className="font-semibold text-slate-900 mb-1">
+                    Predictive Analytics
+                  </h3>
+                  <p className="text-slate-600 text-sm">
+                    Early warning systems and risk assessment
+                  </p>
                 </div>
               </div>
 
@@ -57,8 +75,12 @@ export function Solution(): JSX.Element {
                   <span className="text-green-600 font-bold">✓</span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-900 mb-1">Proactive Interventions</h3>
-                  <p className="text-slate-600 text-sm">Prevent complications before they occur</p>
+                  <h3 className="font-semibold text-slate-900 mb-1">
+                    Proactive Interventions
+                  </h3>
+                  <p className="text-slate-600 text-sm">
+                    Prevent complications before they occur
+                  </p>
                 </div>
               </div>
             </div>

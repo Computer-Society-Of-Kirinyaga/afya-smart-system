@@ -105,8 +105,12 @@ export function SignupPage() {
 
         {/* Signup Card */}
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Create Account</h2>
-          <p className="text-slate-600 mb-6">Join us to start monitoring your health</p>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">
+            Create Account
+          </h2>
+          <p className="text-slate-600 mb-6">
+            Join us to start monitoring your health
+          </p>
 
           {errors.submit && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
@@ -117,7 +121,10 @@ export function SignupPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Full Name */}
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-slate-700 mb-1">
+              <label
+                htmlFor="fullName"
+                className="block text-sm font-medium text-slate-700 mb-1"
+              >
                 Full Name *
               </label>
               <input
@@ -132,12 +139,17 @@ export function SignupPage() {
                 }`}
                 required
               />
-              {errors.fullName && <p className="text-red-600 text-xs mt-1">{errors.fullName}</p>}
+              {errors.fullName && (
+                <p className="text-red-600 text-xs mt-1">{errors.fullName}</p>
+              )}
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-slate-700 mb-1"
+              >
                 Email Address *
               </label>
               <input
@@ -152,12 +164,17 @@ export function SignupPage() {
                 }`}
                 required
               />
-              {errors.email && <p className="text-red-600 text-xs mt-1">{errors.email}</p>}
+              {errors.email && (
+                <p className="text-red-600 text-xs mt-1">{errors.email}</p>
+              )}
             </div>
 
             {/* Phone Number */}
             <div>
-              <label htmlFor="phoneNumber" className="block text-sm font-medium text-slate-700 mb-1">
+              <label
+                htmlFor="phoneNumber"
+                className="block text-sm font-medium text-slate-700 mb-1"
+              >
                 Phone Number *
               </label>
               <input
@@ -172,12 +189,19 @@ export function SignupPage() {
                 }`}
                 required
               />
-              {errors.phoneNumber && <p className="text-red-600 text-xs mt-1">{errors.phoneNumber}</p>}
+              {errors.phoneNumber && (
+                <p className="text-red-600 text-xs mt-1">
+                  {errors.phoneNumber}
+                </p>
+              )}
             </div>
 
             {/* Date of Birth */}
             <div>
-              <label htmlFor="dateOfBirth" className="block text-sm font-medium text-slate-700 mb-1">
+              <label
+                htmlFor="dateOfBirth"
+                className="block text-sm font-medium text-slate-700 mb-1"
+              >
                 Date of Birth *
               </label>
               <input
@@ -191,12 +215,19 @@ export function SignupPage() {
                 }`}
                 required
               />
-              {errors.dateOfBirth && <p className="text-red-600 text-xs mt-1">{errors.dateOfBirth}</p>}
+              {errors.dateOfBirth && (
+                <p className="text-red-600 text-xs mt-1">
+                  {errors.dateOfBirth}
+                </p>
+              )}
             </div>
 
             {/* Emergency Contact */}
             <div>
-              <label htmlFor="emergencyContact" className="block text-sm font-medium text-slate-700 mb-1">
+              <label
+                htmlFor="emergencyContact"
+                className="block text-sm font-medium text-slate-700 mb-1"
+              >
                 Emergency Contact Number *
               </label>
               <input
@@ -207,18 +238,25 @@ export function SignupPage() {
                 onChange={handleChange}
                 placeholder="+254712345679"
                 className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                  errors.emergencyContact ? 'border-red-300' : 'border-slate-300'
+                  errors.emergencyContact
+                    ? 'border-red-300'
+                    : 'border-slate-300'
                 }`}
                 required
               />
               {errors.emergencyContact && (
-                <p className="text-red-600 text-xs mt-1">{errors.emergencyContact}</p>
+                <p className="text-red-600 text-xs mt-1">
+                  {errors.emergencyContact}
+                </p>
               )}
             </div>
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-slate-700 mb-1"
+              >
                 Password *
               </label>
               <input
@@ -233,7 +271,9 @@ export function SignupPage() {
                 }`}
                 required
               />
-              {errors.password && <p className="text-red-600 text-xs mt-1">{errors.password}</p>}
+              {errors.password && (
+                <p className="text-red-600 text-xs mt-1">{errors.password}</p>
+              )}
             </div>
 
             {/* Confirm Password */}
@@ -257,7 +297,9 @@ export function SignupPage() {
                 required
               />
               {errors.confirmPassword && (
-                <p className="text-red-600 text-xs mt-1">{errors.confirmPassword}</p>
+                <p className="text-red-600 text-xs mt-1">
+                  {errors.confirmPassword}
+                </p>
               )}
             </div>
 
@@ -290,7 +332,9 @@ export function SignupPage() {
                 *
               </label>
             </div>
-            {errors.agreed && <p className="text-red-600 text-xs">{errors.agreed}</p>}
+            {errors.agreed && (
+              <p className="text-red-600 text-xs">{errors.agreed}</p>
+            )}
 
             {/* Submit Button */}
             <Button
@@ -306,7 +350,10 @@ export function SignupPage() {
           <div className="mt-6 text-center">
             <p className="text-slate-600 text-sm">
               Already have an account?{' '}
-              <a href="/login" className="text-teal-600 hover:underline font-semibold">
+              <a
+                href="/login"
+                className="text-teal-600 hover:underline font-semibold"
+              >
                 Sign In
               </a>
             </p>

@@ -9,6 +9,7 @@
 **Purpose:** At-a-glance health snapshot — the patient's daily health homescreen.
 
 ### Layout
+
 ```
 WelcomeBanner          (full width)
 QuickStatsRow          (full width — 3 stat chips)
@@ -20,12 +21,14 @@ RecentAlertsList       (col-span-2)    │ RiskScoreCard (col-span-1)
 ### Sections
 
 **`WelcomeBanner`**
+
 - "Good morning, Jane 👋" greeting (time-based)
 - Current date in full: "Friday, 27 March 2026"
 - Sub-text: "Your vitals are being monitored continuously."
 - Right side: `LiveIndicator` badge
 
 **`QuickStatsRow`**
+
 - 3 mini stat chips in a horizontal row:
   - Today's Average Heart Rate: `72 bpm`
   - Current SpO2: `98%`
@@ -33,11 +36,13 @@ RecentAlertsList       (col-span-2)    │ RiskScoreCard (col-span-1)
 - Style: `rounded-full border border-slate-100 bg-white px-4 py-2 text-sm`
 
 **`VitalsSummaryGrid`**
+
 - 5 `VitalCard` components in a responsive grid
 - Each card shows: icon + name + current value + unit + `StatusBadge` + mini sparkline
 - Cards are teal-bordered when normal, orange when warning, red when critical
 
 **`RiskScoreCard`**
+
 - Large card with `RiskGaugeChart` (radial bar)
 - Risk level: Low / Moderate / High / Critical
 - Risk score: 0–100 number
@@ -45,6 +50,7 @@ RecentAlertsList       (col-span-2)    │ RiskScoreCard (col-span-1)
 - Color reflects risk level
 
 **`RecentAlertsList`**
+
 - Title: "Recent Alerts"
 - Last 5 alert events as rows
 - Each row: severity dot + vital name + value + timestamp + "View" button
@@ -57,6 +63,7 @@ RecentAlertsList       (col-span-2)    │ RiskScoreCard (col-span-1)
 **Purpose:** Deep-dive into each vital — current reading, full 24h chart, hourly table.
 
 ### Layout
+
 ```
 VitalsHeader           (full width — title + live badge)
 VitalSelector          (full width — tab strip)
@@ -68,17 +75,20 @@ VitalsDataTable        (full width)
 ### Sections
 
 **`VitalsHeader`**
+
 - Title: "Vitals Monitor"
 - Subtitle: "Real-time readings updated every 5 seconds"
 - `LiveIndicator` badge (right-aligned)
 
 **`VitalSelector`**
+
 - shadcn `<Tabs>` strip with 5 tabs:
   - `❤️ Heart Rate` | `🩸 Blood Pressure` | `💧 SpO2` | `🌡️ Temperature` | `🩸 Glucose`
 - Selected tab drives which vital is shown below
 - Store selected vital in local `useState` (not Zustand — it's page-local)
 
 **`VitalDetailCard`**
+
 - Large current reading display
 - Vital name + icon (colored per vital)
 - Big metric value (`text-4xl font-semibold`) + unit
@@ -87,6 +97,7 @@ VitalsDataTable        (full width)
 - Trend arrow (↑ ↓ →) with color based on direction
 
 **`VitalsChartPanel`**
+
 - Title: "24-Hour Trend"
 - `VitalsAreaChart` (Recharts) — full width, h-64
 - X-axis: hours (00:00 → now)
@@ -95,6 +106,7 @@ VitalsDataTable        (full width)
 - Color: teal-600 line, teal-50 area fill
 
 **`VitalsDataTable`**
+
 - Title: "Hourly Readings"
 - shadcn `<Table>` — columns: Time | Value | Status | Trend
 - Last 24 rows (one per hour)
@@ -108,6 +120,7 @@ VitalsDataTable        (full width)
 **Purpose:** Complete alert history with severity filtering and SMS log.
 
 ### Layout
+
 ```
 AlertsHeader           (full width)
 AlertsFilterBar        (full width)
@@ -119,16 +132,19 @@ AlertDetailSheet       (slide-in — triggered by row click)
 ### Sections
 
 **`AlertsHeader`**
+
 - Title: "Alerts & Risk Flags"
 - Unread count badge: `[3 unread]`
 - "Mark all as read" button (secondary style)
 
 **`AlertsFilterBar`**
+
 - shadcn `<Select>` — Filter by Severity: All / Critical / Warning / Info
 - shadcn `<Select>` — Filter by Vital: All / Heart Rate / BP / SpO2 / Temp / Glucose
 - shadcn `<Button>` — "Clear filters" (ghost)
 
 **`AlertsTable`**
+
 - shadcn `<Table>` — columns:
   - Severity (colored dot + label)
   - Vital
@@ -141,12 +157,14 @@ AlertDetailSheet       (slide-in — triggered by row click)
 - Empty state: `EmptyState` component
 
 **`AlertDetailSheet`**
+
 - shadcn `<Sheet>` (side panel, right)
 - Full alert detail: vital readings at time, threshold, description
 - "SMS sent to: +254 7XX XXX XXX" if SMS was fired
 - "Dismiss alert" button
 
 **`SMSLogPanel`**
+
 - Title: "SMS Notifications"
 - List of SMS events: timestamp + recipient + message preview
 - Status indicator: Delivered / Failed
@@ -159,6 +177,7 @@ AlertDetailSheet       (slide-in — triggered by row click)
 **Purpose:** 7-day trends, aggregated stats, population benchmarks.
 
 ### Layout
+
 ```
 AnalyticsHeader        (full width — title + date range picker)
 ─────── stats row ─────────────────────────────────────────
@@ -171,28 +190,33 @@ PopulationBenchmark    (full width)
 ### Sections
 
 **`AnalyticsHeader`**
+
 - Title: "Health Analytics"
 - Subtitle: "Your 7-day health summary"
 - shadcn `<Select>` date range: Last 7 days / Last 14 days / Last 30 days
 
 **`VitalStatsTable`**
+
 - shadcn `<Table>` — rows per vital:
   - Vital | Average | Min | Max | Trend (↑↓→) | Status
 - Color-coded status per vital
 - Compact row height
 
 **`WeeklyTrendChart`**
+
 - shadcn `<Tabs>` to switch between vitals
 - `VitalsLineChart` (Recharts) — 7 data points (daily averages)
 - X-axis: day labels (Mon, Tue … Sun)
 - Multiple series option: show all 5 vitals as separate lines
 
 **`RiskTrendCard`**
+
 - Risk score per day for last 7 days
 - Small `VitalsLineChart` — red/orange/green zones
 - Current risk level badge
 
 **`PopulationBenchmark`**
+
 - Title: "How You Compare"
 - 5 horizontal progress bars — one per vital
 - Each bar: patient value vs population average
@@ -206,6 +230,7 @@ PopulationBenchmark    (full width)
 **Purpose:** Configure contacts, thresholds, and notification preferences.
 
 ### Layout
+
 ```
 SettingsHeader         (full width)
 ─────── 2-col grid ────────────────────────────────────────
@@ -217,11 +242,13 @@ ProfileSettings        (full width)
 ### Sections
 
 **`SettingsHeader`**
+
 - Title: "Settings"
 - Subtitle: "Manage your monitoring preferences"
 - "Save all changes" button (primary)
 
 **`ContactSettings`**
+
 - Card title: "Alert Contacts"
 - Patient phone number input
 - Doctor phone number input
@@ -230,6 +257,7 @@ ProfileSettings        (full width)
 - "Save contacts" button → updates `useSettingsStore`
 
 **`NotificationSettings`**
+
 - Card title: "Notification Preferences"
 - 3 shadcn `<Switch>` toggles:
   - Send SMS for Critical alerts
@@ -238,6 +266,7 @@ ProfileSettings        (full width)
 - Updates `useSettingsStore`
 
 **`ThresholdSettings`**
+
 - Card title: "Alert Thresholds"
 - Per-vital min/max inputs (10 inputs total):
   - Heart Rate: Min `[60]` Max `[100]` bpm
@@ -250,6 +279,7 @@ ProfileSettings        (full width)
 - Updates `useSettingsStore`
 
 **`ProfileSettings`**
+
 - Card title: "Patient Profile"
 - Name, age, gender inputs
 - Condition tags (multi-select): Hypertension / Diabetes / Cardiac / None
