@@ -12,13 +12,13 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const users_module_1 = require("./users/users.module");
 const health_readings_module_1 = require("./health-readings/health-readings.module");
-const risk_assessments_module_1 = require("./risk_assessments/risk_assessments.module");
+const stream_module_1 = require("./stream/stream.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [users_module_1.UsersModule, health_readings_module_1.HealthReadingsModule, risk_assessments_module_1.RiskAssessmentsModule],
+        imports: [users_module_1.UsersModule, health_readings_module_1.HealthReadingsModule, stream_module_1.StreamModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
