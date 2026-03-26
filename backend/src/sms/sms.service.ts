@@ -7,7 +7,8 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
-import { SMS_GATEWAY, type SmsGateway } from './sms.gateway';
+import { SMS_GATEWAY } from './sms.gateway';
+import type { SmsGateway } from './sms.gateway';
 
 @Injectable()
 export class SmsService {

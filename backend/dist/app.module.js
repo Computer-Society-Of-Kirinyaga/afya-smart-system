@@ -11,11 +11,11 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const database_module_1 = require("./config/database.module");
 const users_module_1 = require("./users/users.module");
 const health_readings_module_1 = require("./health-readings/health-readings.module");
 const stream_module_1 = require("./stream/stream.module");
 const auth_module_1 = require("./auth/auth.module");
-const database_module_1 = require("./config/database.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
