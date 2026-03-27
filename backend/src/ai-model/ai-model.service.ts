@@ -30,8 +30,13 @@ export class AiModelService {
 
   constructor(private configService: ConfigService) {
     const apiKey = this.configService.get<string>('GEMINI_API_KEY');
-    const modelName =
-      this.configService.get<string>('GEMINI_MODEL') || 'gemini-2.0-pro';
+    const modelNameRaw =
+      this.configService.get<string>('GEMINI_MODEL') ||
+      'models/gemini-2.5-flash';
+    const modelName = modelNameRaw.startsWith('models/')
+      ? modelNameRaw
+      : `models/${modelNameRaw}`;
+    const apiVersion = this.configService.get<string>('GEMINI_API_VERSION');
 
     if (!apiKey) {
       throw new Error(
@@ -39,7 +44,7 @@ export class AiModelService {
       );
     }
 
-    this.genAI = new GoogleGenAI({ apiKey });
+    this.genAI = new GoogleGenAI({ apiKey, apiVersion });
     this.modelName = modelName;
     this.logger.log(`AI model initialized: ${modelName}`);
   }
