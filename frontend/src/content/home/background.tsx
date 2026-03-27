@@ -5,8 +5,10 @@ export function AmbientBackground() {
       <div
         className="aura-background-component top-0 w-full -z-10 absolute blur-md h-[700px]"
         style={{
-          maskImage: 'linear-gradient(to bottom, transparent, black 0%, black 80%, transparent)',
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 0%, black 80%, transparent)',
+          maskImage:
+            'linear-linear(to bottom, transparent, black 0%, black 80%, transparent)',
+          WebkitMaskImage:
+            'linear-linear(to bottom, transparent, black 0%, black 80%, transparent)',
         }}
       >
         <div className="aura-background-component top-0 w-full -z-10 absolute h-full">
@@ -28,10 +30,16 @@ export function GlobalGridSystem() {
     <div className="fixed inset-0 z-0 pointer-events-none hidden lg:block h-screen">
       <div className="grid-line-v" style={{ left: 'var(--gx-1)' }}></div>
       <div className="grid-line-v" style={{ left: 'var(--gx-2)' }}>
-        <div className="beam-v" style={{ animation: 'beam-v 6s infinite 1s' }}></div>
+        <div
+          className="beam-v"
+          style={{ animation: 'beam-v 6s infinite 1s' }}
+        ></div>
       </div>
       <div className="grid-line-v" style={{ left: 'var(--gx-3)' }}>
-        <div className="beam-v" style={{ animation: 'beam-v 7s infinite 3s' }}></div>
+        <div
+          className="beam-v"
+          style={{ animation: 'beam-v 7s infinite 3s' }}
+        ></div>
       </div>
       <div className="grid-line-v" style={{ left: 'var(--gx-4)' }}></div>
       <div className="grid-line-h" style={{ top: 'var(--gy-1)' }}></div>

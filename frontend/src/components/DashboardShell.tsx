@@ -54,7 +54,7 @@ export function DashboardShell() {
       >
         {/* Logo */}
         <div className="p-6 border-b border-slate-800">
-          <h1 className="text-2xl font-bold text-teal-400">VITALIS</h1>
+          <h1 className="text-2xl font-bold text-teal-400">AfyaSmart</h1>
           <p className="text-xs text-slate-400 mt-1">Smart Health Monitor</p>
         </div>
 

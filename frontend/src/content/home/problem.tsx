@@ -10,7 +10,10 @@ export function Problem(): JSX.Element {
               The Wearable Data Problem
             </h2>
             <p className="text-lg text-slate-600 mb-6">
-              Your wearable devices generate hundreds of data points every day. But without intelligent interpretation, this data tells you nothing about your health risks. You see numbers without context, trends without meaning.
+              Your wearable devices generate hundreds of data points every day.
+              But without intelligent interpretation, this data tells you
+              nothing about your health risks. You see numbers without context,
+              trends without meaning.
             </p>
 
             <div className="space-y-4">
@@ -77,7 +80,8 @@ export function Problem(): JSX.Element {
               <Shield className="w-8 h-8 text-orange-500 mb-4" />
               <h4 className="font-semibold text-slate-900">Health Gaps</h4>
               <p className="text-sm text-slate-600 mt-2">
-                No connection between your wearables and your healthcare provider
+                No connection between your wearables and your healthcare
+                provider
               </p>
             </div>
           </div>

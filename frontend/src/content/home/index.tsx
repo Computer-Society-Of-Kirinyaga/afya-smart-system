@@ -58,7 +58,6 @@ export function HomePage() {
 
       {/* Footer */}
       <FooterNew />
-
     </div>
   )
 }

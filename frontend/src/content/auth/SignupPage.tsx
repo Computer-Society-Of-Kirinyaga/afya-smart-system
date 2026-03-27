@@ -52,7 +52,9 @@ export function SignupPage() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
@@ -80,20 +82,23 @@ export function SignupPage() {
       const today = new Date()
       let age = today.getFullYear() - birthDate.getFullYear()
       const monthDiff = today.getMonth() - birthDate.getMonth()
-      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      if (
+        monthDiff < 0 ||
+        (monthDiff === 0 && today.getDate() < birthDate.getDate())
+      ) {
         age--
       }
 
       // Parse medications and chronic conditions from comma-separated strings
       const medicationsArray = formData.medications
         .split(',')
-        .map(m => m.trim())
-        .filter(m => m !== '')
-      
+        .map((m) => m.trim())
+        .filter((m) => m !== '')
+
       const chronicConditionsArray = formData.chronicConditions
         .split(',')
-        .map(c => c.trim())
-        .filter(c => c !== '')
+        .map((c) => c.trim())
+        .filter((c) => c !== '')
 
       // Build a RegisterRequest from the form data
       await register({
@@ -104,7 +109,10 @@ export function SignupPage() {
         age: age,
         gender: formData.gender ? Number(formData.gender) : undefined,
         medications: medicationsArray.length > 0 ? medicationsArray : undefined,
-        chronicConditions: chronicConditionsArray.length > 0 ? chronicConditionsArray : undefined,
+        chronicConditions:
+          chronicConditionsArray.length > 0
+            ? chronicConditionsArray
+            : undefined,
       })
       navigate({ to: '/dashboard/overview' })
     } catch (err) {
@@ -115,7 +123,7 @@ export function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-slate-100 flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-linear-to-br from-teal-50 to-slate-100 flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-4xl">
         {/* Logo/Branding */}
         <div className="text-center mb-8">
@@ -325,7 +333,9 @@ export function SignupPage() {
                   onChange={handleChange}
                   placeholder="••••••••"
                   className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                    errors.confirmPassword ? 'border-red-300' : 'border-slate-300'
+                    errors.confirmPassword
+                      ? 'border-red-300'
+                      : 'border-slate-300'
                   }`}
                   required
                 />

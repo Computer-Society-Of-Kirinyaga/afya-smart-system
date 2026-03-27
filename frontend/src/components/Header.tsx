@@ -63,7 +63,7 @@ export default function Header(): JSX.Element {
             <span className="text-white font-bold text-sm">V</span>
           </div>
           <span className="text-lg font-bold text-slate-900 hidden sm:inline">
-            VITALIS
+            AfyaSmart
           </span>
         </div>
 

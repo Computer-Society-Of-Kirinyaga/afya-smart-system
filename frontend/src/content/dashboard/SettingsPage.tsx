@@ -1,4 +1,8 @@
-import { useUpdateUserDoctor, useUpdateUserPreferences, useUser } from '@/hooks/useUsersApi'
+import {
+  useUpdateUserDoctor,
+  useUpdateUserPreferences,
+  useUser,
+} from '@/hooks/useUsersApi'
 import { useAuthStore } from '@/store/auth'
 import { useSettingsStore } from '@/store/settings'
 import { Bell, Phone, Save, Stethoscope } from 'lucide-react'
@@ -20,7 +24,9 @@ function SettingsPage() {
   // Alert preferences — matches API shape exactly
   const [smsEnabled, setSmsEnabled] = useState(true)
   const [alertDoctor, setAlertDoctor] = useState(false)
-  const [riskThreshold, setRiskThreshold] = useState<'low' | 'medium' | 'high'>('medium')
+  const [riskThreshold, setRiskThreshold] = useState<'low' | 'medium' | 'high'>(
+    'medium',
+  )
 
   const [doctorSaved, setDoctorSaved] = useState(false)
   const [prefsSaved, setPrefsSaved] = useState(false)
@@ -101,7 +107,9 @@ function SettingsPage() {
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center gap-3 mb-6">
           <Phone className="w-6 h-6 text-teal-600" />
-          <h2 className="text-2xl font-bold text-slate-900">Account Information</h2>
+          <h2 className="text-2xl font-bold text-slate-900">
+            Account Information
+          </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div>
@@ -110,7 +118,9 @@ function SettingsPage() {
           </div>
           <div>
             <p className="text-slate-500 font-medium mb-1">Phone Number</p>
-            <p className="text-slate-900 font-semibold">{userData.phone_number}</p>
+            <p className="text-slate-900 font-semibold">
+              {userData.phone_number}
+            </p>
           </div>
           <div>
             <p className="text-slate-500 font-medium mb-1">Member Since</p>
@@ -124,7 +134,9 @@ function SettingsPage() {
           </div>
           <div>
             <p className="text-slate-500 font-medium mb-1">Consent Given</p>
-            <p className={`font-semibold ${userData.consent_given ? 'text-green-600' : 'text-red-600'}`}>
+            <p
+              className={`font-semibold ${userData.consent_given ? 'text-green-600' : 'text-red-600'}`}
+            >
               {userData.consent_given ? 'Yes' : 'No'}
             </p>
           </div>
@@ -135,7 +147,9 @@ function SettingsPage() {
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center gap-3 mb-6">
           <Stethoscope className="w-6 h-6 text-teal-600" />
-          <h2 className="text-2xl font-bold text-slate-900">Doctor Information</h2>
+          <h2 className="text-2xl font-bold text-slate-900">
+            Doctor Information
+          </h2>
         </div>
 
         <div className="space-y-4">
@@ -186,7 +200,9 @@ function SettingsPage() {
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center gap-3 mb-6">
           <Bell className="w-6 h-6 text-orange-600" />
-          <h2 className="text-2xl font-bold text-slate-900">Alert Preferences</h2>
+          <h2 className="text-2xl font-bold text-slate-900">
+            Alert Preferences
+          </h2>
         </div>
 
         <div className="space-y-4">
@@ -194,7 +210,9 @@ function SettingsPage() {
           <div className="flex items-center justify-between p-4 border border-slate-200 rounded-lg">
             <div>
               <p className="font-semibold text-slate-900">SMS Alerts</p>
-              <p className="text-sm text-slate-600">Receive health alerts via SMS</p>
+              <p className="text-sm text-slate-600">
+                Receive health alerts via SMS
+              </p>
             </div>
             <button
               onClick={() => setSmsEnabled(!smsEnabled)}
@@ -265,7 +283,9 @@ function SettingsPage() {
             className="w-full mt-2 bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition duration-200"
           >
             <Save className="w-4 h-4" />
-            {updatePreferences.isPending ? 'Saving...' : 'Save Alert Preferences'}
+            {updatePreferences.isPending
+              ? 'Saving...'
+              : 'Save Alert Preferences'}
           </button>
 
           {prefsSaved && (
@@ -280,13 +300,19 @@ function SettingsPage() {
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center gap-3 mb-6">
           <Bell className="w-6 h-6 text-blue-600" />
-          <h2 className="text-2xl font-bold text-slate-900">Push Notifications</h2>
+          <h2 className="text-2xl font-bold text-slate-900">
+            Push Notifications
+          </h2>
         </div>
 
         <div className="flex items-center justify-between p-4 border border-slate-200 rounded-lg">
           <div>
-            <p className="font-semibold text-slate-900">Enable Toast Notifications</p>
-            <p className="text-sm text-slate-600">Get in-app notifications for alerts</p>
+            <p className="font-semibold text-slate-900">
+              Enable Toast Notifications
+            </p>
+            <p className="text-sm text-slate-600">
+              Get in-app notifications for alerts
+            </p>
           </div>
           <button
             onClick={toggleToasts}
@@ -305,7 +331,9 @@ function SettingsPage() {
 
       {/* System Information */}
       <div className="bg-slate-50 rounded-lg p-6 border border-slate-200">
-        <h2 className="text-lg font-bold text-slate-900 mb-4">System Information</h2>
+        <h2 className="text-lg font-bold text-slate-900 mb-4">
+          System Information
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div>
             <p className="text-slate-600">App Version</p>

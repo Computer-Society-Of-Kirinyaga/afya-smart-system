@@ -1,7 +1,6 @@
 import { QueryProvider } from '#/providers/QueryProvider'
 import { Outlet, createRootRoute } from '@tanstack/react-router'
 
-
 import '../styles.css'
 
 export const Route = createRootRoute({

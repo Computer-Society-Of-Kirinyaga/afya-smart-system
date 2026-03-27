@@ -22,19 +22,38 @@ export function Navbar() {
           className="absolute top-8 right-6 text-slate-500 hover:text-slate-900"
           onClick={toggleMenu}
         >
-          <span className="iconify w-8 h-8" data-icon="solar:close-circle-linear"></span>
+          <span
+            className="iconify w-8 h-8"
+            data-icon="solar:close-circle-linear"
+          ></span>
         </button>
         <nav className="flex flex-col gap-8 text-2xl font-medium tracking-tight">
-          <a className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4" href="#features" onClick={toggleMenu}>
+          <a
+            className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4"
+            href="#features"
+            onClick={toggleMenu}
+          >
             Features
           </a>
-          <a className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4" href="#impact" onClick={toggleMenu}>
+          <a
+            className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4"
+            href="#impact"
+            onClick={toggleMenu}
+          >
             How It Works
           </a>
-          <a className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4" href="#testimonials" onClick={toggleMenu}>
+          <a
+            className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4"
+            href="#testimonials"
+            onClick={toggleMenu}
+          >
             Testimonials
           </a>
-          <a className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4" href="#faq" onClick={toggleMenu}>
+          <a
+            className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4"
+            href="#faq"
+            onClick={toggleMenu}
+          >
             FAQ
           </a>
         </nav>
@@ -52,18 +71,29 @@ export function Navbar() {
       <nav className="relative z-50 w-full h-[80px] lg:h-[100px] flex items-center justify-between px-4 border-b border-slate-100 bg-white/70 backdrop-blur-md animate-reveal sticky top-0">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-teal-50 text-teal-600 rounded flex items-center justify-center">
-            <span className="iconify w-5 h-5" data-icon="solar:heart-pulse-linear"></span>
+            <span
+              className="iconify w-5 h-5"
+              data-icon="solar:heart-pulse-linear"
+            ></span>
           </div>
-          <span className="text-lg font-semibold tracking-tight text-slate-900">Afya Smart</span>
+          <span className="text-lg font-semibold tracking-tight text-slate-900">
+            Afya Smart
+          </span>
         </div>
         <div className="hidden md:flex text-sm font-medium text-slate-500 gap-x-8 items-center">
-          <a className="hover:text-slate-900 transition-colors" href="#features">
+          <a
+            className="hover:text-slate-900 transition-colors"
+            href="#features"
+          >
             Features
           </a>
           <a className="hover:text-slate-900 transition-colors" href="#impact">
             How It Works
           </a>
-          <a className="hover:text-slate-900 transition-colors" href="#testimonials">
+          <a
+            className="hover:text-slate-900 transition-colors"
+            href="#testimonials"
+          >
             Testimonials
           </a>
           <a className="hover:text-slate-900 transition-colors" href="#faq">
@@ -77,8 +107,14 @@ export function Navbar() {
           >
             Get started
           </a>
-          <button className="md:hidden text-slate-600 hover:text-slate-900 transition-colors" onClick={toggleMenu}>
-            <span className="iconify w-6 h-6" data-icon="solar:hamburger-menu-linear"></span>
+          <button
+            className="md:hidden text-slate-600 hover:text-slate-900 transition-colors"
+            onClick={toggleMenu}
+          >
+            <span
+              className="iconify w-6 h-6"
+              data-icon="solar:hamburger-menu-linear"
+            ></span>
           </button>
         </div>
       </nav>

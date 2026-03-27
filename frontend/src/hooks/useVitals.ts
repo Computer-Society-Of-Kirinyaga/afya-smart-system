@@ -63,7 +63,9 @@ export function use24HourHistory(vitalType: VitalType) {
       return apiQuery.data.map((reading) => ({
         timestamp: new Date(reading.timestamp),
         value:
-          (reading[VITAL_TYPE_TO_KEY[vitalType] as keyof typeof reading] as number) || 0,
+          (reading[
+            VITAL_TYPE_TO_KEY[vitalType] as keyof typeof reading
+          ] as number) || 0,
         time: new Date(reading.timestamp).toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',

@@ -7,7 +7,7 @@ function OverviewPage() {
   const { data: currentVitals, isLoading: vitalsLoading } = useCurrentVitals()
   const { data: alerts, isLoading: alertsLoading } = useAlerts()
 
-  console.log("current vitaks",currentVitals)
+  console.log('current vitaks', currentVitals)
 
   const recentAlerts = alerts?.slice(0, 5) || []
   const criticalAlerts = alerts?.filter((a) => a.severity === 'critical') || []
@@ -16,12 +16,11 @@ function OverviewPage() {
   return (
     <div className="space-y-6">
       {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-lg p-6 text-white shadow-lg">
+      <div className="bg-linear-to-r from-teal-500 to-teal-600 rounded-lg p-6 text-white shadow-lg">
         <h1 className="text-3xl font-bold">{user?.name}</h1>
         <p className="text-teal-100 mt-2">
           Last vitals updated:{' '}
-          {currentVitals?.timestamp?.toLocaleTimeString() ||
-            'Loading...'}
+          {currentVitals?.timestamp?.toLocaleTimeString() || 'Loading...'}
         </p>
       </div>
 
@@ -91,8 +90,7 @@ function OverviewPage() {
             <div>
               <p className="text-slate-600 text-sm font-medium">Heart Rate</p>
               <p className="text-3xl font-bold text-slate-900 mt-1">
-                {vitalsLoading ? '—' : currentVitals?.heartRate}{' '}
-                bpm
+                {vitalsLoading ? '—' : currentVitals?.heartRate} bpm
               </p>
               <p className="text-xs text-slate-500 mt-1">Normal range</p>
             </div>
@@ -208,8 +206,7 @@ function OverviewPage() {
             <div className="bg-white rounded-lg shadow p-6">
               <p className="text-slate-600 text-sm font-medium">Temperature</p>
               <p className="text-2xl font-bold text-slate-900 mt-2">
-                {currentVitals.temperature}{' '}
-                C
+                {currentVitals.temperature} C
               </p>
               <p className="text-xs text-slate-500 mt-1">Normal</p>
             </div>

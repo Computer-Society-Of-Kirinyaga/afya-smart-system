@@ -6,12 +6,16 @@ export function FooterNew() {
           <div className="lg:col-span-3">
             <div className="flex items-center gap-2 text-slate-900 mb-6">
               <div className="w-6 h-6 bg-teal-100 text-teal-600 rounded flex items-center justify-center">
-                <span className="iconify w-3.5 h-3.5" data-icon="solar:heart-pulse-linear"></span>
+                <span
+                  className="iconify w-3.5 h-3.5"
+                  data-icon="solar:heart-pulse-linear"
+                ></span>
               </div>
               <span className="font-bold tracking-tight">Afya Smart</span>
             </div>
             <p className="text-sm text-slate-500 leading-relaxed">
-              AI-powered health monitoring platform that predicts risks and prevents emergencies.
+              AI-powered health monitoring platform that predicts risks and
+              prevents emergencies.
             </p>
           </div>
           <div className="lg:col-span-2">
@@ -19,13 +23,18 @@ export function FooterNew() {
               Product
             </h4>
             <ul className="space-y-4">
-              {['Features', 'How It Works', 'Pricing', 'Security'].map((item) => (
-                <li key={item}>
-                  <a className="text-sm text-slate-500 hover:text-teal-600 transition-colors" href="#">
-                    {item}
-                  </a>
-                </li>
-              ))}
+              {['Features', 'How It Works', 'Pricing', 'Security'].map(
+                (item) => (
+                  <li key={item}>
+                    <a
+                      className="text-sm text-slate-500 hover:text-teal-600 transition-colors"
+                      href="#"
+                    >
+                      {item}
+                    </a>
+                  </li>
+                ),
+              )}
             </ul>
           </div>
           <div className="lg:col-span-2">
@@ -35,7 +44,10 @@ export function FooterNew() {
             <ul className="space-y-4">
               {['About', 'Blog', 'Contact', 'Privacy'].map((item) => (
                 <li key={item}>
-                  <a className="text-sm text-slate-500 hover:text-teal-600 transition-colors" href="#">
+                  <a
+                    className="text-sm text-slate-500 hover:text-teal-600 transition-colors"
+                    href="#"
+                  >
                     {item}
                   </a>
                 </li>
@@ -50,7 +62,9 @@ export function FooterNew() {
               <span className="block text-lg font-semibold text-slate-900 mb-1">
                 support@healthriskai.com
               </span>
-              <span className="block text-sm text-slate-500">Rapid response team</span>
+              <span className="block text-sm text-slate-500">
+                Rapid response team
+              </span>
             </div>
           </div>
         </div>
@@ -59,14 +73,32 @@ export function FooterNew() {
             © {new Date().getFullYear()} Afya Smart. All rights reserved.
           </p>
           <div className="flex gap-4">
-            <a className="text-slate-400 hover:text-slate-600 transition-colors" href="#">
-              <span className="iconify w-4 h-4" data-icon="ri:twitter-x-line"></span>
+            <a
+              className="text-slate-400 hover:text-slate-600 transition-colors"
+              href="#"
+            >
+              <span
+                className="iconify w-4 h-4"
+                data-icon="ri:twitter-x-line"
+              ></span>
             </a>
-            <a className="text-slate-400 hover:text-slate-600 transition-colors" href="#">
-              <span className="iconify w-4 h-4" data-icon="ri:facebook-circle-line"></span>
+            <a
+              className="text-slate-400 hover:text-slate-600 transition-colors"
+              href="#"
+            >
+              <span
+                className="iconify w-4 h-4"
+                data-icon="ri:facebook-circle-line"
+              ></span>
             </a>
-            <a className="text-slate-400 hover:text-slate-600 transition-colors" href="#">
-              <span className="iconify w-4 h-4" data-icon="ri:instagram-line"></span>
+            <a
+              className="text-slate-400 hover:text-slate-600 transition-colors"
+              href="#"
+            >
+              <span
+                className="iconify w-4 h-4"
+                data-icon="ri:instagram-line"
+              ></span>
             </a>
           </div>
         </div>

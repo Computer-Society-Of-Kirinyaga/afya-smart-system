@@ -128,7 +128,7 @@ export function SharedStyles() {
         position: absolute;
         height: 1px;
         width: 200px;
-        background: linear-gradient(
+        background: linear-linear(
           90deg,
           transparent,
           var(--beam-color),
@@ -141,7 +141,7 @@ export function SharedStyles() {
         position: absolute;
         width: 1px;
         height: 200px;
-        background: linear-gradient(
+        background: linear-linear(
           180deg,
           transparent,
           var(--beam-color),
@@ -164,14 +164,14 @@ export function SharedStyles() {
         pointer-events: auto;
       }
       .mask-linear-fade {
-        mask-image: linear-gradient(
+        mask-image: linear-linear(
           to right,
           transparent,
           black 15%,
           black 85%,
           transparent
         );
-        -webkit-mask-image: linear-gradient(
+        -webkit-mask-image: linear-linear(
           to right,
           transparent,
           black 15%,

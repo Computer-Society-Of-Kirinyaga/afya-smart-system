@@ -23,7 +23,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-slate-100 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-linear-to-br from-teal-50 to-slate-100 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo/Branding */}
         <div className="text-center mb-8">
@@ -96,7 +96,8 @@ export function LoginPage() {
               Login with registered phone number and password
             </p>
             <p className="text-xs text-slate-600">
-              Make sure your account is registered in the system with a valid phone number.
+              Make sure your account is registered in the system with a valid
+              phone number.
             </p>
           </div>
 
@@ -116,7 +117,7 @@ export function LoginPage() {
 
         {/* Footer */}
         <p className="text-center text-slate-600 text-sm mt-8">
-          Part of the VITALIS Smart Health Monitoring System
+          Part of the AfyaSmart Smart Health Monitoring System
         </p>
       </div>
     </div>
