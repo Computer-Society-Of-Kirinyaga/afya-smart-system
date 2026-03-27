@@ -14,10 +14,24 @@ import { PredictionResponseDto } from './dto/ai-response.dto';
 export class AiModelService {
   private readonly logger = new Logger(AiModelService.name);
   private genAI: GoogleGenAI;
-  private model: any;
+  private readonly modelName: string;
+  private readonly probabilityKeys = [
+    'healthy',
+    'hypertension',
+    'diabetes',
+    'arthritis',
+    'asthma',
+    'pneumonia',
+    'uti',
+    'covid19',
+    'copd',
+    'migraine',
+  ] as const;
 
   constructor(private configService: ConfigService) {
     const apiKey = this.configService.get<string>('GEMINI_API_KEY');
+    const modelName =
+      this.configService.get<string>('GEMINI_MODEL') || 'gemini-2.0-pro';
 
     if (!apiKey) {
       throw new Error(
@@ -26,10 +40,8 @@ export class AiModelService {
     }
 
     this.genAI = new GoogleGenAI({ apiKey });
-    this.model = this.genAI.getGenerativeModel({
-      model: 'gemini-2.0-pro',
-      systemInstruction: this.getSystemPrompt(),
-    });
+    this.modelName = modelName;
+    this.logger.log(`AI model initialized: ${modelName}`);
   }
 
   private getSystemPrompt(): string {
@@ -85,8 +97,14 @@ Consider context: chronic conditions, medications, age, and vital sign trends. F
       );
 
       // Call Gemini API
-      const result = await this.model.generateContent(prompt);
-      const responseText = String(result.response.text());
+      const result = await this.genAI.models.generateContent({
+        model: this.modelName,
+        contents: prompt,
+        config: {
+          systemInstruction: this.getSystemPrompt(),
+        },
+      });
+      const responseText = String(result.text ?? '');
 
       // Parse and validate response
       const aiResponse = this.parseAIResponse(responseText);
@@ -250,40 +268,33 @@ Return ONLY valid JSON response, no markdown or additional text.`;
       }
 
       // Validate alert level
-      const validAlertLevels = ['NORMAL', 'WARNING', 'CRITICAL'];
-      if (!validAlertLevels.includes(aiResponse.alertLevel)) {
+      const validAlertLevels = ['NORMAL', 'WARNING', 'CRITICAL'] as const;
+      const normalizedAlertLevel = String(aiResponse.alertLevel).toUpperCase();
+      if (!validAlertLevels.includes(normalizedAlertLevel as any)) {
         this.logger.warn(
           `Invalid alert level "${aiResponse.alertLevel}", defaulting to NORMAL`,
         );
         aiResponse.alertLevel = 'NORMAL';
+      } else {
+        aiResponse.alertLevel = normalizedAlertLevel as any;
       }
 
       // Ensure confidence is within 0-1 range
-      aiResponse.confidence = Math.max(
-        0,
-        Math.min(1, parseFloat(String(aiResponse.confidence))),
-      );
+      const rawConfidence = Number(aiResponse.confidence);
+      aiResponse.confidence = Number.isFinite(rawConfidence)
+        ? Math.max(0, Math.min(1, rawConfidence))
+        : 0;
 
-      // Validate probabilities sum to approximately 1
-      const probabilitiesSum = Object.values(aiResponse.probabilities).reduce(
-        (sum, val: any) => sum + parseFloat(val),
-        0,
-      );
-
-      if (Math.abs(probabilitiesSum - 1.0) > 0.01) {
-        this.logger.warn(
-          `Probabilities sum to ${probabilitiesSum}, normalizing...`,
-        );
-        // Normalize probabilities
-        for (const key in aiResponse.probabilities) {
-          aiResponse.probabilities[key] = parseFloat(
-            String(
-              parseFloat(String(aiResponse.probabilities[key])) /
-                probabilitiesSum,
-            ),
-          );
-        }
+      // Normalize and validate probabilities
+      if (
+        !aiResponse.probabilities ||
+        typeof aiResponse.probabilities !== 'object'
+      ) {
+        throw new Error('Probabilities must be an object');
       }
+      aiResponse.probabilities = this.normalizeProbabilities(
+        aiResponse.probabilities,
+      );
 
       // Validate recommendations array
       if (
@@ -291,6 +302,19 @@ Return ONLY valid JSON response, no markdown or additional text.`;
         aiResponse.recommendations.length === 0
       ) {
         aiResponse.recommendations = ['Maintain regular check-ups'];
+      } else {
+        aiResponse.recommendations = aiResponse.recommendations
+          .filter((rec) => typeof rec === 'string')
+          .map((rec) => rec.trim())
+          .filter((rec) => rec.length > 0);
+        if (aiResponse.recommendations.length === 0) {
+          aiResponse.recommendations = ['Maintain regular check-ups'];
+        }
+      }
+
+      // Ensure disease is a non-empty string
+      if (typeof aiResponse.disease !== 'string' || !aiResponse.disease.trim()) {
+        aiResponse.disease = 'healthy';
       }
 
       return aiResponse;
@@ -306,6 +330,40 @@ Return ONLY valid JSON response, no markdown or additional text.`;
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  private normalizeProbabilities(
+    probabilities: Record<string, unknown>,
+  ): Record<string, number> {
+    const normalized: Record<string, number> = {};
+    let sum = 0;
+
+    for (const key of this.probabilityKeys) {
+      const raw = probabilities[key];
+      const value = Number(raw);
+      const safeValue = Number.isFinite(value) && value >= 0 ? value : 0;
+      normalized[key] = safeValue;
+      sum += safeValue;
+    }
+
+    if (!Number.isFinite(sum) || sum <= 0) {
+      this.logger.warn(
+        'Probabilities were missing or non-positive; defaulting to healthy.',
+      );
+      return this.probabilityKeys.reduce<Record<string, number>>((acc, key) => {
+        acc[key] = key === 'healthy' ? 1 : 0;
+        return acc;
+      }, {});
+    }
+
+    if (Math.abs(sum - 1.0) > 0.01) {
+      this.logger.warn(`Probabilities sum to ${sum}, normalizing...`);
+      for (const key of this.probabilityKeys) {
+        normalized[key] = normalized[key] / sum;
+      }
+    }
+
+    return normalized;
   }
 
   // Helper method to determine if an alert should be triggered
