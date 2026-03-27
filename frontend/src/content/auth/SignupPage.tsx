@@ -8,12 +8,13 @@ export function SignupPage() {
   const { register, isLoading } = useAuthStore()
   const [formData, setFormData] = useState({
     fullName: '',
-    email: '',
     password: '',
     confirmPassword: '',
     phoneNumber: '',
     dateOfBirth: '',
-    emergencyContact: '',
+    gender: '',
+    medications: '',
+    chronicConditions: '',
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [agreed, setAgreed] = useState(false)
@@ -23,12 +24,6 @@ export function SignupPage() {
 
     if (!formData.fullName.trim()) {
       newErrors.fullName = 'Full name is required'
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email'
     }
 
     if (!formData.password) {
@@ -49,10 +44,6 @@ export function SignupPage() {
       newErrors.dateOfBirth = 'Date of birth is required'
     }
 
-    if (!formData.emergencyContact.trim()) {
-      newErrors.emergencyContact = 'Emergency contact is required'
-    }
-
     if (!agreed) {
       newErrors.agreed = 'You must agree to the terms and conditions'
     }
@@ -61,7 +52,7 @@ export function SignupPage() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
@@ -84,13 +75,36 @@ export function SignupPage() {
     }
 
     try {
+      // Calculate age from date of birth
+      const birthDate = new Date(formData.dateOfBirth)
+      const today = new Date()
+      let age = today.getFullYear() - birthDate.getFullYear()
+      const monthDiff = today.getMonth() - birthDate.getMonth()
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--
+      }
+
+      // Parse medications and chronic conditions from comma-separated strings
+      const medicationsArray = formData.medications
+        .split(',')
+        .map(m => m.trim())
+        .filter(m => m !== '')
+      
+      const chronicConditionsArray = formData.chronicConditions
+        .split(',')
+        .map(c => c.trim())
+        .filter(c => c !== '')
+
       // Build a RegisterRequest from the form data
       await register({
         name: formData.fullName,
         phone_number: formData.phoneNumber,
         password: formData.password,
         consent_given: agreed,
-        email: formData.email,
+        age: age,
+        gender: formData.gender ? Number(formData.gender) : undefined,
+        medications: medicationsArray.length > 0 ? medicationsArray : undefined,
+        chronicConditions: chronicConditionsArray.length > 0 ? chronicConditionsArray : undefined,
       })
       navigate({ to: '/dashboard/overview' })
     } catch (err) {
@@ -102,7 +116,7 @@ export function SignupPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-slate-100 flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-4xl">
         {/* Logo/Branding */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-teal-600">Afya Smart</h1>
@@ -125,188 +139,202 @@ export function SignupPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Full Name */}
-            <div>
-              <label
-                htmlFor="fullName"
-                className="block text-sm font-medium text-slate-700 mb-1"
-              >
-                Full Name *
-              </label>
-              <input
-                id="fullName"
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                placeholder="Jane Doe"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                  errors.fullName ? 'border-red-300' : 'border-slate-300'
-                }`}
-                required
-              />
-              {errors.fullName && (
-                <p className="text-red-600 text-xs mt-1">{errors.fullName}</p>
-              )}
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Full Name */}
+              <div className="md:col-span-2">
+                <label
+                  htmlFor="fullName"
+                  className="block text-sm font-medium text-slate-700 mb-1"
+                >
+                  Full Name *
+                </label>
+                <input
+                  id="fullName"
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="Jane Doe"
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
+                    errors.fullName ? 'border-red-300' : 'border-slate-300'
+                  }`}
+                  required
+                />
+                {errors.fullName && (
+                  <p className="text-red-600 text-xs mt-1">{errors.fullName}</p>
+                )}
+              </div>
 
-            {/* Email */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-slate-700 mb-1"
-              >
-                Email Address *
-              </label>
-              <input
-                id="email"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="jane@vitalis.io"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                  errors.email ? 'border-red-300' : 'border-slate-300'
-                }`}
-                required
-              />
-              {errors.email && (
-                <p className="text-red-600 text-xs mt-1">{errors.email}</p>
-              )}
-            </div>
+              {/* Phone Number */}
+              <div>
+                <label
+                  htmlFor="phoneNumber"
+                  className="block text-sm font-medium text-slate-700 mb-1"
+                >
+                  Phone Number *
+                </label>
+                <input
+                  id="phoneNumber"
+                  type="tel"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  placeholder="+254712345678"
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
+                    errors.phoneNumber ? 'border-red-300' : 'border-slate-300'
+                  }`}
+                  required
+                />
+                {errors.phoneNumber && (
+                  <p className="text-red-600 text-xs mt-1">
+                    {errors.phoneNumber}
+                  </p>
+                )}
+              </div>
 
-            {/* Phone Number */}
-            <div>
-              <label
-                htmlFor="phoneNumber"
-                className="block text-sm font-medium text-slate-700 mb-1"
-              >
-                Phone Number *
-              </label>
-              <input
-                id="phoneNumber"
-                type="tel"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                placeholder="+254712345678"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                  errors.phoneNumber ? 'border-red-300' : 'border-slate-300'
-                }`}
-                required
-              />
-              {errors.phoneNumber && (
-                <p className="text-red-600 text-xs mt-1">
-                  {errors.phoneNumber}
+              {/* Date of Birth */}
+              <div>
+                <label
+                  htmlFor="dateOfBirth"
+                  className="block text-sm font-medium text-slate-700 mb-1"
+                >
+                  Date of Birth *
+                </label>
+                <input
+                  id="dateOfBirth"
+                  type="date"
+                  name="dateOfBirth"
+                  value={formData.dateOfBirth}
+                  onChange={handleChange}
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
+                    errors.dateOfBirth ? 'border-red-300' : 'border-slate-300'
+                  }`}
+                  required
+                />
+                {errors.dateOfBirth && (
+                  <p className="text-red-600 text-xs mt-1">
+                    {errors.dateOfBirth}
+                  </p>
+                )}
+              </div>
+
+              {/* Gender */}
+              <div>
+                <label
+                  htmlFor="gender"
+                  className="block text-sm font-medium text-slate-700 mb-1"
+                >
+                  Gender
+                </label>
+                <select
+                  id="gender"
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                >
+                  <option value="">Select gender</option>
+                  <option value="0">Male</option>
+                  <option value="1">Female</option>
+                  <option value="2">Other</option>
+                </select>
+              </div>
+
+              {/* Medications */}
+              <div>
+                <label
+                  htmlFor="medications"
+                  className="block text-sm font-medium text-slate-700 mb-1"
+                >
+                  Current Medications (comma-separated)
+                </label>
+                <input
+                  id="medications"
+                  type="text"
+                  name="medications"
+                  value={formData.medications}
+                  onChange={handleChange}
+                  placeholder="Lisinopril 10mg, Metformin 500mg"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  Enter medications separated by commas
                 </p>
-              )}
-            </div>
+              </div>
 
-            {/* Date of Birth */}
-            <div>
-              <label
-                htmlFor="dateOfBirth"
-                className="block text-sm font-medium text-slate-700 mb-1"
-              >
-                Date of Birth *
-              </label>
-              <input
-                id="dateOfBirth"
-                type="date"
-                name="dateOfBirth"
-                value={formData.dateOfBirth}
-                onChange={handleChange}
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                  errors.dateOfBirth ? 'border-red-300' : 'border-slate-300'
-                }`}
-                required
-              />
-              {errors.dateOfBirth && (
-                <p className="text-red-600 text-xs mt-1">
-                  {errors.dateOfBirth}
+              {/* Chronic Conditions */}
+              <div>
+                <label
+                  htmlFor="chronicConditions"
+                  className="block text-sm font-medium text-slate-700 mb-1"
+                >
+                  Chronic Conditions (comma-separated)
+                </label>
+                <input
+                  id="chronicConditions"
+                  type="text"
+                  name="chronicConditions"
+                  value={formData.chronicConditions}
+                  onChange={handleChange}
+                  placeholder="Hypertension, Type 2 Diabetes"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  Enter chronic conditions separated by commas
                 </p>
-              )}
-            </div>
+              </div>
 
-            {/* Emergency Contact */}
-            <div>
-              <label
-                htmlFor="emergencyContact"
-                className="block text-sm font-medium text-slate-700 mb-1"
-              >
-                Emergency Contact Number *
-              </label>
-              <input
-                id="emergencyContact"
-                type="tel"
-                name="emergencyContact"
-                value={formData.emergencyContact}
-                onChange={handleChange}
-                placeholder="+254712345679"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                  errors.emergencyContact
-                    ? 'border-red-300'
-                    : 'border-slate-300'
-                }`}
-                required
-              />
-              {errors.emergencyContact && (
-                <p className="text-red-600 text-xs mt-1">
-                  {errors.emergencyContact}
-                </p>
-              )}
-            </div>
+              {/* Password */}
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-slate-700 mb-1"
+                >
+                  Password *
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="••••••••"
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
+                    errors.password ? 'border-red-300' : 'border-slate-300'
+                  }`}
+                  required
+                />
+                {errors.password && (
+                  <p className="text-red-600 text-xs mt-1">{errors.password}</p>
+                )}
+              </div>
 
-            {/* Password */}
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-slate-700 mb-1"
-              >
-                Password *
-              </label>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="••••••••"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                  errors.password ? 'border-red-300' : 'border-slate-300'
-                }`}
-                required
-              />
-              {errors.password && (
-                <p className="text-red-600 text-xs mt-1">{errors.password}</p>
-              )}
-            </div>
-
-            {/* Confirm Password */}
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-slate-700 mb-1"
-              >
-                Confirm Password *
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                placeholder="••••••••"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                  errors.confirmPassword ? 'border-red-300' : 'border-slate-300'
-                }`}
-                required
-              />
-              {errors.confirmPassword && (
-                <p className="text-red-600 text-xs mt-1">
-                  {errors.confirmPassword}
-                </p>
-              )}
+              {/* Confirm Password */}
+              <div>
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-slate-700 mb-1"
+                >
+                  Confirm Password *
+                </label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="••••••••"
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
+                    errors.confirmPassword ? 'border-red-300' : 'border-slate-300'
+                  }`}
+                  required
+                />
+                {errors.confirmPassword && (
+                  <p className="text-red-600 text-xs mt-1">
+                    {errors.confirmPassword}
+                  </p>
+                )}
+              </div>
             </div>
 
             {/* Terms and Conditions */}

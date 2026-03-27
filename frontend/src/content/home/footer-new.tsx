@@ -56,7 +56,7 @@ export function FooterNew() {
         </div>
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-slate-200 gap-4">
           <p className="text-xs text-slate-400">
-            © 2024 Afya Smart. All rights reserved.
+            © {new Date().getFullYear()} Afya Smart. All rights reserved.
           </p>
           <div className="flex gap-4">
             <a className="text-slate-400 hover:text-slate-600 transition-colors" href="#">

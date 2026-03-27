@@ -75,7 +75,7 @@ export function Navbar() {
             className="hidden md:flex items-center gap-2 text-xs font-semibold uppercase tracking-wider bg-slate-900 text-white py-2.5 px-5 rounded hover:bg-slate-800 transition-all shadow-md shadow-slate-200 hover:shadow-lg"
             href="/signup"
           >
-            Get start
+            Get started
           </a>
           <button className="md:hidden text-slate-600 hover:text-slate-900 transition-colors" onClick={toggleMenu}>
             <span className="iconify w-6 h-6" data-icon="solar:hamburger-menu-linear"></span>
