@@ -1,8 +1,8 @@
-import { Client } from 'pg';
 import * as dotenv from 'dotenv';
+import { Client } from 'pg';
 
 dotenv.config({
-  path: "../.env"
+  path: '../.env',
 });
 
 const USER_ID =
@@ -13,18 +13,17 @@ const TOTAL_READINGS = Number(process.env.SEED_TOTAL || 100);
 const DAYS_BACK = Number(process.env.SEED_DAYS_BACK || 7);
 const DELAY_MS = Number(process.env.SEED_DELAY_MS || 1000);
 
-
 function getDatabaseConfig() {
   // Check if DATABASE_URL is provided
-  if (process.env.DATABASE_URL) {
-    const databaseUrl = process.env.DATABASE_URL;
-    const isLocal = databaseUrl.includes('localhost') || databaseUrl.includes('127.0.0.1');
+  // if (process.env.DATABASE_URL) {
+  //   const databaseUrl = process.env.DATABASE_URL;
+  //   const isLocal = databaseUrl.includes('localhost') || databaseUrl.includes('127.0.0.1');
     
-    return {
-      connectionString: databaseUrl,
-      ssl: isLocal ? false : { rejectUnauthorized: false },
-    };
-  }
+  //   return {
+  //     connectionString: databaseUrl,
+  //     ssl: isLocal ? false : { rejectUnauthorized: false },
+  //   };
+  // }
   
   // Otherwise use individual parameters
   const host = process.env.DB_HOST;
@@ -32,15 +31,15 @@ function getDatabaseConfig() {
   const user = process.env.DB_USERNAME;
   const password = process.env.DB_PASSWORD;
   const database = process.env.DB_DATABASE;
-  
+
   if (!host || !user || !database) {
     throw new Error(
-      'Missing database configuration. Provide either DATABASE_URL or DB_HOST, DB_USERNAME, DB_DATABASE'
+      'Missing database configuration. Provide either DATABASE_URL or DB_HOST, DB_USERNAME, DB_DATABASE',
     );
   }
-  
+
   const isLocal = host === 'localhost' || host === '127.0.0.1';
-  
+
   return {
     host,
     port,
@@ -50,7 +49,6 @@ function getDatabaseConfig() {
     ssl: isLocal ? false : { rejectUnauthorized: false },
   };
 }
-
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -99,10 +97,10 @@ function generateHealthReading(timestamp: Date) {
 }
 
 async function seedHealthData() {
-   const dbConfig = getDatabaseConfig();
-  
+  const dbConfig = getDatabaseConfig();
+
   console.log('📡 Connecting to database...');
-  
+
   // Create client with appropriate config
   const client = new Client({
     ...dbConfig,
@@ -113,10 +111,9 @@ async function seedHealthData() {
     await client.connect();
     console.log('Connected to database');
 
-    const userCheck = await client.query(
-      'SELECT id FROM users WHERE id = $1',
-      [USER_ID],
-    );
+    const userCheck = await client.query('SELECT id FROM users WHERE id = $1', [
+      USER_ID,
+    ]);
 
     if (userCheck.rows.length === 0) {
       console.error(`User with ID ${USER_ID} not found!`);

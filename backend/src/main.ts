@@ -8,6 +8,7 @@ async function bootstrap() {
   app.enableCors({
     origin: process.env.CORS_ORIGIN || [
       'http://localhost:4000',
+      'https://afya.computersocietyofkirinyaga.org',
       'http://localhost:5173',
     ],
     credentials: true,

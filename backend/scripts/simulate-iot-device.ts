@@ -2,7 +2,7 @@ import { Client } from 'pg';
 import * as dotenv from 'dotenv';
 
 dotenv.config({
-  path: "../.env"
+  path: '../.env',
 });
 
 const USER_ID = '0849a9f5-4409-4c62-9444-cbb351df62a6';
@@ -53,7 +53,7 @@ const dbConfig = getDatabaseConfig()
 async function stream() {
   await client.connect();
   console.log('Streaming data every 5 seconds...');
-  
+
   setInterval(async () => {
     const reading = {
       user_id: USER_ID,
@@ -65,14 +65,25 @@ async function stream() {
       temperature: 36.5 + Math.random() * 0.7,
       steps: Math.floor(Math.random() * 100),
     };
-    
+
     await client.query(
       `INSERT INTO health_readings (user_id, timestamp, heart_rate, systolic_bp, diastolic_bp, spo2, temperature, steps)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-      [reading.user_id, reading.timestamp, reading.heart_rate, reading.systolic_bp, reading.diastolic_bp, reading.spo2, reading.temperature, reading.steps]
+      [
+        reading.user_id,
+        reading.timestamp,
+        reading.heart_rate,
+        reading.systolic_bp,
+        reading.diastolic_bp,
+        reading.spo2,
+        reading.temperature,
+        reading.steps,
+      ],
     );
-    
-    console.log(`Sent: HR=${reading.heart_rate}, BP=${reading.systolic_bp}/${reading.diastolic_bp}, SpO2=${reading.spo2}%`);
+
+    console.log(
+      `Sent: HR=${reading.heart_rate}, BP=${reading.systolic_bp}/${reading.diastolic_bp}, SpO2=${reading.spo2}%`,
+    );
   }, 5000);
 }
 

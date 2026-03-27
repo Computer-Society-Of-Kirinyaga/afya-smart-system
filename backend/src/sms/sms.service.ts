@@ -146,7 +146,7 @@ export class SmsService {
     }
 
     // Add URL for more details
-    message += `\n\nView full report: ${process.env.APP_URL || 'http://localhost:3000'}/dashboard`;
+    message += `\n\nView full report: ${process.env.APP_URL || 'https://afya.computersocietyofkirinyaga.org'}/dashboard`;
 
     return message;
   }
