@@ -119,7 +119,7 @@ export function DashboardShell() {
       {/* Main Content — lg:ml-64 offsets the fixed 256px sidebar */}
       <main className="flex-1 flex flex-col lg:ml-64">
         {/* Topbar */}
-        <header className="bg-white border-b border-slate-200 shadow-sm">
+        <header className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-20">
           <div className="flex items-center justify-between p-6">
             <div className="pl-10 lg:pl-0">
               <h2 className="text-2xl font-bold text-slate-900">
