@@ -1,48 +1,41 @@
 import { useUpdateUserDoctor, useUpdateUserPreferences, useUser } from '@/hooks/useUsersApi'
 import { useAuthStore } from '@/store/auth'
 import { useSettingsStore } from '@/store/settings'
-import { Bell, Phone, Save } from 'lucide-react'
+import { Bell, Phone, Save, Stethoscope } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 function SettingsPage() {
   const { user } = useAuthStore()
   const userId = user?.id
 
-  // Fetch user data from backend
   const { data: userData, isLoading } = useUser(userId || '')
 
-  // Mutations for updating user
   const updateDoctor = useUpdateUserDoctor(userId || '')
   const updatePreferences = useUpdateUserPreferences(userId || '')
 
-  const [primaryPhone, setPrimaryPhone] = useState('')
-  const [secondaryPhone, setSecondaryPhone] = useState('')
-  const [email, setEmail] = useState('')
-  const [emergencyContact, setEmergencyContact] = useState('')
+  // Doctor info
   const [doctorName, setDoctorName] = useState('')
   const [doctorPhone, setDoctorPhone] = useState('')
-  const [smsEnabled, setSmsEnabled] = useState({ critical: true, warning: true, info: true })
-  const [riskThreshold, setRiskThreshold] = useState<'low' | 'medium' | 'high'>('medium')
+
+  // Alert preferences — matches API shape exactly
+  const [smsEnabled, setSmsEnabled] = useState(true)
   const [alertDoctor, setAlertDoctor] = useState(false)
-  const [saved, setSaved] = useState(false)
+  const [riskThreshold, setRiskThreshold] = useState<'low' | 'medium' | 'high'>('medium')
 
-    const {
-    smsEnabled: storeToastsEnabled,
-    updateContacts,
-    toggleToasts,
-  } = useSettingsStore()
+  const [doctorSaved, setDoctorSaved] = useState(false)
+  const [prefsSaved, setPrefsSaved] = useState(false)
 
-  // Populate form when user data loads
+  const { smsEnabled: toastsEnabled, toggleToasts } = useSettingsStore()
+
   useEffect(() => {
     if (userData) {
-      setPrimaryPhone(userData.phone_number || '')
       setDoctorName(userData.doctor_name || '')
       setDoctorPhone(userData.doctor_phone_number || '')
 
       if (userData.alert_preferences) {
         setSmsEnabled(userData.alert_preferences.sms_enabled ?? true)
-        setRiskThreshold(userData.alert_preferences.risk_threshold ?? 'medium')
         setAlertDoctor(userData.alert_preferences.alert_doctor ?? false)
+        setRiskThreshold(userData.alert_preferences.risk_threshold ?? 'medium')
       }
     }
   }, [userData])
@@ -53,8 +46,8 @@ function SettingsPage() {
         doctor_name: doctorName,
         doctor_phone_number: doctorPhone,
       })
-      setSaved(true)
-      setTimeout(() => setSaved(false), 2000)
+      setDoctorSaved(true)
+      setTimeout(() => setDoctorSaved(false), 2000)
     } catch (error) {
       console.error('Failed to save doctor info:', error)
     }
@@ -67,30 +60,11 @@ function SettingsPage() {
         risk_threshold: riskThreshold,
         alert_doctor: alertDoctor,
       })
-      setSaved(true)
-      setTimeout(() => setSaved(false), 2000)
+      setPrefsSaved(true)
+      setTimeout(() => setPrefsSaved(false), 2000)
     } catch (error) {
       console.error('Failed to save preferences:', error)
     }
-  }
-
-  const handleSaveContacts = async () => {
-    try {
-      updateContacts({
-        primaryPhone,
-        secondaryPhone,
-        email,
-        emergencyContact,
-      })
-      setSaved(true)
-      setTimeout(() => setSaved(false), 2000)
-    } catch (error) {
-      console.error('Failed to save contact info:', error)
-    }
-  }
-
-  const updateSmsToggles = (newSmsSettings: typeof smsEnabled) => {
-    setSmsEnabled(newSmsSettings)
   }
 
   if (isLoading) {
@@ -113,7 +87,6 @@ function SettingsPage() {
     )
   }
 
-
   return (
     <div className="space-y-6 max-w-4xl">
       {/* Header */}
@@ -124,166 +97,182 @@ function SettingsPage() {
         </p>
       </div>
 
-      {/* Contact Information */}
+      {/* Account Info (read-only) */}
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center gap-3 mb-6">
           <Phone className="w-6 h-6 text-teal-600" />
-          <h2 className="text-2xl font-bold text-slate-900">
-            Contact Information
-          </h2>
+          <h2 className="text-2xl font-bold text-slate-900">Account Information</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div>
+            <p className="text-slate-500 font-medium mb-1">Name</p>
+            <p className="text-slate-900 font-semibold">{userData.name}</p>
+          </div>
+          <div>
+            <p className="text-slate-500 font-medium mb-1">Phone Number</p>
+            <p className="text-slate-900 font-semibold">{userData.phone_number}</p>
+          </div>
+          <div>
+            <p className="text-slate-500 font-medium mb-1">Member Since</p>
+            <p className="text-slate-900 font-semibold">
+              {new Date(userData.created_at).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </p>
+          </div>
+          <div>
+            <p className="text-slate-500 font-medium mb-1">Consent Given</p>
+            <p className={`font-semibold ${userData.consent_given ? 'text-green-600' : 'text-red-600'}`}>
+              {userData.consent_given ? 'Yes' : 'No'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Doctor Information */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="flex items-center gap-3 mb-6">
+          <Stethoscope className="w-6 h-6 text-teal-600" />
+          <h2 className="text-2xl font-bold text-slate-900">Doctor Information</h2>
         </div>
 
         <div className="space-y-4">
-          {/* Primary Phone */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              Primary Phone
-            </label>
-            <input
-              type="tel"
-              value={primaryPhone}
-              onChange={(e) => setPrimaryPhone(e.target.value)}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-              placeholder="+254712345678"
-            />
-          </div>
-
-          {/* Secondary Phone */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              Secondary Phone (Optional)
-            </label>
-            <input
-              type="tel"
-              value={secondaryPhone}
-              onChange={(e) => setSecondaryPhone(e.target.value)}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-              placeholder="+254798765432"
-            />
-          </div>
-
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-              placeholder="jane@vitalis.io"
-            />
-          </div>
-
-          {/* Emergency Contact */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              Emergency Contact Name
+              Doctor's Name
             </label>
             <input
               type="text"
-              value={emergencyContact}
-              onChange={(e) => setEmergencyContact(e.target.value)}
+              value={doctorName}
+              onChange={(e) => setDoctorName(e.target.value)}
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-              placeholder="John Doe"
+              placeholder="Dr. Kamau"
             />
           </div>
 
-          {/* Save Button */}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">
+              Doctor's Phone Number
+            </label>
+            <input
+              type="tel"
+              value={doctorPhone}
+              onChange={(e) => setDoctorPhone(e.target.value)}
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              placeholder="+254721000000"
+            />
+          </div>
+
           <button
-            onClick={handleSaveContacts}
-            className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition duration-200"
+            onClick={handleSaveDoctor}
+            disabled={updateDoctor.isPending}
+            className="w-full mt-2 bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition duration-200"
           >
             <Save className="w-4 h-4" />
-            Save Contact Information
+            {updateDoctor.isPending ? 'Saving...' : 'Save Doctor Info'}
           </button>
 
-          {saved && (
+          {doctorSaved && (
             <div className="p-4 bg-green-50 border border-green-200 rounded text-green-700 text-sm">
-              ✓ Contact information saved successfully
+              ✓ Doctor information saved successfully
             </div>
           )}
         </div>
       </div>
 
-      {/* SMS Notifications */}
+      {/* Alert Preferences */}
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center gap-3 mb-6">
           <Bell className="w-6 h-6 text-orange-600" />
-          <h2 className="text-2xl font-bold text-slate-900">
-            SMS Notifications
-          </h2>
+          <h2 className="text-2xl font-bold text-slate-900">Alert Preferences</h2>
         </div>
 
         <div className="space-y-4">
-          <p className="text-slate-600 text-sm">
-            Choose which alert types trigger SMS notifications to your primary
-            phone
-          </p>
-
-          {/* Critical Alerts */}
+          {/* SMS Enabled */}
           <div className="flex items-center justify-between p-4 border border-slate-200 rounded-lg">
             <div>
-              <p className="font-semibold text-slate-900">Critical Alerts</p>
-              <p className="text-sm text-slate-600">
-                Life-threatening conditions
-              </p>
+              <p className="font-semibold text-slate-900">SMS Alerts</p>
+              <p className="text-sm text-slate-600">Receive health alerts via SMS</p>
             </div>
-            <input
-              type="checkbox"
-              checked={smsEnabled.critical}
-              onChange={() =>
-                updateSmsToggles({
-                  ...smsEnabled,
-                  critical: !smsEnabled.critical,
-                })
-              }
-              className="w-6 h-6 text-teal-600 rounded focus:ring-2 focus:ring-teal-500"
-            />
+            <button
+              onClick={() => setSmsEnabled(!smsEnabled)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${
+                smsEnabled ? 'bg-teal-600' : 'bg-slate-300'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${
+                  smsEnabled ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
           </div>
 
-          {/* Warning Alerts */}
+          {/* Alert Doctor */}
           <div className="flex items-center justify-between p-4 border border-slate-200 rounded-lg">
             <div>
-              <p className="font-semibold text-slate-900">Warning Alerts</p>
+              <p className="font-semibold text-slate-900">Alert Doctor</p>
               <p className="text-sm text-slate-600">
-                Elevated readings requiring attention
+                Notify your doctor when critical readings are detected
               </p>
             </div>
-            <input
-              type="checkbox"
-              checked={smsEnabled.warning}
-              onChange={() =>
-                updateSmsToggles({
-                  ...smsEnabled,
-                  warning: !smsEnabled.warning,
-                })
-              }
-              className="w-6 h-6 text-teal-600 rounded focus:ring-2 focus:ring-teal-500"
-            />
+            <button
+              onClick={() => setAlertDoctor(!alertDoctor)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${
+                alertDoctor ? 'bg-teal-600' : 'bg-slate-300'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${
+                  alertDoctor ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
           </div>
 
-          {/* Info Alerts */}
-          <div className="flex items-center justify-between p-4 border border-slate-200 rounded-lg">
-            <div>
-              <p className="font-semibold text-slate-900">Info Alerts</p>
-              <p className="text-sm text-slate-600">
-                General information and reminders
-              </p>
+          {/* Risk Threshold */}
+          <div className="p-4 border border-slate-200 rounded-lg">
+            <p className="font-semibold text-slate-900 mb-1">Risk Threshold</p>
+            <p className="text-sm text-slate-600 mb-3">
+              Minimum risk level that triggers an alert
+            </p>
+            <div className="flex gap-3">
+              {(['low', 'medium', 'high'] as const).map((level) => (
+                <button
+                  key={level}
+                  onClick={() => setRiskThreshold(level)}
+                  className={`flex-1 py-2 rounded-lg text-sm font-semibold capitalize transition duration-200 ${
+                    riskThreshold === level
+                      ? level === 'low'
+                        ? 'bg-green-600 text-white'
+                        : level === 'medium'
+                          ? 'bg-amber-500 text-white'
+                          : 'bg-red-600 text-white'
+                      : 'border border-slate-300 text-slate-600 hover:bg-slate-50'
+                  }`}
+                >
+                  {level}
+                </button>
+              ))}
             </div>
-            <input
-              type="checkbox"
-              checked={smsEnabled.info}
-              onChange={() =>
-                updateSmsToggles({
-                  ...smsEnabled,
-                  info: !smsEnabled.info,
-                })
-              }
-              className="w-6 h-6 text-teal-600 rounded focus:ring-2 focus:ring-teal-500"
-            />
           </div>
+
+          <button
+            onClick={handleSavePreferences}
+            disabled={updatePreferences.isPending}
+            className="w-full mt-2 bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition duration-200"
+          >
+            <Save className="w-4 h-4" />
+            {updatePreferences.isPending ? 'Saving...' : 'Save Alert Preferences'}
+          </button>
+
+          {prefsSaved && (
+            <div className="p-4 bg-green-50 border border-green-200 rounded text-green-700 text-sm">
+              ✓ Alert preferences saved successfully
+            </div>
+          )}
         </div>
       </div>
 
@@ -291,42 +280,45 @@ function SettingsPage() {
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center gap-3 mb-6">
           <Bell className="w-6 h-6 text-blue-600" />
-          <h2 className="text-2xl font-bold text-slate-900">
-            Push Notifications
-          </h2>
+          <h2 className="text-2xl font-bold text-slate-900">Push Notifications</h2>
         </div>
 
         <div className="flex items-center justify-between p-4 border border-slate-200 rounded-lg">
           <div>
-            <p className="font-semibold text-slate-900">
-              Enable Toast Notifications
-            </p>
-            <p className="text-sm text-slate-600">
-              Get in-app notifications for alerts
-            </p>
+            <p className="font-semibold text-slate-900">Enable Toast Notifications</p>
+            <p className="text-sm text-slate-600">Get in-app notifications for alerts</p>
           </div>
-          <input
-            type="checkbox"
-            checked={storeToastsEnabled}
-            onChange={toggleToasts}
-            className="w-6 h-6 text-teal-600 rounded focus:ring-2 focus:ring-teal-500"
-          />
+          <button
+            onClick={toggleToasts}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${
+              toastsEnabled ? 'bg-teal-600' : 'bg-slate-300'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${
+                toastsEnabled ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
         </div>
       </div>
 
       {/* System Information */}
       <div className="bg-slate-50 rounded-lg p-6 border border-slate-200">
-        <h2 className="text-lg font-bold text-slate-900 mb-4">
-          System Information
-        </h2>
+        <h2 className="text-lg font-bold text-slate-900 mb-4">System Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div>
             <p className="text-slate-600">App Version</p>
             <p className="font-semibold text-slate-900">1.0.0</p>
           </div>
           <div>
-            <p className="text-slate-600">Last Sync</p>
-            <p className="font-semibold text-slate-900">Just now</p>
+            <p className="text-slate-600">Last Updated</p>
+            <p className="font-semibold text-slate-900">
+              {new Date(userData.updated_at).toLocaleString('en-US', {
+                dateStyle: 'medium',
+                timeStyle: 'short',
+              })}
+            </p>
           </div>
           <div>
             <p className="text-slate-600">Data Storage</p>
