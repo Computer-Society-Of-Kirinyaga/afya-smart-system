@@ -73,7 +73,6 @@ export function Navbar() {
       {/* Navbar */}
       <nav className="relative z-50 w-full h-[80px] lg:h-[100px] flex items-center justify-between px-4 border-b border-slate-100 bg-white/70 backdrop-blur-md animate-reveal sticky top-0">
         <div className="flex items-center gap-3">
-
           <span className="text-lg font-semibold tracking-tight text-slate-900">
             Afya Smart
           </span>
@@ -105,7 +104,7 @@ export function Navbar() {
           >
             Get started
           </a>
-      <button
+          <button
             className="md:hidden flex flex-col justify-center items-center w-10 h-10 group"
             onClick={toggleMenu}
           >

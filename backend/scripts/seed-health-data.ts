@@ -6,8 +6,7 @@ dotenv.config({
 });
 
 const USER_ID =
-  process.env.SEED_USER_ID ||
-  '0849a9f5-4409-4c62-9444-cbb351df62a6';
+  process.env.SEED_USER_ID || '0849a9f5-4409-4c62-9444-cbb351df62a6';
 
 const TOTAL_READINGS = Number(process.env.SEED_TOTAL || 100);
 const DAYS_BACK = Number(process.env.SEED_DAYS_BACK || 7);
@@ -18,13 +17,13 @@ function getDatabaseConfig() {
   // if (process.env.DATABASE_URL) {
   //   const databaseUrl = process.env.DATABASE_URL;
   //   const isLocal = databaseUrl.includes('localhost') || databaseUrl.includes('127.0.0.1');
-    
+
   //   return {
   //     connectionString: databaseUrl,
   //     ssl: isLocal ? false : { rejectUnauthorized: false },
   //   };
   // }
-  
+
   // Otherwise use individual parameters
   const host = process.env.DB_HOST;
   const port = process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432;
