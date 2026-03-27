@@ -1,0 +1,246 @@
+@baseUrl = http://localhost:3000
+@authToken =
+
+###
+# Health Check
+GET {{baseUrl}}/
+
+###
+# Auth - Register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "phone_number": "+254799163101",
+  "password": "password123",
+  "name": "Jane Doe",
+  "doctor_name": "Dr. Kamau",
+  "doctor_phone_number": "+254721227443",
+  "consent_given": true,
+  "alert_preferences": {
+    "sms_enabled": true,
+    "risk_threshold": "medium",
+    "alert_doctor": true
+  }
+}
+
+###
+# Auth - Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "phone_number": "+254799163101",
+  "password": "password123"
+}
+
+###
+# Auth - Refresh Token
+POST {{baseUrl}}/auth/refresh
+Content-Type: application/json
+
+{
+  "refresh_token": "replace-with-refresh-token"
+}
+
+###
+# Auth - Logout (Requires Bearer token)
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{authToken}}
+
+###
+# Auth - Get Profile (Requires Bearer token)
+GET {{baseUrl}}/auth/profile
+Authorization: Bearer {{authToken}}
+
+###
+# Auth - Update Profile (Requires Bearer token)
+PATCH {{baseUrl}}/auth/profile
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "phone_number": "+254700000000"
+}
+
+###
+# Users - Register
+POST {{baseUrl}}/users/register
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "phone_number": "+254700000000",
+  "doctor_name": "Dr. Kamau",
+  "doctor_phone_number": "+254711111111",
+  "consent_given": true,
+  "alert_preferences": {
+    "sms_enabled": true,
+    "risk_threshold": "medium",
+    "alert_doctor": true
+  }
+}
+
+###
+# Users - Get By ID
+GET {{baseUrl}}/users/00000000-0000-0000-0000-000000000000
+
+###
+# Users - Update Doctor Info
+PATCH {{baseUrl}}/users/00000000-0000-0000-0000-000000000000/doctor
+Content-Type: application/json
+
+{
+  "doctor_name": "Dr. Kamau",
+  "doctor_phone_number": "+254711111111"
+}
+
+###
+# Users - Update Alert Preferences
+PATCH {{baseUrl}}/users/00000000-0000-0000-0000-000000000000/preferences
+Content-Type: application/json
+
+{
+  "sms_enabled": true,
+  "risk_threshold": "high",
+  "alert_doctor": false
+}
+
+###
+# Health Readings - Create
+POST {{baseUrl}}/health-readings
+Content-Type: application/json
+
+{
+  "user_id": "00000000-0000-0000-0000-000000000000",
+  "timestamp": "2026-03-27T00:00:00.000Z",
+  "heart_rate": 72,
+  "systolic_bp": 118,
+  "diastolic_bp": 76,
+  "spo2": 97,
+  "temperature": 36.8,
+  "steps": 4500,
+  "sleep_hours": 6.5
+}
+
+###
+# Health Readings - Latest (NOTE: There are two handlers for this same route)
+GET {{baseUrl}}/health-readings/latest-health/00000000-0000-0000-0000-000000000000
+
+###
+# Health Readings - All For User
+GET {{baseUrl}}/health-readings/health-reading/00000000-0000-0000-0000-000000000000
+
+###
+# Risk Assessments - Create
+POST {{baseUrl}}/risk-assessments
+Content-Type: application/json
+
+{
+  "user_id": "b032e3a1-61f9-4b80-ae8a-3e217e27625e",
+  "assessment_time": "2026-03-27T00:00:00.000Z",
+  "llm_input": "Vitals and symptoms summary",
+  "llm_response": {
+    "risk_level": "moderate",
+    "risk_type": "hypertension",
+    "explanation": "Elevated BP readings across multiple checks.",
+    "recommendation": "Schedule a clinician visit and monitor BP daily.",
+    "confidence_score": 0.82,
+    "metrics_analyzed": ["blood_pressure", "heart_rate"]
+  },
+  "risk_level": "moderate",
+  "alert_sent": false
+}
+
+###
+# Risk Assessments - Latest For User
+GET {{baseUrl}}/risk-assessments/latestAssessment/00000000-0000-0000-0000-000000000000
+
+###
+# Risk Assessments - List For User (with filters)
+GET {{baseUrl}}/risk-assessments/user/00000000-0000-0000-0000-000000000000?startDate=2026-03-01&endDate=2026-03-27&limit=10
+
+###
+# Risk Assessments - Risk History
+GET {{baseUrl}}/risk-assessments/history/00000000-0000-0000-0000-000000000000
+
+###
+# Risk Assessments - Update Alert Status
+PATCH {{baseUrl}}/risk-assessments/b032e3a1-61f9-4b80-ae8a-3e217e27625e/alert-status
+Content-Type: application/json
+ 
+{
+  "alertSent": true
+}
+
+###
+# Risk Assessments - Dashboard Stats
+GET {{baseUrl}}/risk-assessments/stats/dashboard/00000000-0000-0000-0000-000000000000
+
+###
+# AI Model - Analyze
+POST {{baseUrl}}/ai-model/analyze
+Content-Type: application/json
+
+{
+  "deviceId": "device-001",
+  "patientId": "b032e3a1-61f9-4b80-ae8a-3e217e27625e",
+  "symptoms": {
+    "cough": 6,
+    "headache": 4,
+    "fatigue": 5
+  },
+  "vitals": [
+    {
+      "heartRate": 88,
+      "spo2": 95,
+      "temperature": 37.9,
+      "bloodPressureSystolic": 132,
+      "bloodPressureDiastolic": 84,
+      "respiratoryRate": 18,
+      "timestamp": "2026-03-27T00:00:00.000Z"
+    }
+  ],
+  "age": 45,
+  "gender": 0,
+  "chronicConditions": ["hypertension"],
+  "medications": ["amlodipine"],
+  "timestamp": "2026-03-27T00:00:00.000Z"
+}
+
+###
+# AI Model - Predict (same input as analyze)
+POST {{baseUrl}}/ai-model/predict
+Content-Type: application/json
+
+{
+  "deviceId": "device-001",
+  "patientId": "patient-001",
+  "symptoms": {
+    "cough": 6,
+    "headache": 4,
+    "fatigue": 5
+  },
+  "vitals": [
+    {
+      "heartRate": 88,
+      "spo2": 95,
+      "temperature": 37.9,
+      "bloodPressureSystolic": 132,
+      "bloodPressureDiastolic": 84,
+      "respiratoryRate": 18,
+      "timestamp": "2026-03-27T00:00:00.000Z"
+    }
+  ],
+  "age": 45,
+  "gender": 0,
+  "chronicConditions": ["hypertension"],
+  "medications": ["amlodipine"],
+  "timestamp": "2026-03-27T00:00:00.000Z"
+}
+
+###
+# Stream - Health Test (SSE)
+GET {{baseUrl}}/stream/health-test
+Accept: text/event-stream
