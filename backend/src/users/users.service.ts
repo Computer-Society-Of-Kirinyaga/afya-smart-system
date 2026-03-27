@@ -48,22 +48,22 @@ export class UsersService {
     });
   }
 
-  async findActiveUsers(hours: number = 1): Promise<User[]> {
-    const cutoffTime = new Date();
-    cutoffTime.setHours(cutoffTime.getHours() - hours);
+async findActiveUsers(minutes: number = 5): Promise<User[]> {
+  const cutoffTime = new Date();
+  cutoffTime.setMinutes(cutoffTime.getMinutes() - minutes);
 
-    return this.usersRepository
-      .createQueryBuilder('user')
-      .where(
-        `user.id IN (
+  return this.usersRepository
+    .createQueryBuilder('user')
+    .where(
+      `user.id IN (
         SELECT DISTINCT user_id 
         FROM health_readings 
         WHERE timestamp > :cutoffTime
       )`,
-        { cutoffTime }
-      )
-      .getMany();
-  }
+      { cutoffTime }
+    )
+    .getMany();
+}
 
   async findAll() {
     return this.usersRepository.find();
