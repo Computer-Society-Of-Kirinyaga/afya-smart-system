@@ -1,4 +1,4 @@
-import { Controller,Param, Sse } from '@nestjs/common';
+import { Controller, Param, Sse } from '@nestjs/common';
 import { HealthReadingsService } from 'src/health-readings/health-readings.service';
 import { interval, Observable, switchMap } from 'rxjs';
 

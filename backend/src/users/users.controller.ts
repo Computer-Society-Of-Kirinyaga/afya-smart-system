@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -24,12 +32,12 @@ export class UsersController {
   @Patch(':id/doctor')
   async updateDoctor(
     @Param('id') id: string,
-    @Body() body: { doctor_name: string; doctor_phone_number: string }
+    @Body() body: { doctor_name: string; doctor_phone_number: string },
   ) {
     return this.usersService.updateDoctorInfo(
-      id, 
-      body.doctor_name, 
-      body.doctor_phone_number
+      id,
+      body.doctor_name,
+      body.doctor_phone_number,
     );
   }
 
@@ -37,7 +45,7 @@ export class UsersController {
   @Patch(':id/preferences')
   async updatePreferences(
     @Param('id') id: string,
-    @Body() preferences: User['alert_preferences']
+    @Body() preferences: User['alert_preferences'],
   ) {
     return this.usersService.updateAlertPreferences(id, preferences);
   }

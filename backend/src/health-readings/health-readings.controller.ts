@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { HealthReadingsService } from './health-readings.service';
 import { CreateHealthReadingDto } from './dto/create-health-reading.dto';
 import { UpdateHealthReadingDto } from './dto/update-health-reading.dto';
@@ -17,8 +25,6 @@ export class HealthReadingsController {
   // findAll() {
   //   return this.healthReadingsService.findAll();
   // }
-
-
 
   @Get('latest-health/:id')
   findLatestReading(@Param('id') id: string) {
@@ -42,11 +48,9 @@ export class HealthReadingsController {
   //   return this.healthReadingsService.update(+id, updateHealthReadingDto);
   // }
 
-
   // we do not expect delete, again its real time
   // @Delete(':id')
   // remove(@Param('id') id: string) {
   //   return this.healthReadingsService.remove(+id);
   // }
-
 }
