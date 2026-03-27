@@ -8,18 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
+const schedule_1 = require("@nestjs/schedule");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const users_module_1 = require("./users/users.module");
 const health_readings_module_1 = require("./health-readings/health-readings.module");
-const stream_module_1 = require("./stream/stream.module");
-const schedule_1 = require("@nestjs/schedule");
+const risk_assessments_module_1 = require("./risk_assessments/risk_assessments.module");
+const crons_module_1 = require("./crons/crons.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [users_module_1.UsersModule, health_readings_module_1.HealthReadingsModule, stream_module_1.StreamModule, schedule_1.ScheduleModule.forRoot()],
+        imports: [
+            schedule_1.ScheduleModule.forRoot(),
+            users_module_1.UsersModule,
+            health_readings_module_1.HealthReadingsModule,
+            risk_assessments_module_1.RiskAssessmentsModule,
+            crons_module_1.CronsModule,
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
