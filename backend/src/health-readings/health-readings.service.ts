@@ -85,6 +85,12 @@ export class HealthReadingsService {
     const query = this.readingsRepository.find({
       where,
       order: { timestamp: 'DESC' },
+      select: {
+        user: {
+          medications: true,
+          chronicConditions: true,
+        }
+      }
     });
 
     if (options?.limit) {
@@ -101,21 +107,19 @@ export class HealthReadingsService {
     });
   }
 
-  async getReadingsLastHours(
-    userId: string,
-    hours: number,
-  ): Promise<HealthReading[]> {
-    const cutoffTime = new Date();
-    cutoffTime.setHours(cutoffTime.getHours() - hours);
-
-    return this.readingsRepository.find({
-      where: {
-        user_id: userId,
-        timestamp: MoreThan(cutoffTime),
-      },
-      order: { timestamp: 'ASC' },
-    });
-  }
+ async getReadingsLastHours(userId: string, hours: number, options?: { relations?: string[] }): Promise<HealthReading[]> {
+  const cutoffTime = new Date();
+  cutoffTime.setHours(cutoffTime.getHours() - hours);
+  
+  return this.readingsRepository.find({
+    where: {
+      user_id: userId,
+      timestamp: MoreThan(cutoffTime),
+    },
+    relations: options?.relations || [], // Allow loading relations
+    order: { timestamp: 'ASC' },
+  });
+}
 
   async getAggregatedReadings(
     userId: string,

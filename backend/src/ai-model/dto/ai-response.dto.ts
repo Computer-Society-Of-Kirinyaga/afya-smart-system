@@ -10,9 +10,6 @@ import {
 
 export class PredictionResponseDto {
   @IsString()
-  patientId: string;
-
-  @IsString()
   disease: string;
 
   @IsNumber()

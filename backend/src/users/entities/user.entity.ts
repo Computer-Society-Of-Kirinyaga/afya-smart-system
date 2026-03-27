@@ -44,7 +44,19 @@ export class User {
     risk_threshold: 'low' | 'medium' | 'high';
     alert_doctor: boolean;
   };
-  
+
+  @Column({ type: 'int', nullable: true })
+  age: number;
+
+  @Column({ type: 'int', nullable: true, comment: '0=Male, 1=Female, 2=Other' })
+  gender: number;
+
+  @Column({ type: 'jsonb', nullable: true, default: [] })
+  medications: string[]; // e.g., ['Lisinopril 10mg', 'Metformin 500mg']
+
+  @Column({ type: 'jsonb', nullable: true, default: [] })
+  chronicConditions: string[]; // e.g., ['Hypertension', 'Type 2 Diabetes']
+
   @Column({ nullable: true, select: false })
   refresh_token?: string;
 

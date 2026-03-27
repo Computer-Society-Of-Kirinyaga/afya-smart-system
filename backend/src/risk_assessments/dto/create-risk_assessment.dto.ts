@@ -6,21 +6,8 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { PredictionResponseDto } from 'src/ai-model/dto/ai-response.dto';
 
-export class LlmResponseDto {
-  @IsEnum(['healthy', 'low', 'moderate', 'high'])
-  risk_level: 'healthy' | 'low' | 'moderate' | 'high';
-
-  risk_type: string;
-  explanation: string;
-  recommendation: string;
-
-  @IsOptional()
-  confidence_score?: number;
-
-  @IsOptional()
-  metrics_analyzed?: string[];
-}
 
 export class CreateRiskAssessmentDto {
   @IsUUID()
@@ -32,8 +19,8 @@ export class CreateRiskAssessmentDto {
   llm_input: string;
 
   @ValidateNested()
-  @Type(() => LlmResponseDto)
-  llm_response: LlmResponseDto;
+  @Type(() => PredictionResponseDto)
+  llm_response: PredictionResponseDto;
 
   @IsEnum(['healthy', 'low', 'moderate', 'high'])
   risk_level: 'healthy' | 'low' | 'moderate' | 'high';

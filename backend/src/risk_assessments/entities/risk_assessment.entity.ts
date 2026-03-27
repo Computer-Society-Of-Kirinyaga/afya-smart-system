@@ -1,3 +1,4 @@
+import { PredictionResponseDto } from 'src/ai-model/dto/ai-response.dto';
 import { User } from 'src/users/entities/user.entity';
 import {
   Entity,
@@ -32,14 +33,7 @@ export class RiskAssessment {
   llm_input: string; // what was sent to LLM
 
   @Column({ type: 'jsonb' })
-  llm_response: {
-    risk_level: RiskLevel;
-    risk_type: string;
-    explanation: string;
-    recommendation: string;
-    confidence_score?: number; // Optional: 0-1
-    metrics_analyzed?: string[]; // Optional: which metrics triggered the alert
-  };
+  llm_response: PredictionResponseDto;
 
   @Column({
     type: 'enum',

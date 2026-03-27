@@ -93,7 +93,7 @@ Consider context: chronic conditions, medications, age, and vital sign trends. F
       const prompt = this.buildAnalysisPrompt(input);
 
       this.logger.debug(
-        `Processing health analysis for patient ${input.patientId}`,
+        `Processing health analysis for patient `,
       );
 
       // Call Gemini API
@@ -114,7 +114,6 @@ Consider context: chronic conditions, medications, age, and vital sign trends. F
 
       // Build final response
       const response: PredictionResponseDto = {
-        patientId: input.patientId,
         disease: aiResponse.disease,
         confidence: aiResponse.confidence,
         probabilities: aiResponse.probabilities,
@@ -125,13 +124,13 @@ Consider context: chronic conditions, medications, age, and vital sign trends. F
       };
 
       this.logger.log(
-        `Health analysis completed for patient ${input.patientId} - Alert Level: ${response.alertLevel}`,
+        `Health analysis completed for patient - Alert Level: ${response.alertLevel}`,
       );
 
       return response;
     } catch (error) {
       this.logger.error(
-        `Error analyzing health data for patient ${input.patientId}:`,
+        `Error analyzing health data for patient:`,
         error,
       );
 
@@ -146,7 +145,6 @@ Consider context: chronic conditions, medications, age, and vital sign trends. F
         {
           message: 'Failed to analyze health data',
           error: errorMessage,
-          patientId: input?.patientId || 'unknown',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -158,40 +156,36 @@ Consider context: chronic conditions, medications, age, and vital sign trends. F
       throw new BadRequestException('Input data is required');
     }
 
-    if (!input.patientId) {
-      throw new BadRequestException('Patient ID is required');
-    }
-
-    if (!input.vitals || input.vitals.length === 0) {
+    if (input.readings.length === 0) {
       throw new BadRequestException('At least one set of vitals is required');
     }
 
-    if (!input.symptoms || Object.keys(input.symptoms).length === 0) {
-      throw new BadRequestException('At least one symptom entry is required');
-    }
+    // if (!input.symptoms || Object.keys(input.symptoms).length === 0) {
+    //   throw new BadRequestException('At least one symptom entry is required');
+    // }
 
-    if (!Number.isInteger(input.age) || input.age < 0 || input.age > 150) {
-      throw new BadRequestException('Valid age is required (0-150)');
-    }
+    // if (!Number.isInteger(input.age) || input.age < 0 || input.age > 150) {
+    //   throw new BadRequestException('Valid age is required (0-150)');
+    // }
 
-    if (![0, 1].includes(input.gender)) {
-      throw new BadRequestException(
-        'Valid gender is required (0=Male, 1=Female)',
-      );
-    }
+    // if (![0, 1].includes(input.gender)) {
+    //   throw new BadRequestException(
+    //     'Valid gender is required (0=Male, 1=Female)',
+    //   );
+    // }
   }
 
   private buildAnalysisPrompt(input: HealthInputDto): string {
-    const latestVitals = input.vitals[input.vitals.length - 1];
+    const latestVitals = input.readings[input.readings.length - 1];
 
-    const symptomsText = Object.entries(input.symptoms)
-      .map(([symptom, severity]) => `- ${symptom}: ${severity}/10`)
-      .sort((a, b) => {
-        const severityA = parseInt(a.split(': ')[1]);
-        const severityB = parseInt(b.split(': ')[1]);
-        return severityB - severityA;
-      })
-      .join('\n');
+    // const symptomsText = Object.entries(input.symptoms)
+    //   .map(([symptom, severity]) => `- ${symptom}: ${severity}/10`)
+    //   .sort((a, b) => {
+    //     const severityA = parseInt(a.split(': ')[1]);
+    //     const severityB = parseInt(b.split(': ')[1]);
+    //     return severityB - severityA;
+    //   })
+    //   .join('\n');
 
     const chronicConditions =
       input.chronicConditions?.length > 0
@@ -204,31 +198,26 @@ Consider context: chronic conditions, medications, age, and vital sign trends. F
         : 'None reported';
 
     const vitalsTrend =
-      input.vitals.length > 1
-        ? `\n[TREND DATA: ${input.vitals.length} readings - can analyze trends over time]`
+      input.readings.length > 1
+        ? `\n[TREND DATA: ${input.readings.length} readings - can analyze trends over time]`
         : '';
 
     return `Analyze this patient's health data and provide comprehensive risk assessment:
 
 PATIENT PROFILE:
-- Age: ${input.age} years
-- Gender: ${input.gender === 0 ? 'Male' : 'Female'}
 - Chronic Conditions: ${chronicConditions}
 - Current Medications: ${medicationList}
-- Device ID: ${input.deviceId || 'N/A'}
 
 LATEST VITAL SIGNS:
-- Heart Rate: ${latestVitals.heartRate} bpm (normal: 60-100)
-- Blood Pressure: ${latestVitals.bloodPressureSystolic}/${latestVitals.bloodPressureDiastolic} mmHg (normal: <120/80)
+- Heart Rate: ${latestVitals.heart_rate} bpm (normal: 60-100)
+- Blood Pressure: ${latestVitals.systolic_bp}/${latestVitals.systolic_bp} mmHg (normal: <120/80)
 - SpO2: ${latestVitals.spo2}% (normal: >95%)
 - Temperature: ${latestVitals.temperature}°C (normal: 36.1-37.2)
-- Respiratory Rate: ${latestVitals.respiratoryRate} /min (normal: 12-20)
+- Respiratory Rate: ${latestVitals.spo2} /min (normal: 12-20)
 - Reading Time: ${latestVitals.timestamp}${vitalsTrend}
 
-REPORTED SYMPTOMS (by severity):
-${symptomsText}
 
-Data Timestamp: ${input.timestamp}
+Data Timestamp: ${new Date().toLocaleDateString()}
 
 ANALYSIS REQUIREMENTS:
 1. Assess vital sign abnormalities against normal ranges
@@ -393,6 +382,6 @@ Return ONLY valid JSON response, no markdown or additional text.`;
         ? `Risk: ${prediction.disease} (${(prediction.confidence * 100).toFixed(1)}% confidence)`
         : 'Status: Healthy';
 
-    return `[${prediction.alertLevel}] Patient ${prediction.patientId} - ${diseaseInfo}`;
+    return `[${prediction.alertLevel}]  - ${diseaseInfo}`;
   }
 }

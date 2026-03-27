@@ -6,6 +6,7 @@ import { UsersService } from '../users/users.service';
 import { RiskAssessment, RiskLevel } from './entities/risk_assessment.entity';
 import { CreateRiskAssessmentDto } from './dto/create-risk_assessment.dto';
 import { SmsService } from 'src/sms/sms.service';
+import { AiModelService } from 'src/ai-model/ai-model.service';
 
 @Injectable()
 export class RiskAssessmentsService {
@@ -15,28 +16,32 @@ export class RiskAssessmentsService {
     private healthReadingsService: HealthReadingsService,
     private usersService: UsersService,
     private smsService: SmsService,
-  ) {}
+    private aiModelService: AiModelService,
+  ) { }
 
   async create(createDto: CreateRiskAssessmentDto) {
     const assessment = this.riskRepository.create(createDto);
     return this.riskRepository.save(assessment);
   }
 
+  // In your risk-assessments.service.ts
+
   async assessUserRisk(userId: string) {
-    // Get last 5 readings (last hour ideally)
-    const readings = await this.healthReadingsService.getReadingsLastHours(
-      userId,
-      1,
-    );
+    // Get last 5 readings with user relation loaded
+    const readings = await this.healthReadingsService.getReadingsLastHours(userId, 1, {
+      relations: ['user'] // Make sure to load the user relation
+    });
 
     if (readings.length === 0) {
       return null;
     }
 
-    // Prepare LLM input
+    // Get user from the first reading
+    const user = readings[0].user;
+
+    // Prepare LLM input with correct data extraction
     const llmInput = {
-      user_id: userId,
-      readings: readings.map((r) => ({
+      readings: readings.map(r => ({
         timestamp: r.timestamp,
         heart_rate: r.heart_rate,
         systolic_bp: r.systolic_bp,
@@ -45,48 +50,54 @@ export class RiskAssessmentsService {
         temperature: r.temperature,
       })),
       averages: {
-        heart_rate:
-          readings.reduce((sum, r) => sum + (r.heart_rate || 0), 0) /
-          readings.length,
-        spo2:
-          readings.reduce((sum, r) => sum + (r.spo2 || 0), 0) / readings.length,
-        temperature:
-          readings.reduce((sum, r) => sum + (r.temperature || 0), 0) /
-          readings.length,
+        heart_rate: readings.reduce((sum, r) => sum + (r.heart_rate || 0), 0) / readings.length,
+        spo2: readings.reduce((sum, r) => sum + (r.spo2 || 0), 0) / readings.length,
+        temperature: readings.reduce((sum, r) => sum + (r.temperature || 0), 0) / readings.length,
       },
+      medications: user?.medications || [],
+      chronicConditions: user?.chronicConditions || [],
+      age: user?.age,
+      gender: user?.gender,
     };
 
-    // TODO: Call LLM service here
-    // const llmResponse = await this.llmService.analyze(llmInput);
-
-    // Mock LLM response for now
-    const mockLlmResponse = {
-      risk_level: 'healthy' as RiskLevel,
-      risk_type: 'none',
-      explanation: 'All vitals are within normal ranges',
-      recommendation: 'Continue monitoring',
-      confidence_score: 0.95,
-    };
-
-    const riskLevel = mockLlmResponse.risk_level;
+    // Call LLM service
+    const llmResponse = await this.aiModelService.analyzeHealthData(llmInput);
 
     // Create assessment record
     const assessment = await this.create({
       user_id: userId,
       llm_input: JSON.stringify(llmInput),
-      llm_response: mockLlmResponse,
-      risk_level: riskLevel,
+      llm_response: llmResponse,
+      risk_level: this.mapAlertLevelToRiskLevel(llmResponse.alertLevel),
       alert_sent: false,
     });
 
     // Send SMS if risk detected
-    if (riskLevel !== 'healthy') {
-          // this.smsService.sendRiskAlert(userId, mockLlmResponse)
+    if (llmResponse.alertLevel !== 'NORMAL') {
+      const userDetails = await this.usersService.findOne(userId);
+      const alertSent = await this.smsService.sendRiskAlert(
+        userId,
+        llmResponse.alertLevel,
+        llmResponse.disease,
+        llmResponse.recommendations
+      );
+
+      if (alertSent) {
+        await this.updateAlertStatus(assessment.id, true);
+      }
     }
 
     return assessment;
   }
 
+  private mapAlertLevelToRiskLevel(alertLevel: string): RiskLevel {
+    const mapping = {
+      'NORMAL': 'healthy',
+      'WARNING': 'moderate',
+      'CRITICAL': 'high'
+    };
+    return mapping[alertLevel] as RiskLevel || 'healthy';
+  }
   async updateAlertStatus(
     assessmentId: string,
     alertSent: boolean,
@@ -162,7 +173,7 @@ export class RiskAssessmentsService {
     const olderAvg =
       older.length > 0
         ? older.reduce((sum, a) => sum + riskScores[a.risk_level], 0) /
-          older.length
+        older.length
         : recentAvg;
 
     let riskTrend: 'improving' | 'worsening' | 'stable' = 'stable';
@@ -175,7 +186,7 @@ export class RiskAssessmentsService {
     if (lastHealthy) {
       lastHealthyDays = Math.floor(
         (new Date().getTime() - lastHealthy.assessment_time.getTime()) /
-          (1000 * 3600 * 24),
+        (1000 * 3600 * 24),
       );
     }
 
