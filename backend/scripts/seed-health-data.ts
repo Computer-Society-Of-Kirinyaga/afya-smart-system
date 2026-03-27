@@ -7,7 +7,7 @@ dotenv.config({
 
 const USER_ID =
   process.env.SEED_USER_ID ||
-  'b032e3a1-61f9-4b80-ae8a-3e217e27625e';
+  '7d576c5f-c5f2-44b8-bcb0-cb50f4e29bb6';
 
 const TOTAL_READINGS = Number(process.env.SEED_TOTAL || 100);
 const DAYS_BACK = Number(process.env.SEED_DAYS_BACK || 7);

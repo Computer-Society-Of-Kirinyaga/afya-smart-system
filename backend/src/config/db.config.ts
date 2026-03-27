@@ -17,7 +17,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       autoLoadEntities: true,
       synchronize: true,
       connectTimeoutMS: 10000,
-      ssl: true,
+      // ssl: true,
     };
   }
 }
