@@ -73,14 +73,7 @@ export function Navbar() {
       {/* Navbar */}
       <nav className="relative z-50 w-full h-[80px] lg:h-[100px] flex items-center justify-between px-4 border-b border-slate-100 bg-white/70 backdrop-blur-md animate-reveal sticky top-0">
         <div className="flex items-center gap-3">
-          <button
-            className="md:hidden flex flex-col justify-center items-center w-10 h-10 group"
-            onClick={toggleMenu}
-          >
-            <span className="block w-6 h-0.5 bg-slate-800 mb-1.5 transition-all"></span>
-            <span className="block w-6 h-0.5 bg-slate-800 mb-1.5 transition-all"></span>
-            <span className="block w-6 h-0.5 bg-slate-800 transition-all"></span>
-          </button>
+
           <span className="text-lg font-semibold tracking-tight text-slate-900">
             Afya Smart
           </span>
@@ -112,16 +105,13 @@ export function Navbar() {
           >
             Get started
           </a>
-          <button
-            className="md:hidden text-slate-600 hover:text-slate-900 transition-colors"
+      <button
+            className="md:hidden flex flex-col justify-center items-center w-10 h-10 group"
             onClick={toggleMenu}
           >
-            <span
-              className="iconify w-6 h-6"
-              data-icon="solar:hamburger-menu-linear"
-            >
-              ddd
-            </span>
+            <span className="block w-6 h-0.5 bg-slate-800 mb-1.5 transition-all"></span>
+            <span className="block w-6 h-0.5 bg-slate-800 mb-1.5 transition-all"></span>
+            <span className="block w-6 h-0.5 bg-slate-800 transition-all"></span>
           </button>
         </div>
       </nav>
