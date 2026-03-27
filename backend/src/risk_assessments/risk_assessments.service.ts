@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, MoreThan, FindOptionsWhere } from 'typeorm';
 import { HealthReadingsService } from '../health-readings/health-readings.service';
@@ -7,6 +7,7 @@ import { RiskAssessment, RiskLevel } from './entities/risk_assessment.entity';
 import { CreateRiskAssessmentDto } from './dto/create-risk_assessment.dto';
 import { SmsService } from 'src/sms/sms.service';
 import { AiModelService } from 'src/ai-model/ai-model.service';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class RiskAssessmentsService {
@@ -18,6 +19,64 @@ export class RiskAssessmentsService {
     private smsService: SmsService,
     private aiModelService: AiModelService,
   ) { }
+
+
+
+  @Cron('*/1 * * * *') // Runs every 5 minutes
+  async cronAssessAllUsers() {
+    const startTime = Date.now();
+    const logger = new Logger('RiskAssessmentCron');
+    logger.log('Starting risk assessment cron job...');
+
+    try {
+      // Get all users who have had readings in the last hour
+      const activeUsers = await this.usersService.findActiveUsers(1); // 1 hour
+
+      logger.log(`Found ${activeUsers.length} active users to assess`);
+
+      const results = {
+        total: activeUsers.length,
+        processed: 0,
+        failed: 0,
+        alertsSent: 0,
+        errors: [] as string[],
+      };
+
+      // Process each user
+      for (const user of activeUsers) {
+        try {
+          const assessment = await this.assessUserRisk(user.id);
+
+          if (assessment) {
+            console.log(assessment)
+            results.processed++;
+            if (assessment.alert_sent) {
+              results.alertsSent++;
+            }
+          } else {
+            results.processed++;
+          }
+
+          // Small delay between users to avoid rate limiting
+          await this.delay(1000);
+
+        } catch (error) {
+          results.failed++;
+          results.errors.push(`User ${user.id}: ${error.message}`);
+          logger.error(`Failed to assess risk for user ${user.id}:`, error.message);
+        }
+      }
+
+      const duration = Date.now() - startTime;
+      logger.log(`Cron job completed in ${duration}ms. Results: ${JSON.stringify(results)}`);
+
+      return results;
+    } catch (error) {
+      logger.error('Cron job failed:', error);
+      throw error;
+    }
+  }
+
 
   async create(createDto: CreateRiskAssessmentDto) {
     const assessment = this.riskRepository.create(createDto);
@@ -195,5 +254,9 @@ export class RiskAssessmentsService {
       riskTrend,
       lastHealthyDays,
     };
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }

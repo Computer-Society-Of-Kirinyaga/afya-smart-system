@@ -9,7 +9,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
     const user = this.usersRepository.create(createUserDto);
@@ -46,6 +46,23 @@ export class UsersService {
     return this.usersRepository.findOne({
       where: { phone_number: phoneNumber },
     });
+  }
+
+  async findActiveUsers(hours: number = 1): Promise<User[]> {
+    const cutoffTime = new Date();
+    cutoffTime.setHours(cutoffTime.getHours() - hours);
+
+    return this.usersRepository
+      .createQueryBuilder('user')
+      .where(
+        `user.id IN (
+        SELECT DISTINCT user_id 
+        FROM health_readings 
+        WHERE timestamp > :cutoffTime
+      )`,
+        { cutoffTime }
+      )
+      .getMany();
   }
 
   async findAll() {
