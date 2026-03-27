@@ -1,10 +1,4 @@
-import {
-  generate24HourHistory,
-  generate7DayAnalytics,
-  generateAlertEvents,
-  generateCurrentVitals,
-} from '@/lib/mockData'
-import { useAuth } from '@/store/auth'
+import { useAuthStore } from '#/store/auth'
 import type {
   AlertEvent,
   CurrentVitals,
@@ -18,67 +12,67 @@ import {
   useLatestHealthReading,
 } from './useHealthReadingsApi'
 
-// Fetch current vitals from API (falls back to mock data if API fails)
+const VITAL_TYPE_TO_KEY: Record<VitalType, string> = {
+  heartRate: 'heart_rate',
+  spo2: 'spo2',
+  temperature: 'temperature',
+  glucose: 'glucose',
+}
+
+// Fetch current vitals from API
 export function useCurrentVitals() {
-  const { userId } = useAuth()
-  const apiQuery = useLatestHealthReading(userId || '')
+  const { user } = useAuthStore()
+  const apiQuery = useLatestHealthReading(user?.id || '')
 
   return useQuery({
     queryKey: ['vitals', 'current'],
     queryFn: async (): Promise<CurrentVitals> => {
-      try {
-        // If API call succeeds, transform the HealthReading to CurrentVitals
-        if (apiQuery.data) {
-          return {
-            heartRate: apiQuery.data.heart_rate || 0,
-            bloodPressure: {
-              systolic: apiQuery.data.systolic_bp || 0,
-              diastolic: apiQuery.data.diastolic_bp || 0,
-            },
-            spO2: apiQuery.data.spo2 || 0,
-            temperature: apiQuery.data.temperature || 0,
-            timestamp: new Date(apiQuery.data.timestamp),
-          }
-        }
+      if (!apiQuery.data) {
         throw new Error('No data from API')
-      } catch {
-        // Fall back to mock data if API fails
-        await new Promise((resolve) => setTimeout(resolve, 300))
-        return generateCurrentVitals()
+      }
+
+      return {
+        heartRate: apiQuery.data.heart_rate || 0,
+        bloodPressure: {
+          systolic: apiQuery.data.systolic_bp || 0,
+          diastolic: apiQuery.data.diastolic_bp || 0,
+        },
+        spO2: apiQuery.data.spo2 || 0,
+        temperature: apiQuery.data.temperature || 0,
+        timestamp: new Date(apiQuery.data.timestamp),
       }
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: true,
-    enabled: !!userId, // Only run if user is authenticated
+    enabled: !!user && !!apiQuery.data,
   })
 }
 
 // Fetch 24-hour history for a specific vital
 export function use24HourHistory(vitalType: VitalType) {
-  const { userId } = useAuth()
-  const apiQuery = useHealthReadings(userId || '')
+  const { user } = useAuthStore()
+  const apiQuery = useHealthReadings(user?.id || '')
 
   return useQuery({
     queryKey: ['vitals', 'history24h', vitalType],
     queryFn: async (): Promise<VitalDataPoint[]> => {
-      try {
-        // Transform API data to VitalDataPoint array
-        if (apiQuery.data && Array.isArray(apiQuery.data)) {
-          return apiQuery.data.map((reading) => ({
-            timestamp: new Date(reading.timestamp),
-            value: (reading[vitalType as keyof typeof reading] as number) || 0,
-          }))
-        }
+      if (!apiQuery.data || !Array.isArray(apiQuery.data)) {
         throw new Error('No data from API')
-      } catch {
-        // Fall back to mock data if API fails
-        await new Promise((resolve) => setTimeout(resolve, 300))
-        return generate24HourHistory(vitalType)
       }
+
+      return apiQuery.data.map((reading) => ({
+        timestamp: new Date(reading.timestamp),
+        value:
+          (reading[VITAL_TYPE_TO_KEY[vitalType] as keyof typeof reading] as number) || 0,
+        time: new Date(reading.timestamp).toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+      }))
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: true,
-    enabled: !!vitalType && !!userId, // Only fetch if vitalType and userId are provided
+    enabled: !!vitalType && !!user && !!apiQuery.data,
   })
 }
 
@@ -87,17 +81,11 @@ export function useWeeklyAnalytics() {
   return useQuery({
     queryKey: ['analytics', 'weekly'],
     queryFn: async (): Promise<WeeklyAnalytics> => {
-      try {
-        // TODO: Create an API endpoint for aggregated weekly analytics
-        throw new Error('No API endpoint yet')
-      } catch {
-        // Fall back to mock data
-        await new Promise((resolve) => setTimeout(resolve, 400))
-        return generate7DayAnalytics()
-      }
+      throw new Error('No API endpoint yet')
     },
-    staleTime: 30 * 60 * 1000, // 30 minutes
+    staleTime: 30 * 60 * 1000,
     refetchOnWindowFocus: true,
+    enabled: false,
   })
 }
 
@@ -106,17 +94,11 @@ export function useAlerts() {
   return useQuery({
     queryKey: ['alerts', 'all'],
     queryFn: async (): Promise<AlertEvent[]> => {
-      try {
-        // TODO: Create an API endpoint for alerts
-        throw new Error('No API endpoint yet')
-      } catch {
-        // Fall back to mock data
-        await new Promise((resolve) => setTimeout(resolve, 300))
-        return generateAlertEvents(15)
-      }
+      throw new Error('No API endpoint yet')
     },
-    staleTime: 2 * 60 * 1000, // 2 minutes (alerts update frequently)
+    staleTime: 2 * 60 * 1000,
     refetchOnWindowFocus: true,
-    refetchInterval: 30 * 1000, // Refetch every 30 seconds for real-time feel
+    refetchInterval: 30 * 1000,
+    enabled: false,
   })
 }

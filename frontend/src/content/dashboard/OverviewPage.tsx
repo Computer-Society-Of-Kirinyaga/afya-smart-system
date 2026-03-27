@@ -7,6 +7,8 @@ function OverviewPage() {
   const { data: currentVitals, isLoading: vitalsLoading } = useCurrentVitals()
   const { data: alerts, isLoading: alertsLoading } = useAlerts()
 
+  console.log("current vitaks",currentVitals)
+
   const recentAlerts = alerts?.slice(0, 5) || []
   const criticalAlerts = alerts?.filter((a) => a.severity === 'critical') || []
   const riskScore = criticalAlerts.length > 0 ? 75 : 35
@@ -18,7 +20,7 @@ function OverviewPage() {
         <h1 className="text-3xl font-bold">{user?.name}</h1>
         <p className="text-teal-100 mt-2">
           Last vitals updated:{' '}
-          {currentVitals?.heartRate.timestamp.toLocaleTimeString() ||
+          {currentVitals?.timestamp?.toLocaleTimeString() ||
             'Loading...'}
         </p>
       </div>
@@ -89,8 +91,8 @@ function OverviewPage() {
             <div>
               <p className="text-slate-600 text-sm font-medium">Heart Rate</p>
               <p className="text-3xl font-bold text-slate-900 mt-1">
-                {vitalsLoading ? '—' : currentVitals?.heartRate.value}{' '}
-                {currentVitals?.heartRate.unit}
+                {vitalsLoading ? '—' : currentVitals?.heartRate}{' '}
+                bpm
               </p>
               <p className="text-xs text-slate-500 mt-1">Normal range</p>
             </div>
@@ -164,7 +166,7 @@ function OverviewPage() {
                       </span>
                     </div>
                     <p className="text-xs text-slate-500 mt-2">
-                      {new Date(alert.timestamp).toLocaleTimeString()}
+                      {new Date(alert.timestamp)?.toLocaleTimeString()}
                     </p>
                   </div>
                 </div>
@@ -197,7 +199,7 @@ function OverviewPage() {
                 Oxygen Saturation
               </p>
               <p className="text-2xl font-bold text-slate-900 mt-2">
-                {currentVitals.spo2.value}% {currentVitals.spo2.unit}
+                {currentVitals.spo2}
               </p>
               <p className="text-xs text-slate-500 mt-1">Normal</p>
             </div>
@@ -206,8 +208,8 @@ function OverviewPage() {
             <div className="bg-white rounded-lg shadow p-6">
               <p className="text-slate-600 text-sm font-medium">Temperature</p>
               <p className="text-2xl font-bold text-slate-900 mt-2">
-                {currentVitals.temperature.value}{' '}
-                {currentVitals.temperature.unit}
+                {currentVitals.temperature}{' '}
+                C
               </p>
               <p className="text-xs text-slate-500 mt-1">Normal</p>
             </div>
@@ -218,7 +220,7 @@ function OverviewPage() {
                 Blood Glucose
               </p>
               <p className="text-2xl font-bold text-slate-900 mt-2">
-                {currentVitals.glucose.value} {currentVitals.glucose.unit}
+                {currentVitals.glucose} {currentVitals.glucose}
               </p>
               <p className="text-xs text-slate-500 mt-1">Normal</p>
             </div>

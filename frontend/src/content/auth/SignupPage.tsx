@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 export function SignupPage() {
   const navigate = useNavigate()
-  const { login, isLoading } = useAuthStore()
+  const { register, isLoading } = useAuthStore()
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -84,8 +84,14 @@ export function SignupPage() {
     }
 
     try {
-      // For demo purposes, we'll use the email as login
-      await login(formData.email, formData.password)
+      // Build a RegisterRequest from the form data
+      await register({
+        name: formData.fullName,
+        phone_number: formData.phoneNumber,
+        password: formData.password,
+        consent_given: agreed,
+        email: formData.email,
+      })
       navigate({ to: '/dashboard/overview' })
     } catch (err) {
       setErrors({

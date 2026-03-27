@@ -1,36 +1,118 @@
+import { useUpdateUserDoctor, useUpdateUserPreferences, useUser } from '@/hooks/useUsersApi'
+import { useAuthStore } from '@/store/auth'
 import { useSettingsStore } from '@/store/settings'
 import { Bell, Phone, Save } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function SettingsPage() {
-  const {
-    contacts,
-    smsEnabled,
-    toastsEnabled,
-    updateContacts,
-    updateSmsToggles,
-    toggleToasts,
-  } = useSettingsStore()
-  const [primaryPhone, setPrimaryPhone] = useState(contacts.primaryPhone)
-  const [secondaryPhone, setSecondaryPhone] = useState(
-    contacts.secondaryPhone || '',
-  )
-  const [email, setEmail] = useState(contacts.email)
-  const [emergencyContact, setEmergencyContact] = useState(
-    contacts.emergencyContact,
-  )
+  const { user } = useAuthStore()
+  const userId = user?.id
+
+  // Fetch user data from backend
+  const { data: userData, isLoading } = useUser(userId || '')
+
+  // Mutations for updating user
+  const updateDoctor = useUpdateUserDoctor(userId || '')
+  const updatePreferences = useUpdateUserPreferences(userId || '')
+
+  const [primaryPhone, setPrimaryPhone] = useState('')
+  const [secondaryPhone, setSecondaryPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [emergencyContact, setEmergencyContact] = useState('')
+  const [doctorName, setDoctorName] = useState('')
+  const [doctorPhone, setDoctorPhone] = useState('')
+  const [smsEnabled, setSmsEnabled] = useState({ critical: true, warning: true, info: true })
+  const [riskThreshold, setRiskThreshold] = useState<'low' | 'medium' | 'high'>('medium')
+  const [alertDoctor, setAlertDoctor] = useState(false)
   const [saved, setSaved] = useState(false)
 
-  const handleSaveContacts = () => {
-    updateContacts({
-      primaryPhone,
-      secondaryPhone: secondaryPhone || undefined,
-      email,
-      emergencyContact,
-    })
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+    const {
+    smsEnabled: storeToastsEnabled,
+    updateContacts,
+    toggleToasts,
+  } = useSettingsStore()
+
+  // Populate form when user data loads
+  useEffect(() => {
+    if (userData) {
+      setPrimaryPhone(userData.phone_number || '')
+      setDoctorName(userData.doctor_name || '')
+      setDoctorPhone(userData.doctor_phone_number || '')
+
+      if (userData.alert_preferences) {
+        setSmsEnabled(userData.alert_preferences.sms_enabled ?? true)
+        setRiskThreshold(userData.alert_preferences.risk_threshold ?? 'medium')
+        setAlertDoctor(userData.alert_preferences.alert_doctor ?? false)
+      }
+    }
+  }, [userData])
+
+  const handleSaveDoctor = async () => {
+    try {
+      await updateDoctor.mutateAsync({
+        doctor_name: doctorName,
+        doctor_phone_number: doctorPhone,
+      })
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2000)
+    } catch (error) {
+      console.error('Failed to save doctor info:', error)
+    }
   }
+
+  const handleSavePreferences = async () => {
+    try {
+      await updatePreferences.mutateAsync({
+        sms_enabled: smsEnabled,
+        risk_threshold: riskThreshold,
+        alert_doctor: alertDoctor,
+      })
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2000)
+    } catch (error) {
+      console.error('Failed to save preferences:', error)
+    }
+  }
+
+  const handleSaveContacts = async () => {
+    try {
+      updateContacts({
+        primaryPhone,
+        secondaryPhone,
+        email,
+        emergencyContact,
+      })
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2000)
+    } catch (error) {
+      console.error('Failed to save contact info:', error)
+    }
+  }
+
+  const updateSmsToggles = (newSmsSettings: typeof smsEnabled) => {
+    setSmsEnabled(newSmsSettings)
+  }
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6 max-w-4xl">
+        <div className="text-center py-12">
+          <p className="text-slate-600">Loading settings...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!userData) {
+    return (
+      <div className="space-y-6 max-w-4xl">
+        <div className="text-center py-12">
+          <p className="text-red-600">Failed to load user data</p>
+        </div>
+      </div>
+    )
+  }
+
 
   return (
     <div className="space-y-6 max-w-4xl">
@@ -225,7 +307,7 @@ function SettingsPage() {
           </div>
           <input
             type="checkbox"
-            checked={toastsEnabled}
+            checked={storeToastsEnabled}
             onChange={toggleToasts}
             className="w-6 h-6 text-teal-600 rounded focus:ring-2 focus:ring-teal-500"
           />

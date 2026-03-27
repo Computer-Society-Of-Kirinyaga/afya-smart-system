@@ -144,7 +144,7 @@ function AlertsPage() {
                         <div>
                           <p className="text-slate-500">Time</p>
                           <p className="font-semibold text-slate-900">
-                            {new Date(alert.timestamp).toLocaleTimeString()}
+                            {new Date(alert.timestamp)?.toLocaleTimeString()}
                           </p>
                         </div>
                       </div>

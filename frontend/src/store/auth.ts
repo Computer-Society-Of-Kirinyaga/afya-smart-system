@@ -1,7 +1,7 @@
+import { api } from '@/lib/api'
+import type { LoginResponse, RegisterRequest } from '@/lib/api.types'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { api } from '@/lib/api'
-import type { LoginRequest, RegisterRequest, LoginResponse } from '@/lib/api.types'
 
 interface User {
   id: string
@@ -117,4 +117,3 @@ export const useAuthStore = create<AuthStore>()(
     },
   ),
 )
-

@@ -25,11 +25,20 @@ export async function apiCall<T>(
   const url = `${API_BASE_URL}${endpoint}`
 
   try {
+    // Get auth token from localStorage
+    const token = localStorage.getItem('access_token')
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    }
+
+    // Add authorization header if token exists
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
     const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options?.headers,
-      },
+      headers,
       ...options,
     })
 
