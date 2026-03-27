@@ -1,7 +1,7 @@
 export function Architecture(): JSX.Element {
   return (
     <section className="w-full relative z-10 bg-white border-b border-slate-100 overflow-hidden py-24">
-      <div className="px-6 lg:px-[6%] max-w-7xl mx-auto">
+      <div className="px-4 max-w-6xl w-full mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
             Enterprise Architecture

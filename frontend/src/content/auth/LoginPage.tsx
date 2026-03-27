@@ -27,7 +27,7 @@ export function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo/Branding */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-teal-600">VITALIS</h1>
+          <h1 className="text-3xl font-bold text-teal-600">Afya Smart</h1>
           <p className="text-slate-600 mt-2">Smart Health Monitoring System</p>
         </div>
 
@@ -97,6 +97,19 @@ export function LoginPage() {
             </p>
             <p className="text-xs text-slate-600">
               Make sure your account is registered in the system with a valid phone number.
+            </p>
+          </div>
+
+          {/* Signup Link */}
+          <div className="mt-6 text-center">
+            <p className="text-slate-600 text-sm">
+              Don't have an account?{' '}
+              <button
+                onClick={() => navigate({ to: '/signup' })}
+                className="text-teal-600 font-semibold hover:underline transition"
+              >
+                Sign Up
+              </button>
             </p>
           </div>
         </div>

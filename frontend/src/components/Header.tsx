@@ -56,7 +56,7 @@ export default function Header(): JSX.Element {
       </div>
 
       {/* Navbar */}
-      <nav className="z-50 w-full h-20 lg:h-25 flex items-center justify-between px-6 lg:px-[6%] border-b border-slate-100 bg-white/70 backdrop-blur-md animate-reveal sticky top-0">
+      <nav className="z-50 w-full h-20 lg:h-25 flex items-center justify-between px-4 border-b border-slate-100 bg-white/70 backdrop-blur-md animate-reveal sticky top-0">
         {/* Logo */}
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-linear-to-br from-sky-500 to-teal-500 flex items-center justify-center">

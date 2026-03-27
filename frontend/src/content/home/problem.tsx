@@ -3,16 +3,14 @@ import { Activity, Shield, Zap } from 'lucide-react'
 export function Problem(): JSX.Element {
   return (
     <section className="w-full relative z-10 bg-white border-b border-slate-100 overflow-hidden py-24">
-      <div className="px-6 lg:px-[6%] max-w-7xl mx-auto">
+      <div className="px-4 max-w-6xl w-full mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <h2 className="text-4xl font-bold text-slate-900 mb-6">
-              The Challenge in Modern Healthcare
+              The Wearable Data Problem
             </h2>
             <p className="text-lg text-slate-600 mb-6">
-              Healthcare providers struggle with fragmented patient data,
-              delayed insights, and inefficient monitoring workflows. This leads
-              to poor patient outcomes and increased operational costs.
+              Your wearable devices generate hundreds of data points every day. But without intelligent interpretation, this data tells you nothing about your health risks. You see numbers without context, trends without meaning.
             </p>
 
             <div className="space-y-4">
@@ -22,10 +20,10 @@ export function Problem(): JSX.Element {
                 </div>
                 <div>
                   <h3 className="font-semibold text-slate-900 mb-1">
-                    Data Silos
+                    Passive Data Only
                   </h3>
                   <p className="text-slate-600 text-sm">
-                    Patient information scattered across multiple systems
+                    Raw metrics without interpretation or context
                   </p>
                 </div>
               </div>
@@ -36,10 +34,10 @@ export function Problem(): JSX.Element {
                 </div>
                 <div>
                   <h3 className="font-semibold text-slate-900 mb-1">
-                    Manual Monitoring
+                    No Early Warnings
                   </h3>
                   <p className="text-slate-600 text-sm">
-                    Time-consuming manual checks and routine visits
+                    You discover problems when it's already too late
                   </p>
                 </div>
               </div>
@@ -50,10 +48,10 @@ export function Problem(): JSX.Element {
                 </div>
                 <div>
                   <h3 className="font-semibold text-slate-900 mb-1">
-                    Delayed Insights
+                    Doctor Doesn't See It
                   </h3>
                   <p className="text-slate-600 text-sm">
-                    Critical health changes detected too late
+                    Your wearable insights stay on your phone
                   </p>
                 </div>
               </div>
@@ -65,21 +63,21 @@ export function Problem(): JSX.Element {
               <Activity className="w-8 h-8 text-red-500 mb-4" />
               <h4 className="font-semibold text-slate-900">Reactive Care</h4>
               <p className="text-sm text-slate-600 mt-2">
-                Crisis management instead of prevention
+                Responding to crises instead of preventing them
               </p>
             </div>
             <div className="bg-slate-50 rounded-lg p-6 border border-slate-200">
               <Zap className="w-8 h-8 text-yellow-500 mb-4" />
-              <h4 className="font-semibold text-slate-900">Low Efficiency</h4>
+              <h4 className="font-semibold text-slate-900">Anxiety</h4>
               <p className="text-sm text-slate-600 mt-2">
-                Wasted resources and time
+                Uncertainty about what your data means
               </p>
             </div>
             <div className="bg-slate-50 rounded-lg p-6 border border-slate-200 lg:col-span-2">
               <Shield className="w-8 h-8 text-orange-500 mb-4" />
-              <h4 className="font-semibold text-slate-900">Compliance Risk</h4>
+              <h4 className="font-semibold text-slate-900">Health Gaps</h4>
               <p className="text-sm text-slate-600 mt-2">
-                Inadequate records and audit trails
+                No connection between your wearables and your healthcare provider
               </p>
             </div>
           </div>

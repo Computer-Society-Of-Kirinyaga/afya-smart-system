@@ -70,17 +70,21 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest {
-  phone_number: string
-  password: string
-  name: string
-  consent_given: boolean
+  phone_number: string;
+  password: string;
+  name: string;
+  consent_given: boolean;
   alert_preferences?: {
-    sms_enabled?: boolean
-    risk_threshold?: 'low' | 'medium' | 'high'
-    alert_doctor?: boolean
-  }
-  doctor_name?: string
-  doctor_phone_number?: string
+    sms_enabled?: boolean;
+    risk_threshold?: 'low' | 'medium' | 'high';
+    alert_doctor?: boolean;
+  };
+  doctor_name?: string;
+  doctor_phone_number?: string;
+  age?: number;
+  gender?: number; 
+  medications?: string[]; 
+  chronicConditions?: string[]; 
 }
 
 export interface LoginResponse {

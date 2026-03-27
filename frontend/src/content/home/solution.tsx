@@ -3,42 +3,40 @@ import { CheckCircle, Cpu, TrendingUp } from 'lucide-react'
 export function Solution(): JSX.Element {
   return (
     <section className="w-full relative z-10 bg-slate-50 border-b border-slate-100 overflow-hidden py-24">
-      <div className="px-6 lg:px-[6%] max-w-7xl mx-auto">
+      <div className="px-4 max-w-6xl w-full mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="order-2 lg:order-1 grid grid-cols-2 gap-4">
             <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
               <CheckCircle className="w-8 h-8 text-green-500 mb-4" />
-              <h4 className="font-semibold text-slate-900">Unified Data</h4>
+              <h4 className="font-semibold text-slate-900">Risk Prediction</h4>
               <p className="text-sm text-slate-600 mt-2">
-                Centralized patient records
+                AI forecasts health risks early
               </p>
             </div>
             <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
               <Cpu className="w-8 h-8 text-blue-500 mb-4" />
-              <h4 className="font-semibold text-slate-900">AI-Powered</h4>
+              <h4 className="font-semibold text-slate-900">Real-Time Alerts</h4>
               <p className="text-sm text-slate-600 mt-2">
-                Intelligent predictions
+                Immediate notifications when risks detected
               </p>
             </div>
             <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-sm lg:col-span-2">
               <TrendingUp className="w-8 h-8 text-teal-500 mb-4" />
               <h4 className="font-semibold text-slate-900">
-                Real-Time Monitoring
+                Doctor Integration
               </h4>
               <p className="text-sm text-slate-600 mt-2">
-                Continuous health tracking
+                Share insights with your healthcare provider
               </p>
             </div>
           </div>
 
           <div className="order-1 lg:order-2">
             <h2 className="text-4xl font-bold text-slate-900 mb-6">
-              Our Intelligent Solution
+              Predictive Health Intelligence
             </h2>
             <p className="text-lg text-slate-600 mb-6">
-              VITALIS combines cutting-edge IoT sensors, machine learning
-              algorithms, and cloud infrastructure to deliver proactive,
-              data-driven healthcare.
+              HealthRisk AI transforms your wearable data into actionable intelligence, forecasting health risks before they become emergencies and keeping your doctor in the loop in real-time.
             </p>
 
             <div className="space-y-4">
@@ -48,10 +46,10 @@ export function Solution(): JSX.Element {
                 </div>
                 <div>
                   <h3 className="font-semibold text-slate-900 mb-1">
-                    Integrated Platform
+                    Trend Analysis
                   </h3>
                   <p className="text-slate-600 text-sm">
-                    All patient data in one secure place
+                    Understand patterns in your health data
                   </p>
                 </div>
               </div>
@@ -62,10 +60,10 @@ export function Solution(): JSX.Element {
                 </div>
                 <div>
                   <h3 className="font-semibold text-slate-900 mb-1">
-                    Predictive Analytics
+                    SMS Notifications
                   </h3>
                   <p className="text-slate-600 text-sm">
-                    Early warning systems and risk assessment
+                    Get alerts even when the app is closed
                   </p>
                 </div>
               </div>
@@ -76,10 +74,10 @@ export function Solution(): JSX.Element {
                 </div>
                 <div>
                   <h3 className="font-semibold text-slate-900 mb-1">
-                    Proactive Interventions
+                    Privacy Protected
                   </h3>
                   <p className="text-slate-600 text-sm">
-                    Prevent complications before they occur
+                    End-to-end encryption and anonymized processing
                   </p>
                 </div>
               </div>

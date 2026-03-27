@@ -2,10 +2,10 @@ import { use24HourHistory, useCurrentVitals } from '@/hooks/useVitals'
 import { useHealthStream } from '@/hooks/useHealthStream'
 import { useAuthStore } from '#/store/auth'
 import type { VitalType } from '@/types/dashboard'
-import { TrendingDown, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState, useMemo } from 'react'
+import { TrendingDown, TrendingUp, ChevronLeft, ChevronRight, WifiOff } from 'lucide-react'
+import { useState, useMemo, useEffect, useRef } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 
-// Maps VitalType (camelCase) → API snake_case key used by the stream
 const VITAL_TO_API_KEY: Record<VitalType, string> = {
   heartRate: 'heart_rate',
   spo2: 'spo2',
@@ -22,33 +22,78 @@ const VITAL_TYPES: { key: VitalType; label: string; unit: string }[] = [
   { key: 'glucose', label: 'Blood Glucose', unit: 'mg/dL' },
 ]
 
+// Smoothly counts to new value on change, pulses the card on update
+function AnimatedValue({ value }: { value: number | undefined }) {
+  const [display, setDisplay] = useState(value ?? 0)
+  const [flash, setFlash] = useState(false)
+  const prev = useRef(value)
+
+  useEffect(() => {
+    if (value === undefined || value === prev.current) return
+    prev.current = value
+    setFlash(true)
+    const start = display
+    const end = value
+    const duration = 600
+    const startTime = performance.now()
+    const tick = (now: number) => {
+      const elapsed = now - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setDisplay(Math.round((start + (end - start) * eased) * 10) / 10)
+      if (progress < 1) requestAnimationFrame(tick)
+      else setDisplay(end)
+    }
+    requestAnimationFrame(tick)
+    setTimeout(() => setFlash(false), 800)
+  }, [value])
+
+  return (
+    <motion.span
+      animate={flash ? { scale: [1, 1.06, 1] } : {}}
+      transition={{ duration: 0.4 }}
+      className="tabular-nums"
+    >
+      {display}
+    </motion.span>
+  )
+}
+
 function VitalsPage() {
   const [activeTab, setActiveTab] = useState<VitalType>('heartRate')
   const [page, setPage] = useState(1)
   const { user } = useAuthStore()
 
-  // Fetch from backend stream
   const { data: streamData, isConnected, error: streamError } = useHealthStream(user?.id || null)
-
-  // Fallback to API polling if stream is not available
   const { data: currentVitals } = useCurrentVitals()
-  const { data: history } = use24HourHistory(activeTab)
+  const { data: history, dataUpdatedAt } = use24HourHistory(activeTab)
+  console.log("streamData",streamData)
 
-  // Use stream data if available, otherwise use API data
+  const prevStreamRef = useRef<number | undefined>()
+  const [pulse, setPulse] = useState(false)
+
   const currentValue = streamData
     ? (streamData[VITAL_TO_API_KEY[activeTab] as keyof typeof streamData] as number) ?? 0
     : activeTab === 'heartRate'
       ? currentVitals?.heartRate
       : activeTab === 'spo2'
-        ? currentVitals?.spO2
+        ? currentVitals?.spo2
         : activeTab === 'temperature'
           ? currentVitals?.temperature
           : (currentVitals as any)?.glucose ?? 0
 
-  // Reverse so most recent reading appears first in the table
+  useEffect(() => {
+    if (currentValue !== prevStreamRef.current) {
+      prevStreamRef.current = currentValue as number
+      setPulse(true)
+      setTimeout(() => setPulse(false), 700)
+    }
+  }, [currentValue,streamData])
+
+  // Reverse so newest is always at top; re-derive when data or timestamp changes
   const reversedHistory = useMemo(
     () => (history ? [...history].reverse() : []),
-    [history],
+    [history, dataUpdatedAt],
   )
 
   const historyValues = reversedHistory.map((h) => h.value)
@@ -61,7 +106,6 @@ function VitalsPage() {
         ) / 10
       : 0
 
-  // Pagination
   const totalPages = Math.max(1, Math.ceil(reversedHistory.length / ROWS_PER_PAGE))
   const paginatedHistory = reversedHistory.slice(
     (page - 1) * ROWS_PER_PAGE,
@@ -76,79 +120,134 @@ function VitalsPage() {
   return (
     <div className="space-y-6">
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-slate-200 overflow-x-auto">
+      <div className="relative flex gap-0 border-b border-slate-200 overflow-x-auto">
         {VITAL_TYPES.map(({ key, label }) => (
           <button
             key={key}
             onClick={() => handleTabChange(key)}
-            className={`px-4 py-3 font-medium border-b-2 transition duration-200 ${
-              activeTab === key
-                ? 'border-teal-600 text-teal-600'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+            className={`relative px-5 py-3 text-sm font-medium transition-colors duration-150 whitespace-nowrap ${
+              activeTab === key ? 'text-teal-600' : 'text-slate-500 hover:text-slate-800'
             }`}
           >
             {label}
+            {activeTab === key && (
+              <motion.div
+                layoutId="tab-underline"
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-teal-600 rounded-full"
+                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              />
+            )}
           </button>
         ))}
       </div>
 
-      {/* Stream status indicator */}
-      {streamError && (
-        <div className="text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded px-4 py-2">
-          Live stream unavailable — showing polled data. ({streamError})
-        </div>
-      )}
+      {/* Stream error banner */}
+      <AnimatePresence>
+        {streamError && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="flex items-center gap-2 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-2.5 overflow-hidden"
+          >
+            <WifiOff className="w-4 h-4 shrink-0" />
+            Live stream unavailable — showing polled data. ({streamError})
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Current Value Card */}
-      <div className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-lg p-8 text-white shadow-lg">
-        <p className="text-teal-100 text-sm font-medium">Current</p>
-        <p className="text-5xl font-bold mt-2">
-          {currentValue}
-          <span className="text-2xl ml-2">
+      <motion.div
+        animate={
+          pulse
+            ? {
+                boxShadow: [
+                  '0 0 0 0px rgba(20,184,166,0)',
+                  '0 0 0 10px rgba(20,184,166,0.2)',
+                  '0 0 0 0px rgba(20,184,166,0)',
+                ],
+              }
+            : {}
+        }
+        transition={{ duration: 0.7 }}
+        className="bg-gradient-to-br from-teal-500 to-teal-700 rounded-xl p-8 text-white shadow-lg"
+      >
+        <div className="flex items-start justify-between">
+          <p className="text-teal-100 text-xs font-semibold uppercase tracking-widest">
+            Current Reading
+          </p>
+          <div
+            className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${
+              isConnected ? 'bg-white/15 text-white' : 'bg-white/10 text-teal-200'
+            }`}
+          >
+            {isConnected ? (
+              <>
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-200 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
+                </span>
+                Live
+              </>
+            ) : (
+              <>
+                <WifiOff className="w-3 h-3" />
+                Polled
+              </>
+            )}
+          </div>
+        </div>
+        <div className="mt-3 flex items-end gap-2">
+          <span className="text-6xl font-bold tracking-tight leading-none">
+            <AnimatedValue value={currentValue as number} />
+          </span>
+          <span className="text-2xl text-teal-200 mb-1">
             {VITAL_TYPES.find((v) => v.key === activeTab)?.unit}
           </span>
-        </p>
-        <p className="text-teal-100 mt-2">
-          {isConnected ? 'Live' : 'Last updated just now'}
-        </p>
-      </div>
+        </div>
+      </motion.div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <p className="text-slate-600 text-sm font-medium">Average (24h)</p>
-          <p className="text-3xl font-bold text-slate-900 mt-2">{avg}</p>
-        </div>
-        <div className="bg-white rounded-lg shadow p-6">
-          <p className="text-slate-600 text-sm font-medium">Minimum (24h)</p>
-          <p className="text-3xl font-bold text-slate-900 mt-2">{min}</p>
-        </div>
-        <div className="bg-white rounded-lg shadow p-6">
-          <p className="text-slate-600 text-sm font-medium">Maximum (24h)</p>
-          <p className="text-3xl font-bold text-slate-900 mt-2">{max}</p>
-        </div>
+      <div className="grid grid-cols-3 gap-4">
+        {[
+          { label: 'Average', value: avg },
+          { label: 'Minimum', value: min },
+          { label: 'Maximum', value: max },
+        ].map(({ label, value }) => (
+          <div key={label} className="bg-white rounded-xl border border-slate-100 shadow-sm p-5">
+            <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">{label} · 24h</p>
+            <p className="text-2xl font-bold text-slate-900 mt-2 tabular-nums">
+              {value}
+              <span className="text-sm font-normal text-slate-400 ml-1">
+                {VITAL_TYPES.find((v) => v.key === activeTab)?.unit}
+              </span>
+            </p>
+          </div>
+        ))}
       </div>
 
-      {/* Chart — chronological order (oldest → newest, left → right) */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-bold text-slate-900 mb-4">24-Hour Trend</h3>
-        <div className="h-64 bg-gradient-to-b from-teal-50 to-slate-50 rounded flex items-end justify-around gap-1 p-4">
+      {/* Chart */}
+      <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-6">
+        <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">24-Hour Trend</h3>
+        <div className="h-44 bg-gradient-to-b from-teal-50/50 to-white rounded-lg flex items-end gap-px p-3">
           {history?.map((point, idx) => {
             const normalized = ((point.value - min) / (max - min || 1)) * 100
             return (
-              <div
+              <motion.div
                 key={idx}
-                className="flex-1 bg-teal-600 rounded-t hover:bg-teal-700 transition duration-200 group relative"
-                style={{ height: `${Math.max(normalized, 5)}%` }}
+                initial={{ height: 0 }}
+                animate={{ height: `${Math.max(normalized, 3)}%` }}
+                transition={{ duration: 0.6, delay: idx * 0.004, ease: [0.22, 1, 0.36, 1] }}
+                className="flex-1 bg-teal-500/80 hover:bg-teal-500 rounded-t cursor-pointer group relative transition-colors"
               >
-                <div className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap transition">
+                <div className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap pointer-events-none z-10">
                   {point.value}
                 </div>
-              </div>
+              </motion.div>
             )
           })}
         </div>
-        <div className="mt-4 flex justify-between text-xs text-slate-500">
+        <div className="mt-3 flex justify-between text-xs text-slate-400">
           <span>12:00 AM</span>
           <span>6:00 AM</span>
           <span>12:00 PM</span>
@@ -158,86 +257,92 @@ function VitalsPage() {
       </div>
 
       {/* History Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="border-b border-slate-200 p-6 flex items-center justify-between">
-          <h3 className="text-lg font-bold text-slate-900">Hourly History</h3>
-          <span className="text-sm text-slate-500">{reversedHistory.length} readings</span>
+      <div className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
+        <div className="border-b border-slate-100 px-6 py-4 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Hourly History</h3>
+          <span className="text-xs text-slate-400 tabular-nums bg-slate-50 px-2 py-1 rounded-md">
+            {reversedHistory.length} readings
+          </span>
         </div>
+
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-slate-50/70">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600">Time</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600">Value</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600">Trend</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Time</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Value</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Trend</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200">
-              {paginatedHistory.map((point, idx) => {
-                const globalIdx = (page - 1) * ROWS_PER_PAGE + idx
-                // Compare against the next item in reversed list (i.e. the previous reading)
-                const prevValue =
-                  globalIdx < reversedHistory.length - 1
-                    ? reversedHistory[globalIdx + 1].value
-                    : point.value
-                const trend =
-                  point.value > prevValue
-                    ? 'up'
-                    : point.value < prevValue
-                      ? 'down'
-                      : 'stable'
+            <tbody className="divide-y divide-slate-50">
+              <AnimatePresence initial={false} mode="popLayout">
+                {paginatedHistory.map((point, idx) => {
+                  const globalIdx = (page - 1) * ROWS_PER_PAGE + idx
+                  const prevValue =
+                    globalIdx < reversedHistory.length - 1
+                      ? reversedHistory[globalIdx + 1].value
+                      : point.value
+                  const trend =
+                    point.value > prevValue ? 'up' : point.value < prevValue ? 'down' : 'stable'
 
-                // timestamp is a Date object (set by use24HourHistory)
-                const timeLabel =
-                  point.timestamp instanceof Date
-                    ? point.timestamp.toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })
-                    : String(point.timestamp)
+                  const timeLabel =
+                    point.timestamp instanceof Date
+                      ? point.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                      : String(point.timestamp)
 
-                return (
-                  <tr key={globalIdx} className="hover:bg-slate-50 transition duration-200">
-                    <td className="px-6 py-4 text-sm text-slate-900">{timeLabel}</td>
-                    <td className="px-6 py-4 text-sm font-semibold text-slate-900">
-                      {point.value} {VITAL_TYPES.find((v) => v.key === activeTab)?.unit}
-                    </td>
-                    <td className="px-6 py-4 text-sm">
-                      <div className="flex items-center gap-2">
-                        {trend === 'up' && (
-                          <>
-                            <TrendingUp className="w-4 h-4 text-red-600" />
-                            <span className="text-red-600">Increasing</span>
-                          </>
-                        )}
-                        {trend === 'down' && (
-                          <>
-                            <TrendingDown className="w-4 h-4 text-green-600" />
-                            <span className="text-green-600">Decreasing</span>
-                          </>
-                        )}
-                        {trend === 'stable' && (
-                          <span className="text-slate-600">Stable</span>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                )
-              })}
+                  return (
+                    <motion.tr
+                      key={`${activeTab}-${point.timestamp instanceof Date ? point.timestamp.getTime() : point.timestamp}`}
+                      initial={{ opacity: 0, y: -12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.28, ease: 'easeOut' }}
+                      className="hover:bg-slate-50/60 transition-colors"
+                    >
+                      <td className="px-6 py-4 text-sm text-slate-600 tabular-nums">{timeLabel}</td>
+                      <td className="px-6 py-4 text-sm font-semibold text-slate-900 tabular-nums">
+                        {point.value}
+                        <span className="text-slate-400 font-normal ml-1 text-xs">
+                          {VITAL_TYPES.find((v) => v.key === activeTab)?.unit}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm">
+                        <div className="flex items-center gap-1.5">
+                          {trend === 'up' && (
+                            <>
+                              <TrendingUp className="w-4 h-4 text-red-500" />
+                              <span className="text-red-500 font-medium text-xs">Increasing</span>
+                            </>
+                          )}
+                          {trend === 'down' && (
+                            <>
+                              <TrendingDown className="w-4 h-4 text-emerald-500" />
+                              <span className="text-emerald-500 font-medium text-xs">Decreasing</span>
+                            </>
+                          )}
+                          {trend === 'stable' && (
+                            <span className="text-slate-400 text-xs">Stable</span>
+                          )}
+                        </div>
+                      </td>
+                    </motion.tr>
+                  )
+                })}
+              </AnimatePresence>
             </tbody>
           </table>
         </div>
 
         {/* Pagination */}
-        <div className="border-t border-slate-200 px-6 py-4 flex items-center justify-between">
-          <p className="text-sm text-slate-600">
+        <div className="border-t border-slate-100 px-6 py-4 flex items-center justify-between">
+          <p className="text-xs text-slate-400">
             Page {page} of {totalPages} · {reversedHistory.length} total
           </p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="p-2 rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              className="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -250,15 +355,15 @@ function VitalsPage() {
               }, [])
               .map((p, i) =>
                 p === '...' ? (
-                  <span key={`ellipsis-${i}`} className="px-2 text-slate-400 text-sm">…</span>
+                  <span key={`ellipsis-${i}`} className="px-1.5 text-slate-300 text-sm">…</span>
                 ) : (
                   <button
                     key={p}
                     onClick={() => setPage(p as number)}
-                    className={`w-8 h-8 rounded-md text-sm font-medium transition ${
+                    className={`w-8 h-8 rounded-lg text-xs font-semibold transition ${
                       page === p
-                        ? 'bg-teal-600 text-white'
-                        : 'border border-slate-200 text-slate-600 hover:bg-slate-50'
+                        ? 'bg-teal-600 text-white shadow-sm'
+                        : 'border border-slate-200 text-slate-500 hover:bg-slate-50'
                     }`}
                   >
                     {p}
@@ -268,7 +373,7 @@ function VitalsPage() {
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="p-2 rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              className="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
