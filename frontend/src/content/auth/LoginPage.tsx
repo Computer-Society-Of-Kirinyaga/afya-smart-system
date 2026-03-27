@@ -6,7 +6,7 @@ import { useState } from 'react'
 export function LoginPage() {
   const navigate = useNavigate()
   const { login, isLoading } = useAuthStore()
-  const [phone_number, setPhoneNumber] = useState('+254712345678')
+  const [phone_number, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
@@ -92,7 +92,7 @@ export function LoginPage() {
             </div>
 
             {/* Password Input */}
-            <div>gradient
+            <div>
               <label
                 htmlFor="password"
                 className="mb-1.5 block text-sm font-medium text-slate-700"
