@@ -2,6 +2,11 @@
 
 import { useState } from 'react'
 
+// Add smooth scrolling to HTML element
+if (typeof window !== 'undefined') {
+  document.documentElement.style.scrollBehavior = 'smooth'
+}
+
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
