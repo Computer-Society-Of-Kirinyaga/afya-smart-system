@@ -33,22 +33,23 @@ export function LoginPage() {
             Afya Smart Platform
           </p>
           <h1 className="mt-6 text-4xl font-semibold leading-tight">
-            Clinical-grade monitoring designed for everyday care.
+            Better care, faster — keep patients safer with less work.
           </h1>
           <p className="mt-4 max-w-lg text-sm leading-6 text-slate-300">
-            Sign in to track live health streams, identify risk patterns, and
-            respond quickly with a unified dashboard.
+            See the right patient information at a glance, get timely alerts, and act
+            sooner to prevent complications. Afya Smart helps your team spend more
+            time caring and less time chasing data.
           </p>
 
           <div className="mt-10 space-y-4 text-sm text-slate-200">
             <div className="rounded-2xl border border-slate-700 bg-slate-800/70 px-4 py-3">
-              Secure access with role-based authentication.
+              Catch problems early with clear, prioritized alerts so you can intervene quickly.
             </div>
             <div className="rounded-2xl border border-slate-700 bg-slate-800/70 px-4 py-3">
-              Real-time alerts and historical trend visibility.
+              Save clinician time with concise patient summaries and streamlined workflows.
             </div>
             <div className="rounded-2xl border border-slate-700 bg-slate-800/70 px-4 py-3">
-              Purpose-built for clinicians, caregivers, and patients.
+              Improve outcomes and boost patient confidence with consistent, actionable insights.
             </div>
           </div>
         </section>
@@ -113,7 +114,7 @@ export function LoginPage() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="mt-3 w-full rounded-xl bg-slate-900 py-2.5 font-semibold text-white transition hover:bg-slate-800"
+              className="mt-3 w-full rounded-xl bg-slate-900 py-5.5 font-semibold text-white transition hover:bg-slate-800"
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
