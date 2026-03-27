@@ -23,7 +23,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-100 via-emerald-50 to-cyan-100 px-4 py-10 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-100 via-emerald-50 to-cyan-100 px-4 py-10 sm:px-6 lg:px-8 grid place-content-center">
       <div className="pointer-events-none absolute -left-24 top-0 h-80 w-80 rounded-full bg-emerald-300/35 blur-3xl" />
       <div className="pointer-events-none absolute -right-16 bottom-0 h-72 w-72 rounded-full bg-cyan-300/40 blur-3xl" />
 
@@ -91,7 +91,7 @@ export function LoginPage() {
             </div>
 
             {/* Password Input */}
-            <div>
+            <div>gradient
               <label
                 htmlFor="password"
                 className="mb-1.5 block text-sm font-medium text-slate-700"
