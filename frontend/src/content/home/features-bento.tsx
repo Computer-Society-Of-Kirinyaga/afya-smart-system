@@ -23,7 +23,7 @@ export function FeaturesBento() {
   }
 
   return (
-    <section className="lg:py-32 bg-slate-50/50 w-full z-10 border-slate-100 border-t pt-24 pb-24 relative">
+    <section id="features" className="lg:py-32 bg-slate-50/50 w-full z-10 border-slate-100 border-t pt-24 pb-24 relative">
       <div className="absolute inset-0 pointer-events-none hidden lg:block z-0">
         <div className="absolute top-0 bottom-0 left-[6%] w-[1px] bg-slate-200/50"></div>
         <div className="absolute top-0 bottom-0 left-[28%] w-[1px] bg-slate-200/50"></div>
@@ -33,12 +33,12 @@ export function FeaturesBento() {
       <div className="relative z-10 lg:px-[6%] max-w-[1600px] mr-auto ml-auto pr-6 pl-6">
         <div className="mb-20 lg:mb-24 max-w-4xl">
           <h2 className="lg:text-7xl text-4xl font-medium text-slate-900 tracking-tight mb-8 scroll-reveal">
-            Holistic Health
-            <span className="text-slate-300"> Infrastructure. </span>
+            Predictive Health
+            <span className="text-slate-300"> Intelligence. </span>
           </h2>
           <div className="scroll-reveal delay-100 grid grid-cols-1 lg:grid-cols-2 gap-12">
             <p className="text-lg text-slate-500 font-light leading-relaxed">
-              From primary care to advanced specialized treatments, VITALIS bridges the gap between patient comfort and medical innovation.
+              Monitor your health 24/7 with AI-powered analytics. Get real-time alerts about risks before they become emergencies, and share insights directly with your healthcare provider.
             </p>
           </div>
         </div>
@@ -49,11 +49,11 @@ export function FeaturesBento() {
           <FeatureCard
             delay="delay-200"
             colSpan="col-span-1 lg:col-span-2"
-            icon="solar:stethoscope-linear"
+            icon="solar:graph-up-linear"
             iconBg="bg-teal-50"
             iconColor="text-teal-600"
-            title="Primary Care"
-            description="Comprehensive annual checkups, preventative screenings, and personalized health plans."
+            title="Trend Analysis"
+            description="Understand how your health metrics evolve over time with AI-powered pattern recognition."
             onMouseMove={handleCardMouseMove}
           />
 
@@ -61,11 +61,11 @@ export function FeaturesBento() {
           <FeatureCard
             delay="delay-300"
             colSpan="col-span-1 lg:col-span-2"
-            icon="solar:document-medicine-linear"
+            icon="solar:bell-linear"
             iconBg="bg-sky-50"
             iconColor="text-sky-600"
-            title="Digital Records"
-            description="Secure, instant access to your medical history, lab results, and prescriptions via our portal."
+            title="Real-Time Alerts"
+            description="Instant SMS and app notifications when risks are detected, keeping you informed immediately."
             onMouseMove={handleCardMouseMove}
           />
 
@@ -73,11 +73,11 @@ export function FeaturesBento() {
           <FeatureCard
             delay="delay-500"
             colSpan="col-span-1 lg:col-span-2"
-            icon="solar:test-tube-linear"
+            icon="solar:shield-check-linear"
             iconBg="bg-indigo-50"
             iconColor="text-indigo-600"
-            title="Advanced Diagnostics"
-            description="State-of-the-art imaging and on-site laboratory for rapid, accurate diagnosis."
+            title="Privacy Protected"
+            description="End-to-end encryption and anonymized data processing. Your data is yours to control."
             onMouseMove={handleCardMouseMove}
           />
 
@@ -85,10 +85,10 @@ export function FeaturesBento() {
           <FeatureCardWide
             delay="delay-200"
             colSpan="col-span-1 lg:col-span-3"
-            icon="solar:monitor-camera-linear"
-            title="Telemedicine Integration"
-            description="Connect with your doctor from the comfort of your home. High-definition video consultations allow for routine follow-ups without the commute."
-            badges={['HIPAA Compliant', 'Encrypted Video']}
+            icon="solar:chat-round-linear"
+            title="Doctor Integration"
+            description="Share your health insights directly with your healthcare provider. Doctors receive real-time updates about critical changes in your condition."
+            badges={['HIPAA Compliant', 'Real-Time Sync']}
             onMouseMove={handleCardMouseMove}
           />
 
@@ -96,9 +96,9 @@ export function FeaturesBento() {
           <FeatureCardWide
             delay="delay-300"
             colSpan="col-span-1 lg:col-span-3"
-            icon="solar:users-group-two-rounded-linear"
-            title="Specialist Network"
-            description="Direct referrals to the top specialists in the region. Our coordinated care model ensures your entire medical team is on the same page."
+            icon="solar:watch-linear"
+            title="Wearable Compatible"
+            description="Works with popular wearables and health platforms like Apple Health, Fitbit, and more. No additional hardware needed, just plug and predict."
             isMultiUser={true}
             onMouseMove={handleCardMouseMove}
           />

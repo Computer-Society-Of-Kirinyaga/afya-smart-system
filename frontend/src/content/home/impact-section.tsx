@@ -17,10 +17,10 @@ export function ImpactSection() {
       new window.Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
           datasets: [
             {
-              label: 'VITALIS',
+              label: 'HealthRisk AI',
               data: [65, 78, 82, 85, 88, 92],
               borderColor: '#14b8a6',
               backgroundColor: gradient,
@@ -34,7 +34,7 @@ export function ImpactSection() {
               fill: true,
             },
             {
-              label: 'National Avg',
+              label: 'Industry Avg',
               data: [45, 48, 52, 51, 54, 56],
               borderColor: '#cbd5e1',
               borderWidth: 2,
@@ -101,7 +101,7 @@ export function ImpactSection() {
   }, [])
 
   return (
-    <section className="w-full relative z-10 bg-white border-b border-slate-100 overflow-hidden">
+    <section id="impact" className="w-full relative z-10 bg-white border-b border-slate-100 overflow-hidden">
       <div className="lg:px-[6%] lg:py-32 max-w-[1600px] mr-auto ml-auto pt-24 pr-6 pb-24 pl-6 relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           {/* Left Content */}
@@ -111,34 +111,34 @@ export function ImpactSection() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
               </span>
-              Live Impact Report
+              AI-Powered Insights
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-slate-900 tracking-tight leading-[1.05] mb-6">
-              Data-driven care,
+              Early detection saves
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500">
-                {' '}measurable results.
+                {' '}lives.
               </span>
             </h2>
             <p className="text-lg text-slate-500 font-light leading-relaxed mb-10 max-w-lg">
-              We continuously monitor outcomes to ensure the highest standard of care. Our predictive models help prevent complications before they occur, setting a new benchmark for patient safety.
+              HealthRisk AI continuously analyzes your wearable data to detect health risks before they become emergencies. Prevent interventions save time, reduce hospitalizations, and ultimately save lives.
             </p>
             <div className="grid grid-cols-2 gap-x-12 gap-y-10">
               <div className="group cursor-default">
                 <div className="text-4xl font-semibold text-slate-900 tracking-tight mb-2 group-hover:text-teal-600 transition-colors">
-                  99.9%
+                  92%
                 </div>
                 <div className="h-0.5 w-12 bg-slate-200 mb-3 group-hover:w-full group-hover:bg-teal-500 transition-all duration-700 ease-out"></div>
                 <p className="text-sm text-slate-500 leading-snug">
-                  Diagnostic accuracy rate across all departments
+                  Early risk detection accuracy
                 </p>
               </div>
               <div className="group cursor-default">
                 <div className="text-4xl font-semibold text-slate-900 tracking-tight mb-2 group-hover:text-teal-600 transition-colors">
-                  35%
+                  48h
                 </div>
                 <div className="h-0.5 w-12 bg-slate-200 mb-3 group-hover:w-full group-hover:bg-teal-500 transition-all duration-700 ease-out"></div>
                 <p className="text-sm text-slate-500 leading-snug">
-                  Faster recovery times compared to national average
+                  Average alert time before critical events
                 </p>
               </div>
             </div>
@@ -151,20 +151,20 @@ export function ImpactSection() {
               <div className="flex items-center justify-between mb-8">
                 <div>
                   <h3 className="text-base font-semibold text-slate-900 tracking-tight">
-                    Recovery Trajectory
+                    Risk Detection Accuracy
                   </h3>
                   <p className="text-[10px] text-slate-400 mt-1 font-mono uppercase tracking-widest">
-                    AVG. DAYS TO DISCHARGE
+                    % Accuracy Over Time
                   </p>
                 </div>
                 <div className="flex items-center gap-4 text-[10px] font-bold tracking-wider uppercase">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-teal-500"></span>
-                    <span className="text-slate-600">VITALIS</span>
+                    <span className="text-slate-600">HealthRisk AI</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-slate-200"></span>
-                    <span className="text-slate-400">National Avg</span>
+                    <span className="text-slate-400">Industry Avg</span>
                   </div>
                 </div>
               </div>

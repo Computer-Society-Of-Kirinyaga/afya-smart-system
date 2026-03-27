@@ -2,7 +2,7 @@
 
 export function TestimonialsNew() {
   return (
-    <section className="overflow-hidden lg:py-32 w-full z-20 pt-24 pb-24 relative bg-white">
+    <section id="testimonials" className="overflow-hidden lg:py-32 w-full z-20 pt-24 pb-24 relative bg-white">
       <div className="absolute inset-0 w-full h-full pointer-events-none hidden lg:block">
         <div className="grid-line-v" style={{ left: '6%' }}></div>
         <div className="grid-line-v" style={{ left: '28%' }}></div>
@@ -17,8 +17,8 @@ export function TestimonialsNew() {
           <div className="lg:col-span-7 flex flex-col gap-6">
             <div className="border border-slate-100 bg-slate-50/50 rounded-sm p-10 lg:p-12 relative flex flex-col justify-center min-h-[240px]">
               <h2 className="leading-[0.95] lg:text-5xl text-4xl font-semibold text-slate-900 tracking-tight z-10 mb-2 relative">
-                Care that puts
-                <span className="text-slate-300"> you first. </span>
+                Trusted by patients
+                <span className="text-slate-300"> and doctors. </span>
               </h2>
             </div>
             <div className="lg:h-[500px] overflow-hidden group h-[420px] border-slate-200 border rounded-sm relative shadow-sm">
@@ -28,9 +28,9 @@ export function TestimonialsNew() {
                 src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/7d3d7aa0-9b80-49e5-94f8-4b8527c42263_1600w.jpg"
               />
               <div className="absolute bottom-10 right-10 text-right bg-white/90 backdrop-blur-sm p-4 rounded shadow-lg">
-                <span className="block text-4xl font-bold text-slate-900 tracking-tight">98%</span>
+                <span className="block text-4xl font-bold text-slate-900 tracking-tight">87%</span>
                 <span className="block text-slate-500 font-mono text-xs uppercase tracking-widest mt-1">
-                  Patient Satisfaction
+                  Early Risk Detected
                 </span>
               </div>
             </div>
@@ -47,7 +47,7 @@ export function TestimonialsNew() {
                   ))}
                 </div>
                 <p className="text-lg font-light leading-relaxed mb-8 text-slate-600">
-                  {'"'}The level of attention to detail at VITALIS is unmatched. I never felt rushed, and Dr. Emily actually listened to my concerns. The app makes scheduling a breeze.{'"'}
+                  {'"'}HealthRisk AI detected an irregular heart pattern my wearable was tracking. My doctor was able to intervene before it became a problem. The early warning saved me from a potential emergency.{'"'}
                 </p>
               </div>
               <div className="flex items-center gap-4 border-t border-slate-100 pt-6">
@@ -59,8 +59,8 @@ export function TestimonialsNew() {
                   />
                 </div>
                 <div>
-                  <h4 className="font-medium text-slate-900 text-sm">Michael Ross</h4>
-                  <span className="text-xs text-slate-400">Patient since 2022</span>
+                  <h4 className="font-medium text-slate-900 text-sm">Sarah Johnson</h4>
+                  <span className="text-xs text-slate-400">HealthRisk AI User</span>
                 </div>
               </div>
             </div>
@@ -73,7 +73,7 @@ export function TestimonialsNew() {
                 ))}
               </div>
               <p className="text-base font-normal leading-relaxed mb-6 text-slate-600">
-                {'"'}The facility is spotless and modern. Having the lab on-site saved me a separate trip. Highly recommended.{'"'}
+                {'"'}As a busy professional, I don't have time for frequent doctor visits. HealthRisk AI monitors my health 24/7 and only alerts me when something matters. Peace of mind without the hassle.{'"'}
               </p>
               <div className="flex items-center gap-4 border-t border-slate-100 pt-4">
                 <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden">

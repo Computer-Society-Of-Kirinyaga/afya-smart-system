@@ -27,7 +27,7 @@ export function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo/Branding */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-teal-600">VITALIS</h1>
+          <h1 className="text-3xl font-bold text-teal-600">Afya Smart</h1>
           <p className="text-slate-600 mt-2">Smart Health Monitoring System</p>
         </div>
 

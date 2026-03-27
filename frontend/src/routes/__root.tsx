@@ -1,7 +1,6 @@
 import { QueryProvider } from '#/providers/QueryProvider'
-import { TanStackDevtools } from '@tanstack/react-devtools'
 import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+
 
 import '../styles.css'
 
@@ -14,17 +13,6 @@ function RootComponent(): JSX.Element {
     <QueryProvider>
       <>
         <Outlet />
-        <TanStackDevtools
-          config={{
-            position: 'bottom-right',
-          }}
-          plugins={[
-            {
-              name: 'TanStack Router',
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
       </>
     </QueryProvider>
   )

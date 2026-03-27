@@ -25,17 +25,17 @@ export function Navbar() {
           <span className="iconify w-8 h-8" data-icon="solar:close-circle-linear"></span>
         </button>
         <nav className="flex flex-col gap-8 text-2xl font-medium tracking-tight">
-          <a className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4" href="#">
-            Services
+          <a className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4" href="#features" onClick={toggleMenu}>
+            Features
           </a>
-          <a className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4" href="#">
-            Specialists
+          <a className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4" href="#impact" onClick={toggleMenu}>
+            How It Works
           </a>
-          <a className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4" href="#">
-            Research
+          <a className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4" href="#testimonials" onClick={toggleMenu}>
+            Testimonials
           </a>
-          <a className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4" href="#">
-            Patients
+          <a className="hover:text-teal-600 transition-colors border-b border-slate-100 pb-4" href="#faq" onClick={toggleMenu}>
+            FAQ
           </a>
         </nav>
         <div className="mt-auto mb-12">
@@ -52,22 +52,22 @@ export function Navbar() {
       <nav className="relative z-50 w-full h-[80px] lg:h-[100px] flex items-center justify-between px-4 border-b border-slate-100 bg-white/70 backdrop-blur-md animate-reveal sticky top-0">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-teal-50 text-teal-600 rounded flex items-center justify-center">
-            <span className="iconify w-5 h-5" data-icon="solar:add-square-linear"></span>
+            <span className="iconify w-5 h-5" data-icon="solar:heart-pulse-linear"></span>
           </div>
-          <span className="text-lg font-semibold tracking-tight text-slate-900">VITALIS</span>
+          <span className="text-lg font-semibold tracking-tight text-slate-900">Afya Smart</span>
         </div>
         <div className="hidden md:flex text-sm font-medium text-slate-500 gap-x-8 items-center">
-          <a className="hover:text-slate-900 transition-colors" href="#">
-            Services
+          <a className="hover:text-slate-900 transition-colors" href="#features">
+            Features
           </a>
-          <a className="hover:text-slate-900 transition-colors" href="#">
-            Specialists
+          <a className="hover:text-slate-900 transition-colors" href="#impact">
+            How It Works
           </a>
-          <a className="hover:text-slate-900 transition-colors" href="#">
-            Research
+          <a className="hover:text-slate-900 transition-colors" href="#testimonials">
+            Testimonials
           </a>
-          <a className="hover:text-slate-900 transition-colors" href="#">
-            Patients
+          <a className="hover:text-slate-900 transition-colors" href="#faq">
+            FAQ
           </a>
         </div>
         <div className="flex items-center gap-4">

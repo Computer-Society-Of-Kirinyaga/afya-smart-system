@@ -10,6 +10,7 @@ import { ImpactSection } from './impact-section'
 import { Navbar } from './navbar'
 import { SharedStyles } from './shared-styles'
 import { TestimonialsNew } from './testimonials-new'
+import { CTA } from './cta'
 
 export function HomePage() {
   useEffect(() => {
@@ -52,8 +53,12 @@ export function HomePage() {
       {/* FAQ Section */}
       <FAQNew />
 
+      {/* Call to Action Section */}
+      <CTA />
+
       {/* Footer */}
       <FooterNew />
+
     </div>
   )
 }
