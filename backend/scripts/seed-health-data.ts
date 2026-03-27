@@ -7,7 +7,7 @@ dotenv.config({
 
 const USER_ID =
   process.env.SEED_USER_ID ||
-  '7d576c5f-c5f2-44b8-bcb0-cb50f4e29bb6';
+  '0849a9f5-4409-4c62-9444-cbb351df62a6';
 
 const TOTAL_READINGS = Number(process.env.SEED_TOTAL || 100);
 const DAYS_BACK = Number(process.env.SEED_DAYS_BACK || 7);
@@ -16,15 +16,15 @@ const DELAY_MS = Number(process.env.SEED_DELAY_MS || 1000);
 
 function getDatabaseConfig() {
   // Check if DATABASE_URL is provided
-  // if (process.env.DATABASE_URL) {
-  //   const databaseUrl = process.env.DATABASE_URL;
-  //   const isLocal = databaseUrl.includes('localhost') || databaseUrl.includes('127.0.0.1');
+  if (process.env.DATABASE_URL) {
+    const databaseUrl = process.env.DATABASE_URL;
+    const isLocal = databaseUrl.includes('localhost') || databaseUrl.includes('127.0.0.1');
     
-  //   return {
-  //     connectionString: databaseUrl,
-  //     ssl: isLocal ? false : { rejectUnauthorized: false },
-  //   };
-  // }
+    return {
+      connectionString: databaseUrl,
+      ssl: isLocal ? false : { rejectUnauthorized: false },
+    };
+  }
   
   // Otherwise use individual parameters
   const host = process.env.DB_HOST;

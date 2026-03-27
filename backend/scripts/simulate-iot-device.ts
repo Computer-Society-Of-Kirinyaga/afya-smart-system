@@ -5,14 +5,50 @@ dotenv.config({
   path: "../.env"
 });
 
-const USER_ID = 'b032e3a1-61f9-4b80-ae8a-3e217e27625e';
+const USER_ID = '0849a9f5-4409-4c62-9444-cbb351df62a6';
 
-const client = new Client({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-});
+function getDatabaseConfig() {
+  // Check if DATABASE_URL is provided
+  if (process.env.DATABASE_URL) {
+    const databaseUrl = process.env.DATABASE_URL;
+    const isLocal = databaseUrl.includes('localhost') || databaseUrl.includes('127.0.0.1');
+    
+    return {
+      connectionString: databaseUrl,
+      ssl: isLocal ? false : { rejectUnauthorized: false },
+    };
+  }
+  
+  // Otherwise use individual parameters
+  const host = process.env.DB_HOST;
+  const port = process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432;
+  const user = process.env.DB_USERNAME;
+  const password = process.env.DB_PASSWORD;
+  const database = process.env.DB_DATABASE;
+  
+  if (!host || !user || !database) {
+    throw new Error(
+      'Missing database configuration. Provide either DATABASE_URL or DB_HOST, DB_USERNAME, DB_DATABASE'
+    );
+  }
+  
+  const isLocal = host === 'localhost' || host === '127.0.0.1';
+  
+  return {
+    host,
+    port,
+    user,
+    password: password || undefined,
+    database,
+    ssl: isLocal ? false : { rejectUnauthorized: false },
+  };
+}
+
+const dbConfig = getDatabaseConfig()
+  const client = new Client({
+    ...dbConfig,
+    connectionTimeoutMillis: 30000,
+  });
 
 async function stream() {
   await client.connect();

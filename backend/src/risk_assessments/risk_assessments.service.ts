@@ -20,64 +20,64 @@ export class RiskAssessmentsService {
     private aiModelService: AiModelService,
   ) {}
 
-  // @Cron('*/1 * * * *') // Runs every 5 minutes
-  // async cronAssessAllUsers() {
-  //   const startTime = Date.now();
-  //   const logger = new Logger('RiskAssessmentCron');
-  //   logger.log('Starting risk assessment cron job...');
+  @Cron('*/1 * * * *') // Runs every 5 minutes
+  async cronAssessAllUsers() {
+    const startTime = Date.now();
+    const logger = new Logger('RiskAssessmentCron');
+    logger.log('Starting risk assessment cron job...');
 
-  //   try {
-  //     // Get all users who have had readings in the last minute
-  //     const activeUsers = await this.usersService.findActiveUsers(1); // 1 minute
+    try {
+      // Get all users who have had readings in the last minute
+      const activeUsers = await this.usersService.findActiveUsers(1); // 1 minute
 
-  //     logger.log(`Found ${activeUsers.length} active users to assess`);
+      logger.log(`Found ${activeUsers.length} active users to assess`);
 
-  //     const results = {
-  //       total: activeUsers.length,
-  //       processed: 0,
-  //       failed: 0,
-  //       alertsSent: 0,
-  //       errors: [] as string[],
-  //     };
+      const results = {
+        total: activeUsers.length,
+        processed: 0,
+        failed: 0,
+        alertsSent: 0,
+        errors: [] as string[],
+      };
 
-  //     // Process each user
-  //     for (const user of activeUsers) {
-  //       try {
-  //         const assessment = await this.assessUserRisk(user.id);
+      // Process each user
+      for (const user of activeUsers) {
+        try {
+          const assessment = await this.assessUserRisk(user.id);
 
-  //         if (assessment) {
-  //           console.log(assessment);
-  //           results.processed++;
-  //           if (assessment.alert_sent) {
-  //             results.alertsSent++;
-  //           }
-  //         } else {
-  //           results.processed++;
-  //         }
+          if (assessment) {
+            console.log(assessment);
+            results.processed++;
+            if (assessment.alert_sent) {
+              results.alertsSent++;
+            }
+          } else {
+            results.processed++;
+          }
 
-  //         // Small delay between users to avoid rate limiting
-  //         await this.delay(1000);
-  //       } catch (error) {
-  //         results.failed++;
-  //         results.errors.push(`User ${user.id}: ${error.message}`);
-  //         logger.error(
-  //           `Failed to assess risk for user ${user.id}:`,
-  //           error.message,
-  //         );
-  //       }
-  //     }
+          // Small delay between users to avoid rate limiting
+          await this.delay(1000);
+        } catch (error) {
+          results.failed++;
+          results.errors.push(`User ${user.id}: ${error.message}`);
+          logger.error(
+            `Failed to assess risk for user ${user.id}:`,
+            error.message,
+          );
+        }
+      }
 
-  //     const duration = Date.now() - startTime;
-  //     logger.log(
-  //       `Cron job completed in ${duration}ms. Results: ${JSON.stringify(results)}`,
-  //     );
+      const duration = Date.now() - startTime;
+      logger.log(
+        `Cron job completed in ${duration}ms. Results: ${JSON.stringify(results)}`,
+      );
 
-  //     return results;
-  //   } catch (error) {
-  //     logger.error('Cron job failed:', error);
-  //     throw error;
-  //   }
-  // }
+      return results;
+    } catch (error) {
+      logger.error('Cron job failed:', error);
+      throw error;
+    }
+  }
 
   async create(createDto: CreateRiskAssessmentDto) {
     const assessment = this.riskRepository.create(createDto);
@@ -87,7 +87,7 @@ export class RiskAssessmentsService {
   // In your risk-assessments.service.ts
 
   async assessUserRisk(userId: string) {
-    const readings = await this.healthReadingsService.getReadingsLastHours(
+    const readings = await this.healthReadingsService.getReadingsLastMins(
       userId,
       1,
       {

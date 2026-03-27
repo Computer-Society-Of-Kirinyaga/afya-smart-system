@@ -107,13 +107,13 @@ export class HealthReadingsService {
     });
   }
 
-  async getReadingsLastHours(
+  async getReadingsLastMins(
     userId: string,
-    hours: number,
+    mins: number,
     options?: { relations?: string[] },
   ): Promise<HealthReading[]> {
     const cutoffTime = new Date();
-    cutoffTime.setHours(cutoffTime.getHours() - hours);
+    cutoffTime.setMinutes(cutoffTime.getMinutes() - mins);
 
     return this.readingsRepository.find({
       where: {
@@ -143,7 +143,7 @@ export class HealthReadingsService {
       temperature_trend: 'increasing' | 'decreasing' | 'stable';
     };
   }> {
-    const readings = await this.getReadingsLastHours(userId, hours);
+    const readings = await this.getReadingsLastMins(userId, hours);
 
     if (readings.length === 0) {
       return {
