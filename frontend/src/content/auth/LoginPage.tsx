@@ -92,7 +92,7 @@ export function LoginPage() {
             </div>
 
             {/* Password Input */}
-            <div>gradient
+            <div>
               <label
                 htmlFor="password"
                 className="mb-1.5 block text-sm font-medium text-slate-700"
