@@ -1,10 +1,10 @@
-import { 
-  Entity, 
-  Column, 
-  PrimaryGeneratedColumn, 
-  CreateDateColumn, 
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
   UpdateDateColumn,
-  Index 
+  Index,
 } from 'typeorm';
 
 @Entity('users')
@@ -28,13 +28,13 @@ export class User {
   @Column({ default: false })
   consent_given: boolean;
 
-  @Column({ 
-    type: 'jsonb', 
-    default: { 
-      sms_enabled: true, 
+  @Column({
+    type: 'jsonb',
+    default: {
+      sms_enabled: true,
       risk_threshold: 'medium',
-      alert_doctor: false  // Option to also alert doctor
-    } 
+      alert_doctor: false, // Option to also alert doctor
+    },
   })
   alert_preferences: {
     sms_enabled: boolean;

@@ -17,23 +17,23 @@ export class UsersService {
   }
 
   async updateDoctorInfo(
-    userId: string, 
-    doctorName: string, 
-    doctorPhone: string
+    userId: string,
+    doctorName: string,
+    doctorPhone: string,
   ) {
     await this.usersRepository.update(userId, {
       doctor_name: doctorName,
-      doctor_phone_number: doctorPhone
+      doctor_phone_number: doctorPhone,
     });
     return this.findOne(userId);
   }
 
   async updateAlertPreferences(
-    userId: string, 
-    preferences: User['alert_preferences']
+    userId: string,
+    preferences: User['alert_preferences'],
   ) {
     await this.usersRepository.update(userId, {
-      alert_preferences: preferences
+      alert_preferences: preferences,
     });
     return this.findOne(userId);
   }
@@ -43,8 +43,8 @@ export class UsersService {
   }
 
   async findByPhone(phoneNumber: string) {
-    return this.usersRepository.findOne({ 
-      where: { phone_number: phoneNumber } 
+    return this.usersRepository.findOne({
+      where: { phone_number: phoneNumber },
     });
   }
 

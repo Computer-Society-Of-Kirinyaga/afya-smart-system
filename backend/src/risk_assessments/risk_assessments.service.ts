@@ -24,8 +24,11 @@ export class RiskAssessmentsService {
 
   async assessUserRisk(userId: string) {
     // Get last 5 readings (last hour ideally)
-    const readings = await this.healthReadingsService.getReadingsLastHours(userId, 1);
-    
+    const readings = await this.healthReadingsService.getReadingsLastHours(
+      userId,
+      1,
+    );
+
     if (readings.length === 0) {
       return null;
     }
@@ -33,7 +36,7 @@ export class RiskAssessmentsService {
     // Prepare LLM input
     const llmInput = {
       user_id: userId,
-      readings: readings.map(r => ({
+      readings: readings.map((r) => ({
         timestamp: r.timestamp,
         heart_rate: r.heart_rate,
         systolic_bp: r.systolic_bp,
@@ -42,15 +45,20 @@ export class RiskAssessmentsService {
         temperature: r.temperature,
       })),
       averages: {
-        heart_rate: readings.reduce((sum, r) => sum + (r.heart_rate || 0), 0) / readings.length,
-        spo2: readings.reduce((sum, r) => sum + (r.spo2 || 0), 0) / readings.length,
-        temperature: readings.reduce((sum, r) => sum + (r.temperature || 0), 0) / readings.length,
+        heart_rate:
+          readings.reduce((sum, r) => sum + (r.heart_rate || 0), 0) /
+          readings.length,
+        spo2:
+          readings.reduce((sum, r) => sum + (r.spo2 || 0), 0) / readings.length,
+        temperature:
+          readings.reduce((sum, r) => sum + (r.temperature || 0), 0) /
+          readings.length,
       },
     };
 
     // TODO: Call LLM service here
     // const llmResponse = await this.llmService.analyze(llmInput);
-    
+
     // Mock LLM response for now
     const mockLlmResponse = {
       risk_level: 'healthy' as RiskLevel,
@@ -73,25 +81,26 @@ export class RiskAssessmentsService {
 
     // Send SMS if risk detected
     if (riskLevel !== 'healthy') {
-     //logic for sms sent
-     
+      //logic for sms sent
     }
 
     return assessment;
   }
 
-  async updateAlertStatus(assessmentId: string, alertSent: boolean): Promise<void> {
-    if(alertSent) {
+  async updateAlertStatus(
+    assessmentId: string,
+    alertSent: boolean,
+  ): Promise<void> {
+    if (alertSent) {
       await this.riskRepository.update(assessmentId, {
         alert_sent: alertSent,
-        alert_sent_at: new Date()
+        alert_sent_at: new Date(),
       });
     }
 
     await this.riskRepository.update(assessmentId, {
-        alert_sent: alertSent,
-      });
-      
+      alert_sent: alertSent,
+    });
   }
 
   async getLatestAssessment(userId: string): Promise<RiskAssessment | null> {
@@ -107,10 +116,10 @@ export class RiskAssessmentsService {
       startDate?: Date;
       endDate?: Date;
       limit?: number;
-    }
+    },
   ): Promise<RiskAssessment[]> {
     const where: FindOptionsWhere<RiskAssessment> = { user_id: userId };
-    
+
     if (options?.startDate && options?.endDate) {
       where.assessment_time = MoreThan(options.startDate);
     }
@@ -133,7 +142,7 @@ export class RiskAssessmentsService {
     lastHealthyDays: number;
   }> {
     const assessments = await this.getAssessmentsForUser(userId, { limit: 10 });
-    
+
     if (assessments.length === 0) {
       return {
         assessments: [],
@@ -146,19 +155,28 @@ export class RiskAssessmentsService {
     const riskScores = { healthy: 0, low: 1, moderate: 2, high: 3 };
     const recent = assessments.slice(0, 5);
     const older = assessments.slice(5);
-    
-    const recentAvg = recent.reduce((sum, a) => sum + riskScores[a.risk_level], 0) / recent.length;
-    const olderAvg = older.length > 0 ? older.reduce((sum, a) => sum + riskScores[a.risk_level], 0) / older.length : recentAvg;
-    
+
+    const recentAvg =
+      recent.reduce((sum, a) => sum + riskScores[a.risk_level], 0) /
+      recent.length;
+    const olderAvg =
+      older.length > 0
+        ? older.reduce((sum, a) => sum + riskScores[a.risk_level], 0) /
+          older.length
+        : recentAvg;
+
     let riskTrend: 'improving' | 'worsening' | 'stable' = 'stable';
     if (recentAvg < olderAvg - 0.5) riskTrend = 'improving';
     if (recentAvg > olderAvg + 0.5) riskTrend = 'worsening';
 
     // Calculate days since last healthy assessment
     let lastHealthyDays = 0;
-    const lastHealthy = assessments.find(a => a.risk_level === 'healthy');
+    const lastHealthy = assessments.find((a) => a.risk_level === 'healthy');
     if (lastHealthy) {
-      lastHealthyDays = Math.floor((new Date().getTime() - lastHealthy.assessment_time.getTime()) / (1000 * 3600 * 24));
+      lastHealthyDays = Math.floor(
+        (new Date().getTime() - lastHealthy.assessment_time.getTime()) /
+          (1000 * 3600 * 24),
+      );
     }
 
     return {

@@ -18,7 +18,8 @@ import { RiskAssessment } from './entities/risk_assessment.entity';
 // @UseGuards(JwtAuthGuard)
 export class RiskAssessmentsController {
   constructor(
-    private readonly riskAssessmentsService:RiskAssessmentsService) {}
+    private readonly riskAssessmentsService: RiskAssessmentsService,
+  ) {}
 
   /**
    * Create a new risk assessment manually
@@ -39,14 +40,14 @@ export class RiskAssessmentsController {
   // @HttpCode(HttpStatus.OK)
   // async assessUserRisk(@Param('userId', ParseUUIDPipe) userId: string) {
   //   const assessment = await this.riskAssessmentsService.assessUserRisk(userId);
-    
+
   //   if (!assessment) {
   //     return {
   //       statusCode: HttpStatus.NOT_FOUND,
   //       message: 'No readings found for this user in the last hour',
   //     };
   //   }
-    
+
   //   return {
   //     message: 'Risk assessment completed successfully',
   //     assessment,
@@ -60,8 +61,9 @@ export class RiskAssessmentsController {
   @Get('latestAssessment/:userId')
   @HttpCode(HttpStatus.OK)
   async getLatestAssessment(@Param('userId', ParseUUIDPipe) userId: string) {
-    const assessment = await this.riskAssessmentsService.getLatestAssessment(userId);
-    
+    const assessment =
+      await this.riskAssessmentsService.getLatestAssessment(userId);
+
     if (!assessment) {
       return {
         statusCode: HttpStatus.NOT_FOUND,
@@ -69,10 +71,9 @@ export class RiskAssessmentsController {
         assessment: null,
       };
     }
-    
+
     return assessment;
   }
-
 
   /**
    * Get all risk assessments for a user with optional filters
@@ -90,19 +91,18 @@ export class RiskAssessmentsController {
       endDate: endDate ? new Date(endDate) : undefined,
       limit: limit ? parseInt(limit, 10) : undefined,
     };
-    
+
     const assessments = await this.riskAssessmentsService.getAssessmentsForUser(
       userId,
       options,
     );
-    
+
     return {
       userId,
       count: assessments.length,
       assessments,
     };
   }
-
 
   /**
    * Get risk history with trends for a user
@@ -112,7 +112,7 @@ export class RiskAssessmentsController {
   @HttpCode(HttpStatus.OK)
   async getRiskHistory(@Param('userId', ParseUUIDPipe) userId: string) {
     const history = await this.riskAssessmentsService.getRiskHistory(userId);
-    
+
     return {
       userId,
       ...history,
@@ -128,16 +128,17 @@ export class RiskAssessmentsController {
     @Param('assessmentId', ParseUUIDPipe) assessmentId: string,
     @Body('alertSent') alertSent: boolean,
   ) {
-    await this.riskAssessmentsService.updateAlertStatus(assessmentId, alertSent);
-    
+    await this.riskAssessmentsService.updateAlertStatus(
+      assessmentId,
+      alertSent,
+    );
+
     return {
       message: 'Alert status updated successfully',
       assessmentId,
       alertSent,
     };
   }
-
-
 
   // /**
   //  * Get a single risk assessment by ID
@@ -146,14 +147,14 @@ export class RiskAssessmentsController {
   // @HttpCode(HttpStatus.OK)
   // async getAssessmentById(@Param('assessmentId', ParseUUIDPipe) assessmentId: string) {
   //   const assessment = await this.riskAssessmentsService.getAssessmentsForUser(assessmentId);
-    
+
   //   if (!assessment) {
   //     return {
   //       statusCode: HttpStatus.NOT_FOUND,
   //       message: 'Risk assessment not found',
   //     };
   //   }
-    
+
   //   return assessment;
   // }
 
@@ -165,14 +166,14 @@ export class RiskAssessmentsController {
   // @HttpCode(HttpStatus.OK)
   // async getRecentAlerts(@Query('limit') limit?: string) {
   //   const alertLimit = limit ? parseInt(limit, 10) : 10;
-    
+
   //   const alerts = await this.riskAssessmentsService.find({
   //     where: { alert_sent: true },
   //     relations: ['user'],
   //     order: { alert_sent_at: 'DESC' },
   //     take: alertLimit,
   //   });
-    
+
   //   return {
   //     count: alerts.length,
   //     alerts,
@@ -187,7 +188,6 @@ export class RiskAssessmentsController {
   @HttpCode(HttpStatus.OK)
   async getDashboardStats(@Param('userId') userId: string) {
     return await this.riskAssessmentsService.getAssessmentsForUser(userId);
-    
   }
 
   // /**
@@ -199,14 +199,14 @@ export class RiskAssessmentsController {
   // async bulkAssessUsers() {
   //   // Get all users with recent readings
   //   const users = await this.riskAssessmentsService.usersService.findAll();
-    
+
   //   const results = {
   //     total: users.length,
   //     processed: 0,
   //     failed: 0,
   //     details: [] as any[],
   //   };
-    
+
   //   // Process each user (consider using queue for large scale)
   //   for (const user of users) {
   //     try {
@@ -226,8 +226,7 @@ export class RiskAssessmentsController {
   //       });
   //     }
   //   }
-    
+
   //   return results;
   // }
-  
 }
