@@ -1,70 +1,115 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { api } from '@/lib/api'
+import type { LoginRequest, RegisterRequest, LoginResponse } from '@/lib/api.types'
 
 interface User {
   id: string
   name: string
-  email: string
+  phone_number: string
+}
+
+interface Tokens {
+  access_token: string
+  refresh_token: string
 }
 
 interface AuthStore {
   user: User | null
+  tokens: Tokens | null
   isAuthenticated: boolean
   isLoading: boolean
-  login: (email: string, password: string) => Promise<void>
+  login: (phone_number: string, password: string) => Promise<void>
+  register: (data: RegisterRequest) => Promise<void>
   logout: () => void
-}
-
-// Mock users for demo
-const MOCK_USERS: Record<string, { password: string; user: User }> = {
-  'jane@vitalis.io': {
-    password: 'password123',
-    user: {
-      id: '1',
-      name: 'Jane Doe',
-      email: 'jane@vitalis.io',
-    },
-  },
-  'john@vitalis.io': {
-    password: 'password456',
-    user: {
-      id: '2',
-      name: 'John Smith',
-      email: 'john@vitalis.io',
-    },
-  },
+  setTokens: (tokens: Tokens) => void
 }
 
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set) => ({
       user: null,
+      tokens: null,
       isAuthenticated: false,
       isLoading: false,
 
-      login: async (email: string, password: string) => {
+      login: async (phone_number: string, password: string) => {
         set({ isLoading: true })
-        // Simulate API delay
-        await new Promise((resolve) => setTimeout(resolve, 500))
+        try {
+          const response = await api.post<LoginResponse>('/auth/login', {
+            phone_number,
+            password,
+          })
 
-        const mockUser = MOCK_USERS[email]
-        if (mockUser && mockUser.password === password) {
+          const { user, tokens } = response
+
           set({
-            user: mockUser.user,
+            user: {
+              id: user.id,
+              name: user.name,
+              phone_number: user.phone_number,
+            },
+            tokens,
             isAuthenticated: true,
             isLoading: false,
           })
-        } else {
+
+          // Store token in localStorage for API requests
+          if (tokens?.access_token) {
+            localStorage.setItem('access_token', tokens.access_token)
+            localStorage.setItem('refresh_token', tokens.refresh_token || '')
+          }
+        } catch (error) {
           set({ isLoading: false })
-          throw new Error('Invalid credentials')
+          throw error instanceof Error ? error : new Error('Login failed')
+        }
+      },
+
+      register: async (data: RegisterRequest) => {
+        set({ isLoading: true })
+        try {
+          const response = await api.post<LoginResponse>('/auth/register', data)
+
+          const { user, tokens } = response
+
+          set({
+            user: {
+              id: user.id,
+              name: user.name,
+              phone_number: user.phone_number,
+            },
+            tokens,
+            isAuthenticated: true,
+            isLoading: false,
+          })
+
+          // Store token in localStorage for API requests
+          if (tokens?.access_token) {
+            localStorage.setItem('access_token', tokens.access_token)
+            localStorage.setItem('refresh_token', tokens.refresh_token || '')
+          }
+        } catch (error) {
+          set({ isLoading: false })
+          throw error instanceof Error ? error : new Error('Registration failed')
         }
       },
 
       logout: () => {
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
         set({
           user: null,
+          tokens: null,
           isAuthenticated: false,
         })
+      },
+
+      setTokens: (tokens: Tokens) => {
+        set({ tokens })
+        if (tokens?.access_token) {
+          localStorage.setItem('access_token', tokens.access_token)
+          localStorage.setItem('refresh_token', tokens.refresh_token || '')
+        }
       },
     }),
     {
@@ -72,3 +117,4 @@ export const useAuthStore = create<AuthStore>()(
     },
   ),
 )
+
