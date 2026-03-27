@@ -8,6 +8,7 @@ import { HealthReadingsModule } from './health-readings/health-readings.module';
 import { StreamModule } from './stream/stream.module';
 import { AuthModule } from './auth/auth.module';
 import { AiModelModule } from './ai-model/ai-model.module';
+import { RiskAssessmentsModule } from './risk_assessments/risk_assessments.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -19,7 +20,8 @@ import { AiModelModule } from './ai-model/ai-model.module';
     HealthReadingsModule,
     StreamModule,
     AuthModule
-  , AiModelModule],
+  , AiModelModule,
+    RiskAssessmentsModule],
   controllers: [AppController],
   providers: [AppService],
 })
