@@ -3,7 +3,7 @@ import { CheckCircle, Cpu, TrendingUp } from 'lucide-react'
 export function Solution(): JSX.Element {
   return (
     <section className="w-full relative z-10 bg-slate-50 border-b border-slate-100 overflow-hidden py-24">
-      <div className="px-6 lg:px-[6%] max-w-7xl mx-auto">
+      <div className="px-4 max-w-6xl w-full mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="order-2 lg:order-1 grid grid-cols-2 gap-4">
             <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">

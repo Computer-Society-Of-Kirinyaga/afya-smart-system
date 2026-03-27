@@ -3,7 +3,7 @@ import { Activity, Shield, Zap } from 'lucide-react'
 export function Problem(): JSX.Element {
   return (
     <section className="w-full relative z-10 bg-white border-b border-slate-100 overflow-hidden py-24">
-      <div className="px-6 lg:px-[6%] max-w-7xl mx-auto">
+      <div className="px-4 max-w-6xl w-full mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <h2 className="text-4xl font-bold text-slate-900 mb-6">

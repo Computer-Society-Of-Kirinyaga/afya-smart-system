@@ -54,7 +54,7 @@ export function FAQ(): JSX.Element {
       className="z-20 w-full border-t border-slate-100 relative bg-white py-24"
       id="faq"
     >
-      <div className="px-6 lg:px-[6%] max-w-3xl mx-auto">
+      <div className="px-4 max-w-3xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
             Frequently Asked Questions

@@ -9,8 +9,8 @@ export function Hero(): JSX.Element {
         <div className="absolute bottom-[-10%] left-[-10%] w-80 lg:w-[700px] h-80 lg:h-[700px] bg-teal-50 rounded-full blur-3xl opacity-60 pointer-events-none" />
 
         {/* Content */}
-        <div className="relative z-10 w-full h-full flex flex-col justify-center px-6 lg:px-[6%] py-20 lg:py-0">
-          <div className="max-w-3xl">
+        <div className="relative z-10 w-full h-full flex flex-col justify-center px-4 py-20 lg:py-0">
+          <div className="max-w-6xl mx-auto w-full">
             <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
               Advanced Medical Care at Your Fingertips
             </h1>
@@ -32,7 +32,7 @@ export function Hero(): JSX.Element {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-8 mt-16 pt-12 border-t border-slate-200">
+          <div className="grid grid-cols-3 gap-8 mt-16 pt-12 border-t border-slate-200 max-w-6xl mx-auto w-full">
             <div>
               <div className="text-3xl font-bold text-slate-900 mb-2">10K+</div>
               <div className="text-sm text-slate-600">Active Patients</div>

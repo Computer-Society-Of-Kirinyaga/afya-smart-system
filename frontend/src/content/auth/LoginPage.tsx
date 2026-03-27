@@ -99,6 +99,19 @@ export function LoginPage() {
               Make sure your account is registered in the system with a valid phone number.
             </p>
           </div>
+
+          {/* Signup Link */}
+          <div className="mt-6 text-center">
+            <p className="text-slate-600 text-sm">
+              Don't have an account?{' '}
+              <button
+                onClick={() => navigate({ to: '/signup' })}
+                className="text-teal-600 font-semibold hover:underline transition"
+              >
+                Sign Up
+              </button>
+            </p>
+          </div>
         </div>
 
         {/* Footer */}

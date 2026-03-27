@@ -356,12 +356,12 @@ export function SignupPage() {
           <div className="mt-6 text-center">
             <p className="text-slate-600 text-sm">
               Already have an account?{' '}
-              <a
-                href="/login"
-                className="text-teal-600 hover:underline font-semibold"
+              <button
+                onClick={() => navigate({ to: '/login' })}
+                className="text-teal-600 font-semibold hover:underline transition"
               >
                 Sign In
-              </a>
+              </button>
             </p>
           </div>
         </div>
