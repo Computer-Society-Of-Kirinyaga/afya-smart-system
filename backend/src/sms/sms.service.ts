@@ -32,16 +32,18 @@ export class SmsService {
     userId: string,
     alertLevel: string,
     disease: string,
-    recommendations: string[]
+    recommendations: string[],
   ): Promise<boolean> {
     this.ensureNonEmpty(userId, 'userId');
 
     const user = await this.usersService.findOne(userId);
-    
+
     if (!user) {
-      throw new NotFoundException(`User not found for SMS alert. userId=${userId}`);
+      throw new NotFoundException(
+        `User not found for SMS alert. userId=${userId}`,
+      );
     }
-    
+
     // Check if user has SMS enabled
     if (!user.alert_preferences?.sms_enabled) {
       this.logger.debug(`SMS disabled for user ${userId}`);
@@ -53,13 +55,17 @@ export class SmsService {
         `User has SMS enabled but no phone number on file. userId=${userId}`,
       );
     }
-    
+
     // Build the alert message
-    const alertMessage = this.buildAlertMessage(alertLevel, disease, recommendations);
-    
+    const alertMessage = this.buildAlertMessage(
+      alertLevel,
+      disease,
+      recommendations,
+    );
+
     const errors: string[] = [];
     let atLeastOneSent = false;
-    
+
     // Send to user
     try {
       await this.sendOrThrow(user.phone_number, alertMessage);
@@ -67,9 +73,12 @@ export class SmsService {
       atLeastOneSent = true;
     } catch (error) {
       errors.push(`user:${this.getErrorMessage(error)}`);
-      this.logger.error(`Failed to send SMS to user ${user.phone_number}:`, error);
+      this.logger.error(
+        `Failed to send SMS to user ${user.phone_number}:`,
+        error,
+      );
     }
-    
+
     // Send to doctor if enabled and phone number exists
     if (user.alert_preferences?.alert_doctor) {
       if (!user.doctor_phone_number) {
@@ -82,7 +91,7 @@ export class SmsService {
           user.phone_number,
           alertLevel,
           disease,
-          recommendations
+          recommendations,
         );
         try {
           await this.sendOrThrow(user.doctor_phone_number, doctorMessage);
@@ -90,7 +99,10 @@ export class SmsService {
           atLeastOneSent = true;
         } catch (error) {
           errors.push(`doctor:${this.getErrorMessage(error)}`);
-          this.logger.error(`Failed to send SMS to doctor ${user.doctor_phone_number}:`, error);
+          this.logger.error(
+            `Failed to send SMS to doctor ${user.doctor_phone_number}:`,
+            error,
+          );
         }
       }
     }
@@ -111,28 +123,31 @@ export class SmsService {
   private buildAlertMessage(
     alertLevel: string,
     disease: string,
-    recommendations: string[]
+    recommendations: string[],
   ): string {
-    const emoji = alertLevel === 'CRITICAL' ? '🚨' : alertLevel === 'WARNING' ? '⚠️' : 'ℹ️';
-    const levelText = alertLevel === 'CRITICAL' ? 'CRITICAL ALERT' : 
-                      alertLevel === 'WARNING' ? 'WARNING' : 'HEALTH UPDATE';
-    
-    let message = `${emoji} [${levelText}] `;
-    
+    const levelText =
+      alertLevel === 'CRITICAL'
+        ? 'CRITICAL ALERT'
+        : alertLevel === 'WARNING'
+          ? 'WARNING'
+          : 'HEALTH UPDATE';
+
+    let message = `[${levelText}]`;
+
     if (disease && disease !== 'healthy') {
       message += `Potential risk: ${disease}. `;
     } else if (alertLevel === 'NORMAL') {
       message += `Your health metrics are within normal range. `;
     }
-    
+
     // Add first recommendation (most important)
     if (recommendations && recommendations.length > 0) {
       message += `${recommendations[0]}`;
     }
-    
+
     // Add URL for more details
     message += `\n\nView full report: ${process.env.APP_URL || 'http://localhost:3000'}/dashboard`;
-    
+
     return message;
   }
 
@@ -144,26 +159,30 @@ export class SmsService {
     userPhone: string,
     alertLevel: string,
     disease: string,
-    recommendations: string[]
+    recommendations: string[],
   ): string {
-    const levelText = alertLevel === 'CRITICAL' ? 'CRITICAL' : 
-                      alertLevel === 'WARNING' ? 'WARNING' : 'ROUTINE';
-    
+    const levelText =
+      alertLevel === 'CRITICAL'
+        ? 'CRITICAL'
+        : alertLevel === 'WARNING'
+          ? 'WARNING'
+          : 'ROUTINE';
+
     let message = `[${levelText}] Patient: ${userName} (${userPhone})\n`;
-    
+
     if (disease && disease !== 'healthy') {
       message += `Risk: ${disease}\n`;
     }
-    
+
     if (recommendations && recommendations.length > 0) {
       message += `Recommendations:\n`;
       recommendations.slice(0, 3).forEach((rec, i) => {
         message += `${i + 1}. ${rec}\n`;
       });
     }
-    
+
     message += `\nView full patient data: ${process.env.APP_URL || 'http://localhost:3000'}/dashboard?patient=${userPhone}`;
-    
+
     return message;
   }
 
@@ -174,7 +193,7 @@ export class SmsService {
     if (!to || !message) {
       throw new BadRequestException('Phone number and message are required');
     }
-    
+
     try {
       await this.sendOrThrow(to, message);
       return true;
@@ -191,7 +210,7 @@ export class SmsService {
       const errorMessage = this.getErrorMessage(error);
       this.logger.warn(`SMS send failed for ${to}: ${errorMessage}`);
       throw new ServiceUnavailableException(
-        `Failed to send SMS to ${to}: ${errorMessage}`
+        `Failed to send SMS to ${to}: ${errorMessage}`,
       );
     }
   }

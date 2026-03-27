@@ -11,17 +11,19 @@ import { AiModelModule } from './ai-model/ai-model.module';
 import { RiskAssessmentsModule } from './risk_assessments/risk_assessments.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({
-      isGlobal: true, 
-      envFilePath: '.env', 
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
     }),
     DatabaseModule,
     UsersModule,
     HealthReadingsModule,
     StreamModule,
-    AuthModule
-  , AiModelModule,
-    RiskAssessmentsModule],
+    AuthModule,
+    AiModelModule,
+    RiskAssessmentsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

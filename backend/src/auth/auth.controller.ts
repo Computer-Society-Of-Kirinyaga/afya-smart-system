@@ -42,7 +42,6 @@ export class AuthController {
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   async refresh(@Body() refreshTokenDto: RefreshTokenDto, @Request() req) {
-  
     const userId = req.user?.id; // This won't work without auth guard
     // Better approach: decode the refresh token to get userId
     return this.authService.refreshTokens(

@@ -13,8 +13,11 @@ export class OpenSmsGateway implements SmsGateway {
     this.apiUrl =
       this.configService.get<string>('OPENSMS_API_URL') ??
       'https://opensms.co.ke/api/http/sms/send';
-    this.apiToken = this.configService.getOrThrow<string>('OPENSMS_API_TOKEN').trim();
-    this.senderId = this.configService.get<string>('OPENSMS_SENDER_ID') ?? 'OPENSMS';
+    this.apiToken = this.configService
+      .getOrThrow<string>('OPENSMS_API_TOKEN')
+      .trim();
+    this.senderId =
+      this.configService.get<string>('OPENSMS_SENDER_ID') ?? 'OPENSMS';
   }
 
   async sendSms(message: SmsMessage): Promise<unknown> {

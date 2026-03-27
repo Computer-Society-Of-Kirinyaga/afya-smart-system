@@ -97,9 +97,7 @@ Consider context: chronic conditions, medications, age, and vital sign trends. F
       // Build analysis prompt
       const prompt = this.buildAnalysisPrompt(input);
 
-      this.logger.debug(
-        `Processing health analysis for patient `,
-      );
+      this.logger.debug(`Processing health analysis for patient `);
 
       // Call Gemini API
       const result = await this.genAI.models.generateContent({
@@ -134,10 +132,7 @@ Consider context: chronic conditions, medications, age, and vital sign trends. F
 
       return response;
     } catch (error) {
-      this.logger.error(
-        `Error analyzing health data for patient:`,
-        error,
-      );
+      this.logger.error(`Error analyzing health data for patient:`, error);
 
       if (error instanceof BadRequestException) {
         throw error;
@@ -307,7 +302,10 @@ Return ONLY valid JSON response, no markdown or additional text.`;
       }
 
       // Ensure disease is a non-empty string
-      if (typeof aiResponse.disease !== 'string' || !aiResponse.disease.trim()) {
+      if (
+        typeof aiResponse.disease !== 'string' ||
+        !aiResponse.disease.trim()
+      ) {
         aiResponse.disease = 'healthy';
       }
 

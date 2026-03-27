@@ -4,6 +4,8 @@ import {
   IsBoolean,
   MinLength,
   IsPhoneNumber,
+  IsNumber,
+  IsArray,
 } from 'class-validator';
 
 export class RegisterDto {
@@ -35,4 +37,20 @@ export class RegisterDto {
     risk_threshold: 'low' | 'medium' | 'high';
     alert_doctor: boolean;
   };
+
+  @IsOptional()
+  @IsNumber()
+  age: number;
+
+  @IsOptional()
+  @IsNumber()
+  gender: number;
+
+  @IsOptional()
+  @IsArray()
+  medications: string[]; // e.g., ['Lisinopril 10mg', 'Metformin 500mg']
+
+  @IsOptional()
+  @IsArray()
+  chronicConditions: string[]; // e.g., ['Hypertension', 'Type 2 Diabetes']
 }

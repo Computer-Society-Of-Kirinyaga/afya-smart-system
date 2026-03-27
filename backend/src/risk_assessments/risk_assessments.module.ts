@@ -16,7 +16,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     HealthReadingsModule,
     UsersModule,
     SmsModule,
-    AiModelModule
+    AiModelModule,
   ],
   controllers: [RiskAssessmentsController],
   providers: [RiskAssessmentsService],

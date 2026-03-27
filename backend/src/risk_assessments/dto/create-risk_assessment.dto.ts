@@ -8,7 +8,6 @@ import {
 import { Type } from 'class-transformer';
 import { PredictionResponseDto } from 'src/ai-model/dto/ai-response.dto';
 
-
 export class CreateRiskAssessmentDto {
   @IsUUID()
   user_id: string;

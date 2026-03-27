@@ -1,9 +1,4 @@
-import {
-  IsString,
-  IsNumber,
-  Min,
-  Max,
-} from 'class-validator';
+import { IsString, IsNumber, Min, Max } from 'class-validator';
 import { HealthReading } from 'src/health-readings/entities/health-reading.entity';
 
 // export class VitalSignDto {
@@ -50,13 +45,13 @@ export class HealthInputDto {
     spo2: number;
     temperature: number;
   }>;
-  
+
   averages: {
     heart_rate: number;
     spo2: number;
     temperature: number;
   };
-  
+
   medications: string[];
   chronicConditions: string[];
   age?: number;

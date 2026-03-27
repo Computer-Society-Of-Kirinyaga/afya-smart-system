@@ -18,9 +18,7 @@ export class RiskAssessmentsService {
     private usersService: UsersService,
     private smsService: SmsService,
     private aiModelService: AiModelService,
-  ) { }
-
-
+  ) {}
 
   @Cron('*/1 * * * *') // Runs every 5 minutes
   async cronAssessAllUsers() {
@@ -29,8 +27,8 @@ export class RiskAssessmentsService {
     logger.log('Starting risk assessment cron job...');
 
     try {
-      // Get all users who have had readings in the last hour
-      const activeUsers = await this.usersService.findActiveUsers(1); // 1 hour
+      // Get all users who have had readings in the last minute
+      const activeUsers = await this.usersService.findActiveUsers(1); // 1 minute
 
       logger.log(`Found ${activeUsers.length} active users to assess`);
 
@@ -48,7 +46,7 @@ export class RiskAssessmentsService {
           const assessment = await this.assessUserRisk(user.id);
 
           if (assessment) {
-            console.log(assessment)
+            console.log(assessment);
             results.processed++;
             if (assessment.alert_sent) {
               results.alertsSent++;
@@ -59,16 +57,20 @@ export class RiskAssessmentsService {
 
           // Small delay between users to avoid rate limiting
           await this.delay(1000);
-
         } catch (error) {
           results.failed++;
           results.errors.push(`User ${user.id}: ${error.message}`);
-          logger.error(`Failed to assess risk for user ${user.id}:`, error.message);
+          logger.error(
+            `Failed to assess risk for user ${user.id}:`,
+            error.message,
+          );
         }
       }
 
       const duration = Date.now() - startTime;
-      logger.log(`Cron job completed in ${duration}ms. Results: ${JSON.stringify(results)}`);
+      logger.log(
+        `Cron job completed in ${duration}ms. Results: ${JSON.stringify(results)}`,
+      );
 
       return results;
     } catch (error) {
@@ -76,7 +78,6 @@ export class RiskAssessmentsService {
       throw error;
     }
   }
-
 
   async create(createDto: CreateRiskAssessmentDto) {
     const assessment = this.riskRepository.create(createDto);
@@ -86,10 +87,13 @@ export class RiskAssessmentsService {
   // In your risk-assessments.service.ts
 
   async assessUserRisk(userId: string) {
-    // Get last 5 readings with user relation loaded
-    const readings = await this.healthReadingsService.getReadingsLastHours(userId, 1, {
-      relations: ['user'] // Make sure to load the user relation
-    });
+    const readings = await this.healthReadingsService.getReadingsLastHours(
+      userId,
+      1,
+      {
+        relations: ['user'], // Make sure to load the user relation
+      },
+    );
 
     if (readings.length === 0) {
       return null;
@@ -100,7 +104,7 @@ export class RiskAssessmentsService {
 
     // Prepare LLM input with correct data extraction
     const llmInput = {
-      readings: readings.map(r => ({
+      readings: readings.map((r) => ({
         timestamp: r.timestamp,
         heart_rate: r.heart_rate,
         systolic_bp: r.systolic_bp,
@@ -109,9 +113,14 @@ export class RiskAssessmentsService {
         temperature: r.temperature,
       })),
       averages: {
-        heart_rate: readings.reduce((sum, r) => sum + (r.heart_rate || 0), 0) / readings.length,
-        spo2: readings.reduce((sum, r) => sum + (r.spo2 || 0), 0) / readings.length,
-        temperature: readings.reduce((sum, r) => sum + (r.temperature || 0), 0) / readings.length,
+        heart_rate:
+          readings.reduce((sum, r) => sum + (r.heart_rate || 0), 0) /
+          readings.length,
+        spo2:
+          readings.reduce((sum, r) => sum + (r.spo2 || 0), 0) / readings.length,
+        temperature:
+          readings.reduce((sum, r) => sum + (r.temperature || 0), 0) /
+          readings.length,
       },
       medications: user?.medications || [],
       chronicConditions: user?.chronicConditions || [],
@@ -138,7 +147,7 @@ export class RiskAssessmentsService {
         userId,
         llmResponse.alertLevel,
         llmResponse.disease,
-        llmResponse.recommendations
+        llmResponse.recommendations,
       );
 
       if (alertSent) {
@@ -151,11 +160,11 @@ export class RiskAssessmentsService {
 
   private mapAlertLevelToRiskLevel(alertLevel: string): RiskLevel {
     const mapping = {
-      'NORMAL': 'healthy',
-      'WARNING': 'moderate',
-      'CRITICAL': 'high'
+      NORMAL: 'healthy',
+      WARNING: 'moderate',
+      CRITICAL: 'high',
     };
-    return mapping[alertLevel] as RiskLevel || 'healthy';
+    return (mapping[alertLevel] as RiskLevel) || 'healthy';
   }
   async updateAlertStatus(
     assessmentId: string,
@@ -232,7 +241,7 @@ export class RiskAssessmentsService {
     const olderAvg =
       older.length > 0
         ? older.reduce((sum, a) => sum + riskScores[a.risk_level], 0) /
-        older.length
+          older.length
         : recentAvg;
 
     let riskTrend: 'improving' | 'worsening' | 'stable' = 'stable';
@@ -245,7 +254,7 @@ export class RiskAssessmentsService {
     if (lastHealthy) {
       lastHealthyDays = Math.floor(
         (new Date().getTime() - lastHealthy.assessment_time.getTime()) /
-        (1000 * 3600 * 24),
+          (1000 * 3600 * 24),
       );
     }
 
@@ -257,6 +266,6 @@ export class RiskAssessmentsService {
   }
 
   private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }
