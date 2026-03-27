@@ -19,6 +19,9 @@ export class User {
   @Column()
   name: string;
 
+  @Column({ select: false })
+  password_hash: string;
+
   @Column({ nullable: true })
   doctor_name: string;
 
@@ -41,6 +44,9 @@ export class User {
     risk_threshold: 'low' | 'medium' | 'high';
     alert_doctor: boolean;
   };
+  
+  @Column({ nullable: true, select: false })
+  refresh_token?: string;
 
   @CreateDateColumn()
   created_at: Date;

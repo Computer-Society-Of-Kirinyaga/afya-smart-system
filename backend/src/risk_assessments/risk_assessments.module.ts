@@ -5,13 +5,14 @@ import { UsersModule } from '../users/users.module';
 import { RiskAssessment } from './entities/risk_assessment.entity';
 import { RiskAssessmentsController } from './risk_assessments.controller';
 import { RiskAssessmentsService } from './risk_assessments.service';
+import { SmsModule } from 'src/sms/sms.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([RiskAssessment]),
     HealthReadingsModule,
     UsersModule,
-    // SmsModule,
+    SmsModule,
   ],
   controllers: [RiskAssessmentsController],
   providers: [RiskAssessmentsService],

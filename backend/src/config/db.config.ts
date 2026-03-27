@@ -7,7 +7,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    return {
+     return {
       type: 'postgres',
       url: this.configService.getOrThrow<string>('DATABASE_URL'),
       ssl: {

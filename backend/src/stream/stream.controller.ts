@@ -22,6 +22,7 @@ export class StreamController {
       }),
     );
   }
+  
   @Sse('health-test')
   testHealthStream(): Observable<MessageEvent> {
     return interval(3000).pipe(
