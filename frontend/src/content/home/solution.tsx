@@ -36,7 +36,9 @@ export function Solution(): JSX.Element {
               Predictive Health Intelligence
             </h2>
             <p className="text-lg text-slate-600 mb-6">
-              HealthRisk AI transforms your wearable data into actionable intelligence, forecasting health risks before they become emergencies and keeping your doctor in the loop in real-time.
+              HealthRisk AI transforms your wearable data into actionable
+              intelligence, forecasting health risks before they become
+              emergencies and keeping your doctor in the loop in real-time.
             </p>
 
             <div className="space-y-4">

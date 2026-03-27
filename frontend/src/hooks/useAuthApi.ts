@@ -1,5 +1,9 @@
 import { api } from '@/lib/api'
-import type { LoginRequest, LoginResponse, RegisterRequest } from '@/lib/api.types'
+import type {
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+} from '@/lib/api.types'
 import { useMutation } from '@tanstack/react-query'
 
 export function useLogin() {

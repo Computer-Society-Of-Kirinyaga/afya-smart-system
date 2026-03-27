@@ -2,7 +2,10 @@
 
 export function TestimonialsNew() {
   return (
-    <section id="testimonials" className="overflow-hidden lg:py-32 w-full z-20 pt-24 pb-24 relative bg-white">
+    <section
+      id="testimonials"
+      className="overflow-hidden lg:py-32 w-full z-20 pt-24 pb-24 relative bg-white"
+    >
       <div className="absolute inset-0 w-full h-full pointer-events-none hidden lg:block">
         <div className="grid-line-v" style={{ left: '6%' }}></div>
         <div className="grid-line-v" style={{ left: '28%' }}></div>
@@ -28,7 +31,9 @@ export function TestimonialsNew() {
                 src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/7d3d7aa0-9b80-49e5-94f8-4b8527c42263_1600w.jpg"
               />
               <div className="absolute bottom-10 right-10 text-right bg-white/90 backdrop-blur-sm p-4 rounded shadow-lg">
-                <span className="block text-4xl font-bold text-slate-900 tracking-tight">87%</span>
+                <span className="block text-4xl font-bold text-slate-900 tracking-tight">
+                  87%
+                </span>
                 <span className="block text-slate-500 font-mono text-xs uppercase tracking-widest mt-1">
                   Early Risk Detected
                 </span>
@@ -43,11 +48,18 @@ export function TestimonialsNew() {
               <div>
                 <div className="flex gap-1 text-yellow-400 mb-6">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className="iconify w-5 h-5" data-icon="solar:star-bold"></span>
+                    <span
+                      key={i}
+                      className="iconify w-5 h-5"
+                      data-icon="solar:star-bold"
+                    ></span>
                   ))}
                 </div>
                 <p className="text-lg font-light leading-relaxed mb-8 text-slate-600">
-                  {'"'}HealthRisk AI detected an irregular heart pattern my wearable was tracking. My doctor was able to intervene before it became a problem. The early warning saved me from a potential emergency.{'"'}
+                  {'"'}HealthRisk AI detected an irregular heart pattern my
+                  wearable was tracking. My doctor was able to intervene before
+                  it became a problem. The early warning saved me from a
+                  potential emergency.{'"'}
                 </p>
               </div>
               <div className="flex items-center gap-4 border-t border-slate-100 pt-6">
@@ -59,8 +71,12 @@ export function TestimonialsNew() {
                   />
                 </div>
                 <div>
-                  <h4 className="font-medium text-slate-900 text-sm">Sarah Johnson</h4>
-                  <span className="text-xs text-slate-400">HealthRisk AI User</span>
+                  <h4 className="font-medium text-slate-900 text-sm">
+                    Sarah Johnson
+                  </h4>
+                  <span className="text-xs text-slate-400">
+                    HealthRisk AI User
+                  </span>
                 </div>
               </div>
             </div>
@@ -69,11 +85,18 @@ export function TestimonialsNew() {
             <div className="bg-white p-8 rounded-sm border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-300">
               <div className="flex gap-1 text-yellow-400 mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <span key={i} className="iconify w-[18px] h-[18px]" data-icon="solar:star-bold"></span>
+                  <span
+                    key={i}
+                    className="iconify w-[18px] h-[18px]"
+                    data-icon="solar:star-bold"
+                  ></span>
                 ))}
               </div>
               <p className="text-base font-normal leading-relaxed mb-6 text-slate-600">
-                {'"'}As a busy professional, I don't have time for frequent doctor visits. HealthRisk AI monitors my health 24/7 and only alerts me when something matters. Peace of mind without the hassle.{'"'}
+                {'"'}As a busy professional, I don't have time for frequent
+                doctor visits. HealthRisk AI monitors my health 24/7 and only
+                alerts me when something matters. Peace of mind without the
+                hassle.{'"'}
               </p>
               <div className="flex items-center gap-4 border-t border-slate-100 pt-4">
                 <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden">
@@ -84,7 +107,9 @@ export function TestimonialsNew() {
                   />
                 </div>
                 <div>
-                  <h4 className="font-medium text-slate-900 text-sm">Sarah Jay</h4>
+                  <h4 className="font-medium text-slate-900 text-sm">
+                    Sarah Jay
+                  </h4>
                 </div>
               </div>
             </div>
@@ -93,7 +118,7 @@ export function TestimonialsNew() {
 
         {/* CTA Banner */}
         <div className="bg-slate-900 rounded-sm p-8 lg:px-12 lg:py-10 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group shadow-2xl shadow-slate-300/50">
-          <div className="absolute inset-0 bg-gradient-to-r from-teal-900/50 to-transparent pointer-events-none"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-teal-900/50 to-transparent pointer-events-none"></div>
           <div className="relative z-10 text-center md:text-left">
             <h3 className="text-3xl font-medium text-white tracking-tight mb-2">
               Ready to prioritize your health?
@@ -105,7 +130,10 @@ export function TestimonialsNew() {
           <button className="relative z-10 bg-white text-slate-900 pl-8 pr-6 py-4 rounded font-semibold text-xs uppercase tracking-widest hover:bg-slate-100 transition-all flex items-center gap-4 group/btn shadow-lg">
             Schedule Visit
             <div className="w-6 h-6 bg-slate-900 text-white rounded-full flex items-center justify-center group-hover/btn:scale-110 transition-transform">
-              <span className="iconify w-3.5 h-3.5" data-icon="solar:arrow-right-linear"></span>
+              <span
+                className="iconify w-3.5 h-3.5"
+                data-icon="solar:arrow-right-linear"
+              ></span>
             </div>
           </button>
         </div>

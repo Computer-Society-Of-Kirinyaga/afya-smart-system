@@ -3,15 +3,17 @@ export function ImpactSection() {
   useEffect(() => {
     // Initialize Chart
     setTimeout(() => {
-      const canvas = document.getElementById('recoveryChart') as HTMLCanvasElement
+      const canvas = document.getElementById(
+        'recoveryChart',
+      ) as HTMLCanvasElement
       if (!canvas) return
 
       const ctx = canvas.getContext('2d')
       if (!ctx) return
 
-      const gradient = ctx.createLinearGradient(0, 0, 0, 300)
-      gradient.addColorStop(0, 'rgba(20, 184, 166, 0.15)')
-      gradient.addColorStop(1, 'rgba(20, 184, 166, 0)')
+      const linear = ctx.createLinearGradient(0, 0, 0, 300)
+      linear.addColorStop(0, 'rgba(20, 184, 166, 0.15)')
+      linear.addColorStop(1, 'rgba(20, 184, 166, 0)')
 
       // @ts-ignore
       new window.Chart(ctx, {
@@ -23,7 +25,7 @@ export function ImpactSection() {
               label: 'HealthRisk AI',
               data: [65, 78, 82, 85, 88, 92],
               borderColor: '#14b8a6',
-              backgroundColor: gradient,
+              backgroundColor: linear,
               borderWidth: 2,
               tension: 0.4,
               pointBackgroundColor: '#ffffff',
@@ -101,7 +103,10 @@ export function ImpactSection() {
   }, [])
 
   return (
-    <section id="impact" className="w-full relative z-10 bg-white border-b border-slate-100 overflow-hidden">
+    <section
+      id="impact"
+      className="w-full relative z-10 bg-white border-b border-slate-100 overflow-hidden"
+    >
       <div className="lg:px-[6%] lg:py-32 max-w-[1600px] mr-auto ml-auto pt-24 pr-6 pb-24 pl-6 relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           {/* Left Content */}
@@ -115,12 +120,15 @@ export function ImpactSection() {
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-slate-900 tracking-tight leading-[1.05] mb-6">
               Early detection saves
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500">
-                {' '}lives.
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-teal-600 to-emerald-500">
+                {' '}
+                lives.
               </span>
             </h2>
             <p className="text-lg text-slate-500 font-light leading-relaxed mb-10 max-w-lg">
-              HealthRisk AI continuously analyzes your wearable data to detect health risks before they become emergencies. Prevent interventions save time, reduce hospitalizations, and ultimately save lives.
+              HealthRisk AI continuously analyzes your wearable data to detect
+              health risks before they become emergencies. Prevent interventions
+              save time, reduce hospitalizations, and ultimately save lives.
             </p>
             <div className="grid grid-cols-2 gap-x-12 gap-y-10">
               <div className="group cursor-default">
@@ -146,7 +154,7 @@ export function ImpactSection() {
 
           {/* Chart Card */}
           <div className="relative group scroll-reveal delay-200">
-            <div className="absolute -inset-4 bg-gradient-to-r from-teal-50 to-slate-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl"></div>
+            <div className="absolute -inset-4 bg-linear-to-r from-teal-50 to-slate-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl"></div>
             <div className="relative bg-white border border-slate-200 rounded-sm p-6 lg:p-8 shadow-sm transition-all duration-500 hover:shadow-lg hover:border-teal-100">
               <div className="flex items-center justify-between mb-8">
                 <div>
@@ -184,7 +192,10 @@ export function ImpactSection() {
               <div className="mt-6 pt-6 border-t border-slate-100 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-emerald-50 text-emerald-600 rounded-full">
-                    <span className="iconify w-4 h-4" data-icon="solar:graph-up-linear"></span>
+                    <span
+                      className="iconify w-4 h-4"
+                      data-icon="solar:graph-up-linear"
+                    ></span>
                   </div>
                   <div className="text-sm">
                     <span className="font-semibold text-slate-900 block leading-tight">

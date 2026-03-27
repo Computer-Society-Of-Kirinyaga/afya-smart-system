@@ -59,7 +59,7 @@ export const useSettingsStore = create<SettingsStore>()(
       contacts: {
         primaryPhone: '+254712345678',
         secondaryPhone: '+254798765432',
-        email: 'jane@vitalis.io',
+        email: 'jane@afyasmart.io',
         emergencyContact: 'John Doe',
       },
       thresholds: DEFAULT_THRESHOLDS,

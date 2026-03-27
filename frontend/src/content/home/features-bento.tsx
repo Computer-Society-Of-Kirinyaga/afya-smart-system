@@ -1,6 +1,5 @@
 'use client'
 
-
 export function FeaturesBento() {
   const handleGridMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const cards = (e.currentTarget as HTMLDivElement).children
@@ -18,12 +17,21 @@ export function FeaturesBento() {
     const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
-    ;(e.currentTarget as HTMLDivElement).style.setProperty('--mouse-x', x + 'px')
-    ;(e.currentTarget as HTMLDivElement).style.setProperty('--mouse-y', y + 'px')
+    ;(e.currentTarget as HTMLDivElement).style.setProperty(
+      '--mouse-x',
+      x + 'px',
+    )
+    ;(e.currentTarget as HTMLDivElement).style.setProperty(
+      '--mouse-y',
+      y + 'px',
+    )
   }
 
   return (
-    <section id="features" className="lg:py-32 bg-slate-50/50 w-full z-10 border-slate-100 border-t pt-24 pb-24 relative">
+    <section
+      id="features"
+      className="lg:py-32 bg-slate-50/50 w-full z-10 border-slate-100 border-t pt-24 pb-24 relative"
+    >
       <div className="absolute inset-0 pointer-events-none hidden lg:block z-0">
         <div className="absolute top-0 bottom-0 left-[6%] w-[1px] bg-slate-200/50"></div>
         <div className="absolute top-0 bottom-0 left-[28%] w-[1px] bg-slate-200/50"></div>
@@ -38,13 +46,18 @@ export function FeaturesBento() {
           </h2>
           <div className="scroll-reveal delay-100 grid grid-cols-1 lg:grid-cols-2 gap-12">
             <p className="text-lg text-slate-500 font-light leading-relaxed">
-              Monitor your health 24/7 with AI-powered analytics. Get real-time alerts about risks before they become emergencies, and share insights directly with your healthcare provider.
+              Monitor your health 24/7 with AI-powered analytics. Get real-time
+              alerts about risks before they become emergencies, and share
+              insights directly with your healthcare provider.
             </p>
           </div>
         </div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6" onMouseMove={handleGridMouseMove}>
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6"
+          onMouseMove={handleGridMouseMove}
+        >
           {/* Card 1 */}
           <FeatureCard
             delay="delay-200"
@@ -137,16 +150,23 @@ function FeatureCard({
       <div
         className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
-          background: 'radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(15, 23, 42, 0.03), transparent 40%)',
+          background:
+            'radial-linear(400px circle at var(--mouse-x) var(--mouse-y), rgba(15, 23, 42, 0.03), transparent 40%)',
           zIndex: 0,
         }}
       ></div>
-      <div className={`h-12 w-12 ${iconBg} rounded-lg flex items-center justify-center ${iconColor} mb-8 relative z-10`}>
+      <div
+        className={`h-12 w-12 ${iconBg} rounded-lg flex items-center justify-center ${iconColor} mb-8 relative z-10`}
+      >
         <span className="iconify w-6 h-6" data-icon={icon}></span>
       </div>
       <div className="relative z-10">
-        <h3 className="text-lg font-semibold text-slate-900 mb-2 tracking-tight">{title}</h3>
-        <p className="text-sm text-slate-500 font-normal leading-relaxed">{description}</p>
+        <h3 className="text-lg font-semibold text-slate-900 mb-2 tracking-tight">
+          {title}
+        </h3>
+        <p className="text-sm text-slate-500 font-normal leading-relaxed">
+          {description}
+        </p>
       </div>
     </div>
   )
@@ -181,16 +201,23 @@ function FeatureCardWide({
       <div
         className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
-          background: 'radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(15, 23, 42, 0.03), transparent 40%)',
+          background:
+            'radial-linear(400px circle at var(--mouse-x) var(--mouse-y), rgba(15, 23, 42, 0.03), transparent 40%)',
           zIndex: 0,
         }}
       ></div>
-      <div className={`absolute top-8 right-8 transition-colors ${icon === 'solar:users-group-two-rounded-linear' ? 'text-slate-200 group-hover:text-sky-100' : 'text-slate-200 group-hover:text-teal-100'}`}>
+      <div
+        className={`absolute top-8 right-8 transition-colors ${icon === 'solar:users-group-two-rounded-linear' ? 'text-slate-200 group-hover:text-sky-100' : 'text-slate-200 group-hover:text-teal-100'}`}
+      >
         <span className="iconify w-16 h-16" data-icon={icon}></span>
       </div>
       <div className="mt-auto relative z-10">
-        <h3 className="text-xl font-semibold text-slate-900 mb-3 tracking-tight">{title}</h3>
-        <p className="text-sm text-slate-500 font-normal leading-relaxed max-w-md">{description}</p>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3 tracking-tight">
+          {title}
+        </h3>
+        <p className="text-sm text-slate-500 font-normal leading-relaxed max-w-md">
+          {description}
+        </p>
         <div className="mt-8">
           {badges ? (
             <div className="flex items-center gap-4">

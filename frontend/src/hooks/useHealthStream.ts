@@ -27,12 +27,9 @@ export function useHealthStream(userId: string | null) {
     const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
     const token = localStorage.getItem('access_token')
 
-    const eventSource = new EventSource(
-      `${API_BASE_URL}/stream/${userId}`,
-      {
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-      } as EventSourceInit,
-    )
+    const eventSource = new EventSource(`${API_BASE_URL}/stream/${userId}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    } as EventSourceInit)
 
     const handleMessage = (event: MessageEvent) => {
       try {
@@ -80,9 +77,7 @@ export function useHealthTestStream() {
   useEffect(() => {
     const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
-    const eventSource = new EventSource(
-      `${API_BASE_URL}/stream/health-test`,
-    )
+    const eventSource = new EventSource(`${API_BASE_URL}/stream/health-test`)
 
     const handleMessage = (event: MessageEvent) => {
       try {

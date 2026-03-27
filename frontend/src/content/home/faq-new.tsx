@@ -4,14 +4,20 @@ import { useState } from 'react'
 
 export function FAQNew() {
   return (
-    <section id="faq" className="z-20 w-full border-t border-slate-100 relative bg-white">
+    <section
+      id="faq"
+      className="z-20 w-full border-t border-slate-100 relative bg-white"
+    >
       <div className="lg:px-[6%] max-w-[1600px] mr-auto ml-auto pr-6 pl-6 pt-24 pb-24">
         <div className="max-w-3xl">
           <h3 className="text-xs font-mono text-slate-500 uppercase mb-8">
             Common Questions
           </h3>
           <div className="space-y-0">
-            <FAQItem question="Which wearables are compatible with HealthRisk AI?" answer="HealthRisk AI works with Apple Health, Fitbit, Garmin, Oura Ring, and other major health platforms. You can connect any wearable device that syncs with these platforms to start getting AI-powered insights." />
+            <FAQItem
+              question="Which wearables are compatible with HealthRisk AI?"
+              answer="HealthRisk AI works with Apple Health, Fitbit, Garmin, Oura Ring, and other major health platforms. You can connect any wearable device that syncs with these platforms to start getting AI-powered insights."
+            />
             <FAQItem
               question="How accurate is the risk prediction?"
               answer="Our machine learning models achieve 92% accuracy in early risk detection. The AI learns from millions of health data points and is continuously improving. Individual accuracy varies based on data quality and personal health factors."

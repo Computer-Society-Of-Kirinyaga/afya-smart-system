@@ -8,7 +8,8 @@ export function CTA() {
           Ready to Take Control of Your Health?
         </h2>
         <p className="text-xl text-sky-100 mb-10 max-w-2xl mx-auto">
-          Join patients and healthcare providers using HealthRisk AI to predict risks before they become emergencies.
+          Join patients and healthcare providers using HealthRisk AI to predict
+          risks before they become emergencies.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
