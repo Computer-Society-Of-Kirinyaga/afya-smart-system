@@ -26,13 +26,22 @@ export default function Header(): JSX.Element {
           <a href="/" className="text-slate-900 hover:text-sky-600 transition">
             Home
           </a>
-          <a href="#features" className="text-slate-900 hover:text-sky-600 transition">
+          <a
+            href="#features"
+            className="text-slate-900 hover:text-sky-600 transition"
+          >
             Features
           </a>
-          <a href="#testimonials" className="text-slate-900 hover:text-sky-600 transition">
+          <a
+            href="#testimonials"
+            className="text-slate-900 hover:text-sky-600 transition"
+          >
             Testimonials
           </a>
-          <a href="#faq" className="text-slate-900 hover:text-sky-600 transition">
+          <a
+            href="#faq"
+            className="text-slate-900 hover:text-sky-600 transition"
+          >
             FAQ
           </a>
         </nav>
@@ -53,21 +62,35 @@ export default function Header(): JSX.Element {
           <div className="w-8 h-8 rounded-lg bg-linear-to-br from-sky-500 to-teal-500 flex items-center justify-center">
             <span className="text-white font-bold text-sm">V</span>
           </div>
-          <span className="text-lg font-bold text-slate-900 hidden sm:inline">VITALIS</span>
+          <span className="text-lg font-bold text-slate-900 hidden sm:inline">
+            VITALIS
+          </span>
         </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-12">
-          <a href="/" className="text-slate-700 hover:text-slate-900 transition text-sm">
+          <a
+            href="/"
+            className="text-slate-700 hover:text-slate-900 transition text-sm"
+          >
             Home
           </a>
-          <a href="#features" className="text-slate-700 hover:text-slate-900 transition text-sm">
+          <a
+            href="#features"
+            className="text-slate-700 hover:text-slate-900 transition text-sm"
+          >
             Features
           </a>
-          <a href="#testimonials" className="text-slate-700 hover:text-slate-900 transition text-sm">
+          <a
+            href="#testimonials"
+            className="text-slate-700 hover:text-slate-900 transition text-sm"
+          >
             Testimonials
           </a>
-          <a href="#faq" className="text-slate-700 hover:text-slate-900 transition text-sm">
+          <a
+            href="#faq"
+            className="text-slate-700 hover:text-slate-900 transition text-sm"
+          >
             FAQ
           </a>
         </nav>

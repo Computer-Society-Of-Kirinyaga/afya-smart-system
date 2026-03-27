@@ -8,7 +8,8 @@ export function CTA() {
           Ready to Transform Patient Care?
         </h2>
         <p className="text-xl text-sky-100 mb-10 max-w-2xl mx-auto">
-          Join hundreds of healthcare institutions using VITALIS to deliver better outcomes and reduce costs.
+          Join hundreds of healthcare institutions using VITALIS to deliver
+          better outcomes and reduce costs.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -21,7 +22,8 @@ export function CTA() {
         </div>
 
         <p className="text-sky-100 mt-8 text-sm">
-          No credit card required. 14-day free trial. Full access to all features.
+          No credit card required. 14-day free trial. Full access to all
+          features.
         </p>
       </div>
     </section>

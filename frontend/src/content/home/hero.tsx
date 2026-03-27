@@ -1,6 +1,5 @@
 import { ArrowRight } from 'lucide-react'
 
-
 export function Hero(): JSX.Element {
   return (
     <section className="flex flex-col lg:block lg:h-[calc(100vh-100px)] z-10 w-full relative">
@@ -16,7 +15,10 @@ export function Hero(): JSX.Element {
               Advanced Medical Care at Your Fingertips
             </h1>
             <p className="text-lg lg:text-xl text-slate-600 mb-10 max-w-2xl">
-              Revolutionize patient monitoring with intelligent, real-time health tracking. From chronic disease management to preventive care, VITALIS empowers healthcare providers with actionable insights.
+              Revolutionize patient monitoring with intelligent, real-time
+              health tracking. From chronic disease management to preventive
+              care, VITALIS empowers healthcare providers with actionable
+              insights.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -36,7 +38,9 @@ export function Hero(): JSX.Element {
               <div className="text-sm text-slate-600">Active Patients</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-slate-900 mb-2">99.9%</div>
+              <div className="text-3xl font-bold text-slate-900 mb-2">
+                99.9%
+              </div>
               <div className="text-sm text-slate-600">Uptime SLA</div>
             </div>
             <div>

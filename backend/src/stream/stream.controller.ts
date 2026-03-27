@@ -6,7 +6,7 @@ import { interval, Observable, switchMap } from 'rxjs';
 export class StreamController {
   constructor(private readonly healthReadingsService: HealthReadingsService) {}
 
-  // @Sse(':userId')
+  @Sse(':userId')
   streamHealthData(@Param('userId') userId: string): Observable<MessageEvent> {
     // Create an observable that emits every 5 seconds
     return interval(5000).pipe(
@@ -22,7 +22,7 @@ export class StreamController {
       }),
     );
   }
-  
+
   @Sse('health-test')
   testHealthStream(): Observable<MessageEvent> {
     return interval(3000).pipe(

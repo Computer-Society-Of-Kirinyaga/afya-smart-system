@@ -1,8 +1,22 @@
 import { Button } from '@/components/ui/button'
 import { useAlertStore } from '@/store/alerts'
 import { useAuthStore } from '@/store/auth'
-import { Navigate, Outlet, useLocation, useNavigate } from '@tanstack/react-router'
-import { AlertCircle, BarChart3, Bell, Heart, LogOut, Menu, Settings, X } from 'lucide-react'
+import {
+  Navigate,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from '@tanstack/react-router'
+import {
+  AlertCircle,
+  BarChart3,
+  Bell,
+  Heart,
+  LogOut,
+  Menu,
+  Settings,
+  X,
+} from 'lucide-react'
 import { useState } from 'react'
 
 export function DashboardShell() {
@@ -12,7 +26,6 @@ export function DashboardShell() {
   const { unreadCount } = useAlertStore()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  // Redirect to login if not authenticated
   if (!isAuthenticated) {
     return <Navigate to="/login" />
   }
@@ -33,8 +46,10 @@ export function DashboardShell() {
     <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row">
       {/* Sidebar */}
       <aside
-        className={`fixed lg:relative lg:w-64 w-64 h-screen bg-slate-900 text-white shadow-lg z-40 transform transition-transform duration-300 ${
-          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        className={`fixed lg:fixed lg:w-64 w-64 h-screen bg-slate-900 text-white shadow-lg z-40 transform transition-transform duration-300 overflow-y-auto ${
+          mobileMenuOpen
+            ? 'translate-x-0'
+            : '-translate-x-full lg:translate-x-0'
         }`}
       >
         {/* Logo */}
@@ -86,7 +101,11 @@ export function DashboardShell() {
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-slate-900 text-white rounded-lg"
       >
-        {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        {mobileMenuOpen ? (
+          <X className="w-6 h-6" />
+        ) : (
+          <Menu className="w-6 h-6" />
+        )}
       </button>
 
       {/* Overlay for mobile menu */}
@@ -97,12 +116,12 @@ export function DashboardShell() {
         />
       )}
 
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col">
+      {/* Main Content — lg:ml-64 offsets the fixed 256px sidebar */}
+      <main className="flex-1 flex flex-col lg:ml-64">
         {/* Topbar */}
-        <header className="bg-white border-b border-slate-200 shadow-sm">
+        <header className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-20">
           <div className="flex items-center justify-between p-6">
-            <div>
+            <div className="pl-10 lg:pl-0">
               <h2 className="text-2xl font-bold text-slate-900">
                 Welcome, {user?.name || 'Patient'}
               </h2>

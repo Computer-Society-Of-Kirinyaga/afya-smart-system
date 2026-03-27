@@ -7,7 +7,7 @@ async function bootstrap() {
   // Enable CORS for frontend communication
   app.enableCors({
     origin: process.env.CORS_ORIGIN || [
-      'http://localhost:3000',
+      'http://localhost:4000',
       'http://localhost:5173',
     ],
     credentials: true,
@@ -15,7 +15,7 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type,Authorization',
   });
 
-  const port = process.env.PORT ?? 3000;
+  const port = process.env.PORT ?? 3002;
   await app.listen(port);
   console.log(`Server is running on ${port}`);
 }

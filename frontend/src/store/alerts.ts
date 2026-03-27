@@ -30,7 +30,7 @@ export const useAlertStore = create<AlertStore>((set) => ({
   markAsRead: (alertId: string) => {
     set((state) => {
       const newAlerts = state.activeAlerts.map((alert) =>
-        alert.id === alertId ? { ...alert, isRead: true } : alert
+        alert.id === alertId ? { ...alert, isRead: true } : alert,
       )
       const unreadCount = newAlerts.filter((a) => !a.isRead).length
 
@@ -43,14 +43,19 @@ export const useAlertStore = create<AlertStore>((set) => ({
 
   markAllAsRead: () => {
     set((state) => ({
-      activeAlerts: state.activeAlerts.map((alert) => ({ ...alert, isRead: true })),
+      activeAlerts: state.activeAlerts.map((alert) => ({
+        ...alert,
+        isRead: true,
+      })),
       unreadCount: 0,
     }))
   },
 
   clearAlert: (alertId: string) => {
     set((state) => {
-      const newAlerts = state.activeAlerts.filter((alert) => alert.id !== alertId)
+      const newAlerts = state.activeAlerts.filter(
+        (alert) => alert.id !== alertId,
+      )
       const unreadCount = newAlerts.filter((a) => !a.isRead).length
 
       return {
