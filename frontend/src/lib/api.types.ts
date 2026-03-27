@@ -57,3 +57,44 @@ export interface StreamData {
   data: unknown
   timestamp: string
 }
+
+// Auth-related types
+export interface Tokens {
+  access_token: string
+  refresh_token: string
+}
+
+export interface LoginRequest {
+  phone_number: string
+  password: string
+}
+
+export interface RegisterRequest {
+  phone_number: string
+  password: string
+  name: string
+  consent_given: boolean
+  alert_preferences?: {
+    sms_enabled?: boolean
+    risk_threshold?: 'low' | 'medium' | 'high'
+    alert_doctor?: boolean
+  }
+  doctor_name?: string
+  doctor_phone_number?: string
+}
+
+export interface LoginResponse {
+  message: string
+  user: {
+    id: string
+    phone_number: string
+    name: string
+    consent_given: boolean
+    alert_preferences?: Record<string, unknown>
+    doctor_name?: string
+    doctor_phone_number?: string
+    created_at?: string
+  }
+  tokens: Tokens
+}
+
