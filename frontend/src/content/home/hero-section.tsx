@@ -43,17 +43,7 @@ export function HeroSection() {
           </span>
         </h1>
         <div className="flex animate-reveal delay-500 lg:justify-start lg:pl-2 lg:mt-12 pointer-events-auto mt-12 pl-2 gap-x-6 gap-y-6 items-center justify-center">
-          <button className="group flex items-center gap-3 pl-6 pr-2 py-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-full transition-all shadow-sm">
-            <span className="text-sm font-medium text-slate-700">
-              Start Free Trial
-            </span>
-            <div className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-900 group-hover:bg-teal-50 group-hover:text-teal-600 transition-colors">
-              <span
-                className="iconify w-4 h-4"
-                data-icon="solar:arrow-right-linear"
-              ></span>
-            </div>
-          </button>
+     
           <div className="flex flex-col text-left">
             <span className="text-xs font-semibold text-slate-900 uppercase tracking-wide">
               Risk Detection
