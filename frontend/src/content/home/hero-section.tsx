@@ -157,7 +157,7 @@ export function HeroSection() {
         <div className="hidden lg:block marker -top-[2.5px] -right-[2.5px]"></div>
         <img
           alt="Medical Lab"
-          className="group-hover:scale-105 transition-transform duration-1000 ease-out w-full h-full object-cover"
+          className="group-hover:scale-105 transition-transform duration-1000 ease-out w-full h-full object-cover rounded-md"
           src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/9f023d8e-7464-4eea-9789-18f1b0227cc8_1600w.webp"
         />
         <div className="absolute inset-0 bg-linear-to-t from-slate-900/10 to-transparent"></div>
