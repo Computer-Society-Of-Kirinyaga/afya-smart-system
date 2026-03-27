@@ -1,4 +1,10 @@
-import { IsUUID, IsOptional, IsBoolean, IsEnum, ValidateNested } from 'class-validator';
+import {
+  IsUUID,
+  IsOptional,
+  IsBoolean,
+  IsEnum,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class LlmResponseDto {

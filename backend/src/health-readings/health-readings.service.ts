@@ -1,8 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between, MoreThan, LessThan, FindOptionsWhere } from 'typeorm';
+import {
+  Repository,
+  Between,
+  MoreThan,
+  LessThan,
+  FindOptionsWhere,
+} from 'typeorm';
 import { HealthReading } from './entities/health-reading.entity';
-import { CreateHealthReadingDto, BulkCreateHealthReadingDto } from './dto/create-health-reading.dto';
+import {
+  CreateHealthReadingDto,
+  BulkCreateHealthReadingDto,
+} from './dto/create-health-reading.dto';
 import { User } from '../users/entities/user.entity';
 
 @Injectable()
@@ -16,24 +25,33 @@ export class HealthReadingsService {
 
   async create(createDto: CreateHealthReadingDto): Promise<HealthReading> {
     // Verify user exists
-    const user = await this.usersRepository.findOne({ where: { id: createDto.user_id } });
+    const user = await this.usersRepository.findOne({
+      where: { id: createDto.user_id },
+    });
     if (!user) {
-      throw new NotFoundException(`User with ID ${createDto.user_id} not found`);
+      throw new NotFoundException(
+        `User with ID ${createDto.user_id} not found`,
+      );
     }
 
     const reading = this.readingsRepository.create({
       ...createDto,
-      timestamp: createDto.timestamp ? new Date(createDto.timestamp) : new Date(),
+      timestamp: createDto.timestamp
+        ? new Date(createDto.timestamp)
+        : new Date(),
     });
     return this.readingsRepository.save(reading);
   }
 
-
   //Could come in handy
-  async bulkCreate(bulkDto: BulkCreateHealthReadingDto): Promise<HealthReading[]> {
+  async bulkCreate(
+    bulkDto: BulkCreateHealthReadingDto,
+  ): Promise<HealthReading[]> {
     const readings = await Promise.all(
       bulkDto.readings.map(async (dto) => {
-        const user = await this.usersRepository.findOne({ where: { id: dto.user_id } });
+        const user = await this.usersRepository.findOne({
+          where: { id: dto.user_id },
+        });
         if (!user) {
           throw new NotFoundException(`User with ID ${dto.user_id} not found`);
         }
@@ -41,7 +59,7 @@ export class HealthReadingsService {
           ...dto,
           timestamp: dto.timestamp ? new Date(dto.timestamp) : new Date(),
         });
-      })
+      }),
     );
     return this.readingsRepository.save(readings);
   }
@@ -52,10 +70,10 @@ export class HealthReadingsService {
       startDate?: Date;
       endDate?: Date;
       limit?: number;
-    }
+    },
   ): Promise<HealthReading[]> {
     const where: FindOptionsWhere<HealthReading> = { user_id: userId };
-    
+
     if (options?.startDate && options?.endDate) {
       where.timestamp = Between(options.startDate, options.endDate);
     } else if (options?.startDate) {
@@ -83,10 +101,13 @@ export class HealthReadingsService {
     });
   }
 
-  async getReadingsLastHours(userId: string, hours: number): Promise<HealthReading[]> {
+  async getReadingsLastHours(
+    userId: string,
+    hours: number,
+  ): Promise<HealthReading[]> {
     const cutoffTime = new Date();
     cutoffTime.setHours(cutoffTime.getHours() - hours);
-    
+
     return this.readingsRepository.find({
       where: {
         user_id: userId,
@@ -98,7 +119,7 @@ export class HealthReadingsService {
 
   async getAggregatedReadings(
     userId: string,
-    hours: number = 1
+    hours: number = 1,
   ): Promise<{
     readings: HealthReading[];
     averages: {
@@ -115,7 +136,7 @@ export class HealthReadingsService {
     };
   }> {
     const readings = await this.getReadingsLastHours(userId, hours);
-    
+
     if (readings.length === 0) {
       return {
         readings: [],
@@ -135,21 +156,37 @@ export class HealthReadingsService {
     }
 
     // Calculate averages
-    const avg_heart_rate = readings.reduce((sum, r) => sum + (r.heart_rate || 0), 0) / readings.length;
-    const avg_spo2 = readings.reduce((sum, r) => sum + (r.spo2 || 0), 0) / readings.length;
-    const avg_temperature = readings.reduce((sum, r) => sum + (r.temperature || 0), 0) / readings.length;
-    const avg_systolic_bp = readings.reduce((sum, r) => sum + (r.systolic_bp || 0), 0) / readings.length;
-    const avg_diastolic_bp = readings.reduce((sum, r) => sum + (r.diastolic_bp || 0), 0) / readings.length;
+    const avg_heart_rate =
+      readings.reduce((sum, r) => sum + (r.heart_rate || 0), 0) /
+      readings.length;
+    const avg_spo2 =
+      readings.reduce((sum, r) => sum + (r.spo2 || 0), 0) / readings.length;
+    const avg_temperature =
+      readings.reduce((sum, r) => sum + (r.temperature || 0), 0) /
+      readings.length;
+    const avg_systolic_bp =
+      readings.reduce((sum, r) => sum + (r.systolic_bp || 0), 0) /
+      readings.length;
+    const avg_diastolic_bp =
+      readings.reduce((sum, r) => sum + (r.diastolic_bp || 0), 0) /
+      readings.length;
 
     // Calculate trends (compare first half vs second half)
     const midPoint = Math.floor(readings.length / 2);
     const firstHalf = readings.slice(0, midPoint);
     const secondHalf = readings.slice(midPoint);
 
-    const getTrend = (values: number[]): 'increasing' | 'decreasing' | 'stable' => {
+    const getTrend = (
+      values: number[],
+    ): 'increasing' | 'decreasing' | 'stable' => {
       if (values.length < 2) return 'stable';
-      const firstAvg = values.slice(0, Math.floor(values.length / 2)).reduce((a, b) => a + b, 0) / Math.floor(values.length / 2);
-      const secondAvg = values.slice(Math.floor(values.length / 2)).reduce((a, b) => a + b, 0) / (values.length - Math.floor(values.length / 2));
+      const firstAvg =
+        values
+          .slice(0, Math.floor(values.length / 2))
+          .reduce((a, b) => a + b, 0) / Math.floor(values.length / 2);
+      const secondAvg =
+        values.slice(Math.floor(values.length / 2)).reduce((a, b) => a + b, 0) /
+        (values.length - Math.floor(values.length / 2));
       const diffPercent = ((secondAvg - firstAvg) / firstAvg) * 100;
       if (diffPercent > 5) return 'increasing';
       if (diffPercent < -5) return 'decreasing';
@@ -166,9 +203,13 @@ export class HealthReadingsService {
         avg_diastolic_bp: parseFloat(avg_diastolic_bp.toFixed(0)),
       },
       trends: {
-        heart_rate_trend: getTrend(readings.map(r => r.heart_rate).filter(Boolean)),
-        spo2_trend: getTrend(readings.map(r => r.spo2).filter(Boolean)),
-        temperature_trend: getTrend(readings.map(r => r.temperature).filter(Boolean)),
+        heart_rate_trend: getTrend(
+          readings.map((r) => r.heart_rate).filter(Boolean),
+        ),
+        spo2_trend: getTrend(readings.map((r) => r.spo2).filter(Boolean)),
+        temperature_trend: getTrend(
+          readings.map((r) => r.temperature).filter(Boolean),
+        ),
       },
     };
   }

@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { HealthReadingsModule } from './health-readings/health-readings.module';
 import { StreamModule } from './stream/stream.module';
 import { AuthModule } from './auth/auth.module';
+import { AiModelModule } from './ai-model/ai-model.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -18,7 +19,7 @@ import { AuthModule } from './auth/auth.module';
     HealthReadingsModule,
     StreamModule,
     AuthModule
-  ],
+  , AiModelModule],
   controllers: [AppController],
   providers: [AppService],
 })
