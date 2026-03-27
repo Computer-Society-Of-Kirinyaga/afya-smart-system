@@ -169,7 +169,7 @@ GET {{baseUrl}}/risk-assessments/history/00000000-0000-0000-0000-000000000000
 # Risk Assessments - Update Alert Status
 PATCH {{baseUrl}}/risk-assessments/b032e3a1-61f9-4b80-ae8a-3e217e27625e/alert-status
 Content-Type: application/json
- 
+
 {
   "alertSent": true
 }
