@@ -43,7 +43,6 @@ export function HeroSection() {
           </span>
         </h1>
         <div className="flex animate-reveal delay-500 lg:justify-start lg:pl-2 lg:mt-12 pointer-events-auto mt-12 pl-2 gap-x-6 gap-y-6 items-center justify-center">
-     
           <div className="flex flex-col text-left">
             <span className="text-xs font-semibold text-slate-900 uppercase tracking-wide">
               Risk Detection

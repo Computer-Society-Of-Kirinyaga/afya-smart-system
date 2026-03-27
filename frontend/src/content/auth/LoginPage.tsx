@@ -36,20 +36,23 @@ export function LoginPage() {
             Better care, faster — keep patients safer with less work.
           </h1>
           <p className="mt-4 max-w-lg text-sm leading-6 text-slate-300">
-            See the right patient information at a glance, get timely alerts, and act
-            sooner to prevent complications. Afya Smart helps your team spend more
-            time caring and less time chasing data.
+            See the right patient information at a glance, get timely alerts,
+            and act sooner to prevent complications. Afya Smart helps your team
+            spend more time caring and less time chasing data.
           </p>
 
           <div className="mt-10 space-y-4 text-sm text-slate-200">
             <div className="rounded-2xl border border-slate-700 bg-slate-800/70 px-4 py-3">
-              Catch problems early with clear, prioritized alerts so you can intervene quickly.
+              Catch problems early with clear, prioritized alerts so you can
+              intervene quickly.
             </div>
             <div className="rounded-2xl border border-slate-700 bg-slate-800/70 px-4 py-3">
-              Save clinician time with concise patient summaries and streamlined workflows.
+              Save clinician time with concise patient summaries and streamlined
+              workflows.
             </div>
             <div className="rounded-2xl border border-slate-700 bg-slate-800/70 px-4 py-3">
-              Improve outcomes and boost patient confidence with consistent, actionable insights.
+              Improve outcomes and boost patient confidence with consistent,
+              actionable insights.
             </div>
           </div>
         </section>
@@ -59,7 +62,9 @@ export function LoginPage() {
             <p className="text-sm font-medium tracking-wide text-emerald-700">
               Welcome back
             </p>
-            <h2 className="mt-2 text-3xl font-semibold text-slate-900">Sign In</h2>
+            <h2 className="mt-2 text-3xl font-semibold text-slate-900">
+              Sign In
+            </h2>
             <p className="mt-2 text-sm text-slate-600">
               Continue to your Afya Smart workspace.
             </p>

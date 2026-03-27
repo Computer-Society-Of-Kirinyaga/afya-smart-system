@@ -24,13 +24,11 @@ export function Navbar() {
         id="mobile-menu"
       >
         <button
-          className="absolute top-8 right-6 text-slate-500 hover:text-slate-900"
+          className="absolute top-8 right-6 w-10 h-10 flex items-center justify-center"
           onClick={toggleMenu}
         >
-          <span
-            className="iconify w-8 h-8"
-            data-icon="solar:close-circle-linear"
-          ></span>
+          <span className="absolute w-6 h-0.5 bg-slate-800 rotate-45"></span>
+          <span className="absolute w-6 h-0.5 bg-slate-800 -rotate-45"></span>
         </button>
         <nav className="flex flex-col gap-8 text-2xl font-medium tracking-tight">
           <a
@@ -75,12 +73,14 @@ export function Navbar() {
       {/* Navbar */}
       <nav className="relative z-50 w-full h-[80px] lg:h-[100px] flex items-center justify-between px-4 border-b border-slate-100 bg-white/70 backdrop-blur-md animate-reveal sticky top-0">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-teal-50 text-teal-600 rounded flex items-center justify-center">
-            <span
-              className="iconify w-5 h-5"
-              data-icon="solar:heart-pulse-linear"
-            ></span>
-          </div>
+          <button
+            className="md:hidden flex flex-col justify-center items-center w-10 h-10 group"
+            onClick={toggleMenu}
+          >
+            <span className="block w-6 h-0.5 bg-slate-800 mb-1.5 transition-all"></span>
+            <span className="block w-6 h-0.5 bg-slate-800 mb-1.5 transition-all"></span>
+            <span className="block w-6 h-0.5 bg-slate-800 transition-all"></span>
+          </button>
           <span className="text-lg font-semibold tracking-tight text-slate-900">
             Afya Smart
           </span>
@@ -119,7 +119,9 @@ export function Navbar() {
             <span
               className="iconify w-6 h-6"
               data-icon="solar:hamburger-menu-linear"
-            ></span>
+            >
+              ddd
+            </span>
           </button>
         </div>
       </nav>
